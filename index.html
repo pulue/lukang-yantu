@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>鹿康研途 · AI考研规划师</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+
+/* ======== 顶部导航栏（PC全宽） ======== */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;z-index:200;padding:0 24px;gap:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.topbar-logo{font-size:18px;font-weight:800;color:#b45309;white-space:nowrap;text-decoration:none}
+.topbar-logo span{color:#f59e0b}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.topbar-badge{background:#fde68a;color:#78350f;font-size:12px;padding:4px 12px;border-radius:16px;font-weight:600}
+
+/* ======== 主布局（侧边栏 + 内容区） ======== */
+#app{display:flex;padding-top:56px;min-height:100vh}
+
+/* 侧边栏 */
+.sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e2e8f0;height:calc(100vh - 56px);position:sticky;top:56px;overflow-y:auto;padding:20px 14px;flex-shrink:0}
+.sidebar-section{margin-bottom:20px}
+.sidebar-section-title{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:6px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:#475569;transition:all .2s;border:none;background:none;width:100%;text-align:left}
+.sidebar-item:hover{background:#f8fafc;color:#334155}
+.sidebar-item.active{background:#fef3c7;color:#b45309;font-weight:600}
+.sidebar-item .si-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.sidebar-item .si-badge{margin-left:auto;background:#ef4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:8px}
+
+/* 主内容区 */
+.main-content{flex:1;min-width:0;overflow-y:auto;height:calc(100vh - 56px)}
+
+/* 页面 */
+.page{display:none;padding:32px 40px}
+.page.active{display:block}
+
+/* ======== 首页布局（两栏） ======== */
+.index-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+
+/* Hero Banner */
+.hero{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 60%,#fbbf24 100%);border-radius:16px;padding:36px 40px 32px;grid-column:1/-1}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.hero-greeting{font-size:15px;color:#92400e;display:block;margin-bottom:6px}
+.hero-title{font-size:36px;font-weight:800;color:#b45309;display:block;margin-bottom:6px}
+.hero-subtitle{font-size:15px;color:#a16207;display:block}
+.countdown-card{display:flex;align-items:center;background:rgba(255,255,255,.85);border-radius:14px;padding:16px 24px;gap:16px;cursor:pointer;min-width:280px}
+.countdown-ring{background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff;border-radius:50%;width:60px;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:60px;box-shadow:0 4px 12px rgba(180,83,9,.3)}
+.countdown-num{font-size:24px;font-weight:800;line-height:1}
+.countdown-unit{font-size:10px;opacity:.9}
+.countdown-divider{width:1px;height:36px;background:#e2e8f0}
+.countdown-info{flex:1;text-align:left}
+.countdown-target{font-size:12px;color:#64748b;display:block}
+.countdown-date{font-size:14px;color:#334155;font-weight:600;display:block;margin-top:2px}
+.date-input{width:100%;padding:6px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-top:6px}
+
+/* 每日一句 */
+.daily-quote{background:rgba(255,255,255,.6);border-radius:10px;padding:14px 20px;text-align:center;font-size:14px;font-style:italic;color:#78350f;margin-top:0;grid-column:1/-1}
+
+/* 区块 */
+.section{margin-bottom:0}
+.section-title{font-size:16px;font-weight:700;color:#334155;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* 功能网格 */
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.feature-item{text-align:center;padding:20px 12px;border-radius:12px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .2s}
+.feature-item:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.08);border-color:#fde68a}
+.feature-icon-box{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px}
+.feature-name{font-size:14px;font-weight:600;color:#334155;display:block;margin-bottom:3px}
+.feature-desc{font-size:12px;color:#94a3b8;display:block}
+
+/* 工具箱 */
+.toolbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toolbox-item{display:flex;align-items:center;gap:12px;padding:16px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .2s}
+.toolbox-item:hover{background:#eff6ff;border-color:#bfdbfe;transform:translateY(-1px)}
+.toolbox-icon{font-size:26px}
+.toolbox-name{font-size:15px;font-weight:600;color:#334155;display:block}
+.toolbox-desc{font-size:12px;color:#94a3b8;display:block}
+
+/* 热门问题 */
+.hot-questions{display:flex;flex-direction:column;gap:8px}
+.question-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .2s}
+.question-item:hover{background:#fff7ed;border-color:#fde68a}
+.question-rank{width:24px;height:24px;border-radius:6px;background:#fde68a;color:#b45309;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.question-text{flex:1;font-size:14px;color:#475569}
+.question-arrow{font-size:16px;color:#cbd5e1;flex-shrink:0}
+
+/* 底部 */
+.footer{text-align:center;padding:20px;color:#94a3b8;font-size:12px;grid-column:1/-1;border-top:1px solid #f1f5f9;margin-top:4px}
+
+/* ======== Chat页（全高，左右布局） ======== */
+.chat-page{display:none;padding:0;height:calc(100vh - 56px);flex-direction:column}
+.chat-page.active{display:flex}
+.chat-page .navbar{background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-page .navbar-center{font-weight:700;font-size:16px;color:#334155}
+.chat-page .navbar-action{background:#b45309;color:#fff;border:none;border-radius:8px;padding:7px 18px;font-size:13px;cursor:pointer}
+.chat-body{display:flex;flex:1;min-height:0}
+.chat-sidebar{width:280px;border-right:1px solid #e2e8f0;padding:20px;overflow-y:auto;flex-shrink:0;background:#fafafa}
+.chat-sidebar-title{font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+#quickTemplates{display:flex;flex-direction:column;gap:16px;width:100%}
+.chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.chat-messages{flex:1;overflow-y:auto;padding:24px 40px}
+.msg{display:flex;margin-bottom:18px;animation:msgIn .3s ease}
+.msg.user{justify-content:flex-end}
+.msg-bubble{max-width:72%;padding:14px 18px;border-radius:14px;font-size:15px;line-height:1.8;word-break:break-word}
+.msg.user .msg-bubble{background:#fde68a;color:#78350f;border-bottom-right-radius:4px}
+.msg.assistant .msg-bubble{background:#f1f5f9;color:#334155;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.msg-time{font-size:10px;color:#94a3b8;margin-top:4px}
+.msg-actions{display:flex;gap:8px;margin-top:6px}
+.msg-btn{background:none;border:1px solid #e2e8f0;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;color:#64748b}
+.msg-btn:hover{background:#f1f5f9}
+.typing-dots{display:inline-flex;gap:4px;padding:4px 0}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:#cbd5e1;animation:typing 1.4s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{opacity:.3}30%{opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.quick-templates{padding:10px 40px;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid #f1f5f9}
+.qt-item{display:flex;align-items:center;background:#fef3c7;color:#92400e;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;font-size:14px;cursor:pointer;transition:all .2s;line-height:1.5;word-break:break-all}
+.qt-item:hover{background:#fde68a}
+.qt-item::before{content:'💬';margin-right:10px;font-size:16px;flex-shrink:0}
+.quick-tag{display:none}
+.chat-input-bar{padding:16px 40px 20px;border-top:1px solid #e2e8f0;display:flex;gap:14px;align-items:center;background:#fff;flex-shrink:0}
+.chat-input-bar input{flex:1;padding:13px 20px;border:1px solid #e2e8f0;border-radius:24px;font-size:15px;outline:none;transition:border-color .2s;background:#f8fafc}
+.chat-input-bar input:focus{border-color:#f59e0b;background:#fff}
+.chat-input-bar button{background:#f59e0b;color:white;border:none;border-radius:24px;padding:13px 32px;font-size:15px;font-weight:600;cursor:pointer}
+.chat-input-bar button:disabled{opacity:.5;cursor:not-allowed}
+.empty-state{text-align:center;padding:100px 20px;color:#94a3b8}
+.empty-state .empty-icon{font-size:64px;display:block;margin-bottom:20px}
+.empty-state .empty-text{font-size:16px}
+
+/* ======== 知识库页 ======== */
+.knowledge-page .kb-layout{display:grid;grid-template-columns:200px 1fr;gap:0;height:100%}
+.kb-sidebar{border-right:1px solid #f1f5f9;padding:16px}
+.search-bar-wrap{padding:24px 40px 14px}
+.search-box{display:flex;align-items:center;background:#f1f5f9;border-radius:10px;padding:10px 16px;max-width:600px}
+.search-box input{border:none;outline:none;background:transparent;flex:1;font-size:14px;padding:2px 4px}
+.search-box .search-icon{font-size:18px;color:#94a3b8;margin-right:10px}
+.categories{display:flex;gap:10px;padding:0 40px 16px;flex-wrap:wrap}
+.cat-tag{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer;transition:all .2s}
+.cat-tag.active{background:#fde68a;color:#b45309;border-color:#f59e0b;font-weight:600}
+.cat-tag:hover{background:#fef3c7}
+.knowledge-list{padding:0 40px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.knowledge-item{padding:20px;border:1px solid #f1f5f9;border-radius:12px;cursor:pointer;transition:all .2s;background:#fff}
+.knowledge-item:hover{border-color:#fde68a;box-shadow:0 4px 12px rgba(0,0,0,.06);transform:translateY(-2px)}
+.knowledge-item-title{font-size:15px;font-weight:600;color:#334155;margin-bottom:8px}
+.knowledge-item-desc{font-size:13px;color:#94a3b8;margin-bottom:10px;line-height:1.6}
+.knowledge-item-meta{display:flex;gap:14px;font-size:12px;color:#cbd5e1}
+
+/* 知识详情 */
+.detail-page{padding:0}
+.detail-page .detail-header{padding:20px 28px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:12px;background:#fff;position:sticky;top:0}
+.back-btn{background:#f1f5f9;border:none;border-radius:8px;padding:7px 14px;font-size:14px;cursor:pointer;color:#475569;display:flex;align-items:center;gap:4px}
+.back-btn:hover{background:#e2e8f0}
+.detail-content{padding:32px 40px;max-width:900px}
+.detail-content h2{font-size:22px;color:#1e293b;margin-bottom:14px}
+.detail-content p{font-size:15px;color:#475569;line-height:1.9;margin-bottom:14px}
+.detail-content h3{font-size:16px;color:#334155;margin:20px 0 10px;font-weight:700}
+
+/* ======== 用户页（增强版） ======== */
+.user-page{padding:0}
+.user-header{position:relative;overflow:hidden}
+.user-header-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#fde047 0%,#fef08a 50%,#fef9c3 100%);border-radius:0 0 28px 28px}
+.user-header-content{position:relative;padding:48px 48px 32px}
+.user-row{display:flex;align-items:center;gap:20px}
+.user-avatar{width:80px;height:80px;border-radius:50%;background:rgba(146,64,14,.12);border:2px solid rgba(146,64,14,.2);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0}
+.user-detail{flex:1}
+.user-name-score{font-size:22px;font-weight:700;color:#713f12;display:block;margin-bottom:4px}
+.user-id-text{font-size:14px;color:#92400e;display:block}
+.edit-btn{font-size:22px;cursor:pointer;padding:8px;border-radius:8px;background:rgba(255,255,255,.3);border:none;color:#713f12;transition:all .2s}
+.edit-btn:hover{background:rgba(255,255,255,.6)}
+/* 签到区域 */
+.checkin-area{margin-top:20px}
+.checkin-card{background:rgba(255,255,255,.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(113,63,18,.12);cursor:pointer;transition:all .2s}
+.checkin-card:hover{background:rgba(255,255,255,.5)}
+.checkin-left{display:flex;align-items:center;gap:14px}
+.checkin-icon{font-size:28px}
+.checkin-title{font-size:15px;font-weight:600;color:#713f12;display:block}
+.checkin-streak{font-size:12px;color:#92400e;display:block;margin-top:2px}
+.checkin-btn{border-radius:24px;padding:8px 24px;font-size:14px;font-weight:600;border:1px solid rgba(113,63,18,.15);cursor:pointer;transition:all .2s;background:rgba(146,64,14,.12);color:#713f12}
+.checkin-btn.done{background:rgba(16,185,129,.25);color:#065f46;border-color:rgba(16,185,129,.3)}
+
+/* 统计卡片 */
+.stats-row{display:flex;background:#fff;margin:-20px 32px 20px;padding:28px 0;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;z-index:1}
+.stat-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.stat-num{font-size:26px;font-weight:700;color:#334155}
+.stat-label{font-size:13px;color:#94a3b8;margin-top:6px}
+.stat-divider{width:1px;height:44px;background:#e2e8f0;align-self:center}
+
+/* 菜单（增强版） */
+.menu-section{padding:0 32px 20px}
+.menu-group{background:#fff;border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.menu-item{display:flex;align-items:center;padding:20px 24px;border-bottom:1px solid #f1f5f9;gap:16px;cursor:pointer;transition:background .2s}
+.menu-item:last-child{border-bottom:none}
+.menu-item:hover{background:#f8fafc}
+.menu-icon{font-size:24px;flex-shrink:0}
+.menu-title{font-size:16px;font-weight:600;color:#334155;flex-shrink:0;width:100px}
+.menu-desc{flex:1;font-size:13px;color:#94a3b8}
+.menu-arrow{font-size:22px;color:#cbd5e1}
+.menu-badge{background:#ef4444;color:#fff;font-size:11px;padding:2px 10px;border-radius:12px;margin-right:4px}
+
+/* ======== 院校查询 ======== */
+.univ-content{padding:32px 40px}
+.univ-filters{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.univ-search{flex:1;min-width:240px;max-width:400px;padding:11px 16px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none}
+.univ-search:focus{border-color:#f59e0b}
+.univ-filter-select{padding:11px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;cursor:pointer;background:#fff;color:#334155;min-width:120px}
+.univ-filter-select:focus{border-color:#f59e0b}
+.univ-count{font-size:13px;color:#94a3b8;margin-left:auto;white-space:nowrap}
+.univ-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.univ-item{padding:20px;border:1px solid #f1f5f9;border-radius:14px;transition:all .2s;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:12px}
+.univ-item:hover{border-color:#fde68a;background:#fefce8;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.univ-item-top{display:flex;justify-content:space-between;align-items:flex-start}
+.univ-name{font-weight:700;font-size:16px;color:#1e293b}
+.univ-location{font-size:12px;color:#94a3b8}
+.univ-tags{display:flex;gap:5px;flex-wrap:wrap}
+.univ-tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:5px;font-weight:600}
+.univ-tag.t985{background:#fee2e2;color:#dc2626}
+.univ-tag.t211{background:#dbeafe;color:#2563eb}
+.univ-tag.tsyl{background:#fef3c7;color:#b45309}
+.univ-tag.type-tag{background:#f0fdf4;color:#16a34a}
+.univ-tag.level-tag{background:#f1f5f9;color:#64748b}
+.univ-majors{display:flex;gap:6px;flex-wrap:wrap}
+.univ-major{font-size:11px;padding:2px 8px;border-radius:4px;background:#f8fafc;color:#64748b;border:1px solid #f1f5f9}
+.univ-desc{font-size:13px;color:#64748b;line-height:1.6}
+.univ-item-footer{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#94a3b8}
+.univ-detail-link{color:#f59e0b;font-weight:600;cursor:pointer}
+.univ-detail-link:hover{text-decoration:underline}
+/* 院校详情弹窗 */
+.univ-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
+.univ-modal-overlay.show{display:flex}
+.univ-modal{background:#fff;border-radius:20px;width:90%;max-width:820px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15);animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.univ-modal-header{padding:28px 32px 20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:flex-start}
+.univ-modal-title{font-size:22px;font-weight:800;color:#1e293b;display:block}
+.univ-modal-subtitle{font-size:14px;color:#94a3b8;margin-top:4px}
+.univ-modal-close{background:none;border:none;font-size:28px;color:#cbd5e1;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
+.univ-modal-close:hover{color:#64748b}
+.univ-modal-body{padding:24px 32px}
+.univ-modal-section{margin-bottom:24px}
+.univ-modal-section h4{font-size:15px;font-weight:700;color:#334155;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.univ-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+.univ-modal-grid .um-label{font-size:13px;color:#94a3b8}
+.univ-modal-grid .um-value{font-size:14px;color:#334155;font-weight:500}
+.univ-modal-tags{display:flex;gap:6px;flex-wrap:wrap}
+.univ-modal-majors{display:flex;gap:6px;flex-wrap:wrap}
+.univ-modal-major-tag{font-size:12px;padding:4px 12px;border-radius:6px;background:#fef3c7;color:#92400e;font-weight:500}
+.univ-modal-desc{font-size:14px;color:#475569;line-height:1.8;background:#f8fafc;border-radius:12px;padding:18px 20px}
+/* 详情弹窗增强 */
+.um-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.um-stat-card{text-align:center;padding:16px 10px;border-radius:14px;background:linear-gradient(135deg,#fefce8,#fffbeb);border:1px solid #fde68a}
+.um-stat-card.s2{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#bfdbfe}
+.um-stat-card.s3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#bbf7d0}
+.um-stat-card.s4{background:linear-gradient(135deg,#fdf2f8,#fce7f3);border-color:#fbcfe8}
+.um-stat-num{font-size:24px;font-weight:800;color:#b45309;display:block;line-height:1}
+.um-stat-card.s2 .um-stat-num{color:#2563eb}
+.um-stat-card.s3 .um-stat-num{color:#16a34a}
+.um-stat-card.s4 .um-stat-num{color:#be185d}
+.um-stat-label{font-size:12px;color:#94a3b8;margin-top:6px;display:block}
+.um-score-section{margin-bottom:18px}
+.um-score-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.um-score-label{width:80px;font-size:13px;color:#64748b;flex-shrink:0;text-align:right}
+.um-score-bar{flex:1;height:20px;background:#f1f5f9;border-radius:10px;overflow:hidden}
+.um-score-fill{height:100%;border-radius:10px;transition:width .5s ease}
+.um-score-fill.shigh{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.um-score-fill.smid{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.um-score-fill.slow{background:linear-gradient(90deg,#10b981,#34d399)}
+.um-score-val{width:36px;font-size:12px;font-weight:700;color:#334155;text-align:center;flex-shrink:0}
+.um-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
+.um-detail-grid .dl{font-size:12px;color:#94a3b8}
+.um-detail-grid .dv{font-size:14px;color:#334155;font-weight:500;margin-bottom:8px}
+.um-detail-grid .dv.bold{font-weight:700;color:#b45309}
+.um-advice-box{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fbbf24;border-radius:14px;padding:20px 24px;margin-top:4px}
+.um-advice-box h4{color:#b45309 !important;margin-bottom:10px !important}
+.um-advice-box p{font-size:14px;color:#78350f;line-height:1.8;margin:0}
+.um-advice-list{list-style:none;padding:0;margin:0}
+.um-advice-list li{font-size:13px;color:#78350f;line-height:1.8;padding:4px 0;padding-left:20px;position:relative}
+.um-advice-list li::before{content:'▸';position:absolute;left:0;color:#f59e0b;font-weight:700}
+.um-pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.um-pro-card,.um-con-card{border-radius:12px;padding:16px;font-size:13px;line-height:1.8}
+.um-pro-card{background:#f0fdf4;border:1px solid #bbf7d0}
+.um-pro-card .pc-title{color:#16a34a;font-weight:700;font-size:14px;display:block;margin-bottom:8px}
+.um-con-card{background:#fef2f2;border:1px solid #fecaca}
+.um-con-card .pc-title{color:#dc2626;font-weight:700;font-size:14px;display:block;margin-bottom:8px}
+.um-keyword-list{display:flex;gap:6px;flex-wrap:wrap}
+.um-keyword{font-size:12px;padding:5px 14px;border-radius:20px;background:#f0fdf4;color:#16a34a;font-weight:500;border:1px solid #bbf7d0}
+.um-detail-section{margin-bottom:24px}
+.um-detail-section h4{font-size:15px;font-weight:700;color:#334155;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.um-detail-section .section-desc{font-size:14px;color:#475569;line-height:1.9}
+.um-info-table{width:100%;border-collapse:collapse}
+.um-info-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid #f1f5f9}
+.um-info-table td:first-child{color:#94a3b8;width:120px}
+.um-info-table td:last-child{color:#334155;font-weight:500}
+
+.univ-no-result{text-align:center;padding:80px 20px;color:#94a3b8;grid-column:1/-1}
+.univ-no-result .unr-icon{font-size:52px;display:block;margin-bottom:16px}
+.univ-no-result .unr-text{font-size:15px}
+
+/* ======== 每日一练（增强版） ======== */
+.daily-content{padding:32px 40px}
+/* 科目Tab */
+.subject-tabs{display:flex;gap:0;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:12px}
+.subj-tab{flex:1;text-align:center;padding:16px 0;font-size:15px;color:#94a3b8;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.subj-tab.active{color:#92400e;font-weight:700;border-bottom-color:#facc15;background:#fefce8}
+.subj-tab-icon{font-size:20px}
+/* 英语子Tab */
+.sub-tabs{display:flex;gap:10px;margin-bottom:12px}
+.sub-tab{flex:1;text-align:center;padding:10px 0;background:#fff;border-radius:12px;font-size:13px;color:#94a3b8;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.03);transition:all .2s}
+.sub-tab.active{color:#713f12;background:linear-gradient(135deg,#fde047,#fef08a);font-weight:600}
+/* 统计行 */
+.daily-stats-bar{padding:0;margin-bottom:8px}
+.daily-stats-text{font-size:13px;color:#94a3b8}
+/* 题目卡片 */
+.q-card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.05);margin-bottom:16px}
+.q-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.q-tag{font-size:12px;padding:4px 12px;border-radius:8px;font-weight:600}
+.q-tag.politics{background:#fee2e2;color:#dc2626}
+.q-tag.english{background:#fef9c3;color:#92400e}
+.q-tag.cate{background:#f3f4f6;color:#6b7280}
+.q-tag.diff{background:#fefce8;color:#92400e}
+.q-tag.multi-badge{background:#fce7f3;color:#be185d}
+.q-body{font-size:18px;font-weight:700;color:#1e293b;line-height:1.8;display:block;margin-bottom:24px}
+/* 选项 */
+.daily-options-enh{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.daily-option-enh{display:flex;align-items:center;padding:14px 18px;border-radius:12px;border:2px solid #e5e7eb;gap:12px;cursor:pointer;transition:all .15s;font-size:14px}
+.daily-option-enh:hover{border-color:#facc15;background:#fffbeb}
+.daily-option-enh.selected{border-color:#facc15;background:#fef3c7}
+.daily-option-enh.correct{border-color:#10b981;background:#d1fae5}
+.daily-option-enh.wrong{border-color:#ef4444;background:#fee2e2}
+.opt-letter{width:32px;height:32px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;color:#6b7280}
+.option-enh.selected .opt-letter{background:#facc15;color:#713f12}
+.option-enh.correct .opt-letter{background:#10b981;color:#fff}
+.option-enh.wrong .opt-letter{background:#ef4444;color:#fff}
+.opt-text{flex:1;color:#334155}
+.opt-icon{font-size:18px;font-weight:700;color:#10b981}
+.opt-icon.wrong-icon{color:#ef4444}
+/* 翻译输入 */
+.translate-area{margin-bottom:24px}
+.translate-input{width:100%;min-height:100px;padding:14px;background:#f9fafb;border:2px solid #e5e7eb;border-radius:12px;font-size:14px;line-height:1.6;outline:none;resize:vertical;font-family:inherit}
+.translate-input:focus{border-color:#facc15}
+.translate-display{padding:14px;background:#f9fafb;border-radius:12px;font-size:14px;line-height:1.6;color:#334155}
+.translate-display .td-label{font-size:12px;color:#94a3b8;display:block;margin-bottom:6px}
+/* 提交按钮 */
+.submit-btn{text-align:center;background:linear-gradient(135deg,#fde047,#fef08a);color:#713f12;padding:16px;border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px;transition:all .15s;border:none;width:100%}
+.submit-btn:hover{opacity:.9}
+.submit-btn:active{transform:scale(.98)}
+/* 结果面板 */
+.result-panel{border-top:1px solid #e5e7eb;padding-top:20px;margin-top:8px}
+.result-head{text-align:center;margin-bottom:16px;font-size:20px;font-weight:700}
+.result-answer{margin-bottom:12px}
+.result-answer .ra-label{font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px}
+.result-answer .ra-value{font-size:14px;color:#64748b;line-height:1.7}
+.result-explanation{margin-bottom:12px}
+.result-explanation .re-label{font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px}
+.result-explanation .re-value{font-size:14px;color:#64748b;line-height:1.7}
+/* 下一题按钮 */
+.next-btn{text-align:center;margin-top:18px;padding:14px;border-radius:12px;background:#fefce8;color:#92400e;font-size:15px;font-weight:700;cursor:pointer;border:1px solid #fde047;transition:all .15s;width:100%}
+.next-btn:hover{background:#fde68a}
+/* 空状态 */
+.daily-empty{text-align:center;padding:80px 20px;color:#94a3b8}
+.daily-empty .de-icon{font-size:48px;display:block;margin-bottom:14px}
+.daily-empty .de-title{font-size:16px;font-weight:600;color:#64748b;margin-bottom:6px}
+.daily-empty .de-sub{font-size:13px;color:#94a3b8}
+
+/* ======== 收藏页 ======== */
+.fav-content{padding:32px 40px}
+.fav-list{display:flex;flex-direction:column;gap:10px}
+.fav-item{padding:16px 18px;background:#fff;border:1px solid #f1f5f9;border-radius:12px;display:flex;justify-content:space-between;align-items:center;transition:all .2s;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.fav-item:hover{border-color:#fde68a;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.fav-info{flex:1;min-width:0}
+.fav-title{font-size:14px;font-weight:600;color:#334155;display:block;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav-meta{font-size:12px;color:#94a3b8}
+.fav-unstar{color:#f59e0b;font-size:18px;cursor:pointer;padding:6px;border:none;background:none}
+
+/* ======== 历史会话页 ======== */
+.hist-content{padding:32px 40px}
+.hist-list{display:flex;flex-direction:column;gap:10px}
+.hist-item{padding:16px 18px;background:#fff;border:1px solid #f1f5f9;border-radius:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.hist-item:hover{border-color:#fde68a;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.hist-info{flex:1;min-width:0}
+.hist-title{font-size:14px;font-weight:600;color:#334155;display:block;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-meta{font-size:12px;color:#94a3b8}
+.hist-del{color:#ef4444;font-size:14px;cursor:pointer;padding:8px;border:none;background:none;border-radius:6px}
+.hist-del:hover{background:#fee2e2}
+
+/* 院校对比 */
+.compare-content{padding:32px 40px}
+.compare-selectors{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+.compare-selector{flex:1;min-width:280px}
+.compare-selector label{font-size:14px;font-weight:700;color:#334155;display:block;margin-bottom:8px}
+.compare-selector select{width:100%;padding:12px 16px;border:1px solid #e2e8f0;border-radius:10px;font-size:15px;outline:none;cursor:pointer;background:#fff}
+.compare-selector select:focus{border-color:#f59e0b}
+/* 对比结果容器 */
+.compare-result-wrap{display:none}
+.compare-result-wrap.visible{display:block}
+/* 对比标题行 */
+.compare-header-row{display:flex;gap:24px;margin-bottom:28px}
+.compare-vs{display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#f59e0b;padding:0 10px;min-width:60px}
+.compare-col{flex:1;background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,.04);display:flex;align-items:center;gap:18px}
+.compare-col-rank{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:14px;width:80px;height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.compare-col-rank-num{font-size:28px;font-weight:800;color:#b45309;line-height:1}
+.compare-col-rank-label{font-size:11px;color:#92400e;margin-top:2px}
+.compare-col-info{flex:1}
+.compare-col-name{font-size:20px;font-weight:700;color:#1e293b;display:block;margin-bottom:4px}
+.compare-col-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.compare-col-tag{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.compare-col-tag.type985{background:#fee2e2;color:#dc2626}
+.compare-col-tag.type211{background:#dbeafe;color:#2563eb}
+.compare-col-tag.level{background:#fef3c7;color:#b45309}
+.compare-col-location{font-size:13px;color:#64748b}
+/* 综合评分条 */
+.score-bars{margin-bottom:28px;background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.score-bars-title{font-size:16px;font-weight:700;color:#334155;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.score-bar-row{display:flex;align-items:center;margin-bottom:16px}
+.score-bar-label{width:80px;font-size:13px;color:#64748b;font-weight:600;flex-shrink:0}
+.score-bar-visual{flex:1;display:flex;flex-direction:column;gap:6px}
+.score-bar-item{display:flex;align-items:center;gap:8px}
+.score-bar-item-name{width:70px;font-size:12px;color:#94a3b8;text-align:right;flex-shrink:0}
+.score-bar-item-track{flex:1;height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+.score-bar-item-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.score-bar-item-fill.a-fill{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.score-bar-item-fill.b-fill{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.score-bar-item-val{font-size:12px;font-weight:700;color:#475569;width:36px;text-align:center;flex-shrink:0}
+/* 分析区块 */
+.analysis-section{margin-bottom:24px;background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.analysis-section-title{font-size:17px;font-weight:700;color:#1e293b;margin-bottom:18px;display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:2px solid #f1f5f9}
+/* 基本信息双栏 */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.info-card{border-radius:12px;overflow:hidden}
+.info-card-header{padding:12px 18px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.info-card-header.a-hd{background:#fef3c7;color:#92400e}
+.info-card-header.b-hd{background:#dbeafe;color:#1e40af}
+.info-card-body{padding:16px 18px;background:#f8fafc;border:1px solid #f1f5f9;border-top:none;border-radius:0 0 12px 12px}
+.info-row{display:flex;padding:8px 0;border-bottom:1px solid #f1f5f9;align-items:flex-start}
+.info-row:last-child{border-bottom:none}
+.info-row-label{width:90px;font-size:13px;color:#94a3b8;flex-shrink:0}
+.info-row-value{flex:1;font-size:14px;color:#334155;font-weight:500}
+/* 学科实力 */
+.strength-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.strength-card{padding:18px;border-radius:12px;border:1px solid #f1f5f9}
+.strength-card.a{border-left:4px solid #f59e0b;background:#fefce8}
+.strength-card.b{border-left:4px solid #3b82f6;background:#eff6ff}
+.strength-card h4{font-size:15px;font-weight:700;margin-bottom:12px}
+.strength-card.a h4{color:#b45309}
+.strength-card.b h4{color:#1d4ed8}
+.strength-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.strength-tag{font-size:12px;padding:4px 10px;border-radius:6px;background:#fff;border:1px solid #e2e8f0;color:#475569}
+.strength-desc{font-size:13px;color:#64748b;line-height:1.7}
+/* 考研难度分析 */
+.difficulty-table{width:100%;border-collapse:collapse;margin-top:4px}
+.difficulty-table thead th{background:#f1f5f9;color:#64748b;font-weight:600;font-size:13px;padding:12px 14px;text-align:center;border-bottom:1px solid #e2e8f0}
+.difficulty-table thead th:first-child{text-align:left;width:100px}
+.difficulty-table tbody td{padding:11px 14px;text-align:center;font-size:14px;color:#334155;border-bottom:1px solid #f1f5f9}
+.difficulty-table tbody td:first-child{text-align:left;font-weight:600;color:#64748b;font-size:13px}
+.difficulty-table tbody tr:last-child td{border-bottom:none}
+.difficulty-table .better{color:#16a34a;font-weight:700}
+.difficulty-table .worse{color:#dc2626}
+/* 报考建议 */
+.recommend-section{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:16px;padding:24px 28px;margin-top:0}
+.recommend-section .rec-title{font-size:17px;font-weight:700;color:#78350f;margin-bottom:16px}
+.recommend-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rec-card{background:rgba(255,255,255,.7);border-radius:12px;padding:18px 20px}
+.rec-card h4{font-size:15px;font-weight:700;color:#92400e;margin-bottom:8px}
+.rec-card p{font-size:13px;color:#78350f;line-height:1.8}
+.rec-conclusion{margin-top:16px;padding:16px 20px;background:rgba(255,255,255,.6);border-radius:10px;font-size:14px;color:#78350f;line-height:1.8}
+.rec-conclusion strong{color:#b45309}
+.compare-empty{text-align:center;padding:80px 20px;color:#94a3b8;font-size:15px}
+.compare-empty .ce-icon{font-size:52px;display:block;margin-bottom:16px}
+
+/* 备考进度 */
+.progress-content{padding:32px 40px}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.progress-header h3{font-size:18px;font-weight:700;color:#334155}
+.progress-header button{background:#b45309;color:#fff;border:none;border-radius:10px;padding:9px 22px;font-size:13px;cursor:pointer;font-weight:600}
+.progress-header button:hover{background:#92400e}
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;margin-bottom:24px}
+.subject-card{background:#fff;border:1px solid #f1f5f9;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.subject-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.subject-name{font-size:16px;font-weight:700;color:#334155}
+.subject-name .subject-icon{font-size:22px;margin-right:8px}
+.subject-percent{font-size:14px;font-weight:700;color:#b45309}
+.progress-bar-wrap{height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden;margin-bottom:10px}
+.progress-bar-fill{height:100%;border-radius:5px;transition:width .5s ease}
+.progress-bar-fill.politics{background:linear-gradient(90deg,#ef4444,#f87171)}
+.progress-bar-fill.math{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.progress-bar-fill.english{background:linear-gradient(90deg,#10b981,#34d399)}
+.progress-bar-fill.major{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.subject-meta{display:flex;gap:16px;font-size:12px;color:#94a3b8;flex-wrap:wrap}
+.subject-meta span{cursor:pointer;padding:3px 10px;border-radius:6px;background:#f1f5f9;transition:all .2s}
+.subject-meta span:hover{background:#fef3c7;color:#b45309}
+.subject-detail{display:flex;gap:8px;margin-top:10px}
+.subject-detail input[type="range"]{flex:1}
+.subject-detail button{background:#f59e0b;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;cursor:pointer;white-space:nowrap}
+.overall-progress{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:20px;margin-bottom:20px}
+.overall-ring{background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex-shrink:0}
+.overall-info h4{font-size:15px;font-weight:600;color:#78350f;margin-bottom:4px}
+.overall-info p{font-size:12px;color:#a16207}
+
+/* Toast */
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);background:#334155;color:white;padding:10px 24px;border-radius:20px;font-size:13px;z-index:9999;animation:toastIn .3s ease;pointer-events:none}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* 加载 */
+.loading{text-align:center;padding:32px;color:#94a3b8;font-size:14px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 评价弹窗 */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:300;display:flex;align-items:center;justify-content:center;animation:overlayIn .3s}
+.modal{background:#fff;border-radius:16px;width:420px;padding:28px;animation:modalIn .25s}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.modal h3{font-size:17px;margin-bottom:18px;text-align:center;font-weight:700}
+.stars{display:flex;gap:10px;justify-content:center;margin-bottom:18px}
+.star{font-size:34px;cursor:pointer;transition:transform .2s}
+.star:hover,.star.active{transform:scale(1.2);color:#f59e0b}
+.modal textarea{width:100%;height:90px;border:1px solid #e2e8f0;border-radius:10px;padding:12px;font-size:14px;margin-bottom:16px;resize:none;outline:none}
+.modal textarea:focus{border-color:#f59e0b}
+.modal-btns{display:flex;gap:12px}
+.modal-btns button{flex:1;padding:13px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600}
+.modal-btns .btn-cancel{background:#f1f5f9;border:1px solid #e2e8f0;color:#64748b}
+.modal-btns .btn-submit{background:#f59e0b;border:none;color:#fff}
+
+/* 移动端兼容 */
+@media(max-width:768px){
+  .topbar-right .topbar-badge{display:none}
+  .sidebar{display:none}
+  #app{flex-direction:column}
+  .main-content{height:auto}
+  .page{padding:14px 16px}
+  .index-layout{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-top{flex-direction:column;gap:14px}
+  .hero{padding:20px 16px 18px}
+  .hero-title{font-size:24px}
+  .chat-body .chat-sidebar{display:none}
+  .knowledge-list{grid-template-columns:1fr;padding:0 16px 16px}
+  .categories{padding:0 16px 10px}
+  .search-bar-wrap{padding:14px 16px 10px}
+  .univ-content{padding:16px}
+  .univ-filters{flex-direction:column;gap:8px}
+  .univ-search{max-width:100%}
+  .univ-filter-select{width:100%}
+  .univ-count{margin-left:0}
+  .univ-list{grid-template-columns:1fr}
+  .univ-modal{width:96%;max-height:92vh}
+  .univ-modal-header{padding:20px 16px 16px}
+  .univ-modal-body{padding:16px}
+  .univ-modal-grid{grid-template-columns:1fr}
+  .um-overview{grid-template-columns:repeat(2,1fr)}
+  .um-pros-cons{grid-template-columns:1fr}
+  .um-detail-grid{grid-template-columns:1fr}
+  .um-info-table td:first-child{width:90px}
+  .daily-content{padding:16px}
+  .user-header-content{padding:24px 16px 20px}
+  .stats-row{margin:-12px 16px 12px;padding:20px 0}
+  .menu-section{padding:0 16px 16px}
+  .chat-messages{padding:14px 16px}
+  .chat-input-bar{padding:10px 16px 12px}
+  .detail-content{padding:16px}
+  .fav-content,.hist-content{padding:16px}
+  .compare-content{padding:16px}
+  .compare-header-row{flex-direction:column;gap:12px}
+  .compare-vs{padding:0}
+  .info-grid{grid-template-columns:1fr}
+  .strength-grid{grid-template-columns:1fr}
+  .recommend-grid{grid-template-columns:1fr}
+  .score-bar-row{flex-direction:column;gap:8px}
+  .score-bar-label{width:100%;margin-bottom:4px}
+  .score-bar-item-name{width:60px;font-size:11px}
+  .progress-content{padding:16px}
+  .user-page .page{padding:0}
+  .mobile-tabbar{display:flex !important}
+}
+
+/* 桌面端隐藏移动tabbar */
+.mobile-tabbar{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2e8f0;z-index:150}
+.tabbar-item{flex:1;text-align:center;padding:8px 0 6px;font-size:11px;color:#94a3b8;cursor:pointer;transition:color .2s}
+.tabbar-item .tab-icon{font-size:20px;display:block;margin-bottom:2px}
+.tabbar-item.active{color:#b45309;font-weight:600}
+
+body{overflow-x:hidden}
+pre{background:#1e293b;color:#e2e8f0;padding:14px;border-radius:10px;overflow-x:auto;font-size:13px;line-height:1.6}
+code{font-size:13px}
+.card{background:#fff;border:1px solid #f1f5f9;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+</style>
+</head>
+<body>
+
+<!-- ==================== 顶部导航栏 ==================== -->
+<header class="topbar">
+  <span class="topbar-logo">鹿康<span>研途</span></span>
+  <div class="topbar-right">
+    <span class="topbar-badge">考研加油 🎓</span>
+  </div>
+</header>
+
+<div id="app">
+  <!-- ==================== 侧边栏 ==================== -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">主功能</div>
+      <button class="sidebar-item active" data-page="index" onclick="switchTab('index')">
+        <span class="si-icon">🏠</span> 首页
+      </button>
+      <button class="sidebar-item" data-page="chat" onclick="switchTab('chat')">
+        <span class="si-icon">🤖</span> AI规划师
+      </button>
+      <button class="sidebar-item" data-page="knowledge" onclick="switchTab('knowledge')">
+        <span class="si-icon">📚</span> 知识库
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">工具</div>
+      <button class="sidebar-item" onclick="navigateTo('university')">
+        <span class="si-icon">🏫</span> 院校查询
+      </button>
+      <button class="sidebar-item" onclick="navigateTo('compare')">
+        <span class="si-icon">⚖️</span> 择校对比
+      </button>
+      <button class="sidebar-item" onclick="navigateTo('progress')">
+        <span class="si-icon">📈</span> 备考进度
+      </button>
+      <button class="sidebar-item" onclick="navigateTo('daily')">
+        <span class="si-icon">✏️</span> 每日一练
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">账号</div>
+      <button class="sidebar-item" data-page="user" onclick="switchTab('user')">
+        <span class="si-icon">👤</span> 个人中心
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==================== 主内容区 ==================== -->
+  <main class="main-content">
+
+    <!-- 首页 -->
+    <div class="page active" id="page-index">
+      <div class="index-layout">
+        <div class="hero">
+          <div class="hero-top">
+            <div>
+              <span class="hero-greeting" id="greeting">下午好，考研人 👋</span>
+              <span class="hero-title">鹿康研途</span>
+              <span class="hero-subtitle">AI 考研规划师 · 科学规划每一步</span>
+            </div>
+            <div class="countdown-card" id="countdownCard">
+              <div class="countdown-ring">
+                <span class="countdown-num" id="countdownDays">0</span>
+                <span class="countdown-unit" id="countdownLabel">天</span>
+              </div>
+              <div class="countdown-divider"></div>
+              <div class="countdown-info">
+                <span class="countdown-target">距考研笔试</span>
+                <span class="countdown-date" id="countdownDate">点击设定考试日期</span>
+                <input type="date" class="date-input" id="examDateInput" style="display:none">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="daily-quote">
+          <span class="quote-text" id="dailyQuote">所有的努力，最终都会绕个大圈回报你</span>
+        </div>
+        <div>
+          <div class="section">
+            <span class="section-title">✨ 我能帮你什么</span>
+            <div class="feature-grid" id="featureGrid"></div>
+          </div>
+          <div class="section" style="margin-top:20px">
+            <span class="section-title">🔥 你可能会问</span>
+            <div class="hot-questions" id="hotQuestions"></div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <span class="section-title">🧰 考研工具箱</span>
+            <div class="toolbox-grid" id="toolboxGrid"></div>
+          </div>
+        </div>
+        <div class="footer">鹿康研途 · 陪你走到上岸那天 🎓</div>
+      </div>
+    </div>
+
+    <!-- AI对话页 -->
+    <div class="page chat-page" id="page-chat">
+      <div class="navbar">
+        <span class="navbar-center" id="chatTitle">🤖 AI考研规划师</span>
+        <button class="navbar-action" id="feedbackBtn">评价</button>
+      </div>
+      <div class="chat-body">
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-title">快速提问</div>
+          <div id="quickTemplates"></div>
+        </div>
+        <div class="chat-main">
+          <div id="chatMessages" class="chat-messages">
+            <div class="empty-state">
+              <span class="empty-icon">🤖</span>
+              <span class="empty-text">嗨~ 我是你的AI考研规划师<br>告诉我你的困惑，我来帮你！</span>
+            </div>
+          </div>
+          <div class="chat-input-bar">
+            <input type="text" id="chatInput" placeholder="输入你的考研问题，按 Enter 发送..." onkeydown="if(event.key==='Enter')sendMessage()">
+            <button id="sendBtn" onclick="sendMessage()">发送</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 知识库页 -->
+    <div class="page knowledge-page" id="page-knowledge">
+      <div class="search-bar-wrap">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="knowledgeSearch" placeholder="搜索考研知识..." oninput="searchKnowledge()">
+        </div>
+      </div>
+      <div class="categories" id="categories"></div>
+      <div class="knowledge-list" id="knowledgeList">
+        <div class="loading"><span class="spinner"></span>加载中...</div>
+      </div>
+    </div>
+
+    <!-- 个人中心（增强版） -->
+    <div class="page user-page" id="page-user">
+      <div class="user-header">
+        <div class="user-header-bg"></div>
+        <div class="user-header-content">
+          <div class="user-row">
+            <div class="user-avatar">🎓</div>
+            <div class="user-detail">
+              <span class="user-name-score">考研人</span>
+              <span class="user-id-text">鹿康研途 · 考研人</span>
+            </div>
+            <button class="edit-btn" onclick="editProfile()" title="编辑资料">✏️</button>
+          </div>
+          <div class="checkin-area">
+            <div class="checkin-card" onclick="doCheckin()">
+              <div class="checkin-left">
+                <span class="checkin-icon" id="checkinIcon">📅</span>
+                <div>
+                  <span class="checkin-title" id="checkinTitle">每日签到</span>
+                  <span class="checkin-streak" id="checkinStreak">已连续 0 天</span>
+                </div>
+              </div>
+              <button class="checkin-btn" id="checkinBtn">签到</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stats-row" id="userStats"></div>
+      <div class="menu-section" id="userMenuSection"></div>
+    </div>
+
+    <!-- 知识详情 -->
+    <div class="page detail-page" id="page-detail">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">知识详情</span>
+      </div>
+      <div class="detail-content" id="detailContent"></div>
+    </div>
+
+    <!-- 院校查询 -->
+    <div class="page" id="page-university">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">院校查询</span>
+      </div>
+      <div class="univ-content">
+        <div class="univ-filters">
+          <input type="text" class="univ-search" id="univSearch" placeholder="搜索院校名称、城市、专业..." oninput="searchUniversities()">
+          <select class="univ-filter-select" id="univProvince" onchange="searchUniversities()">
+            <option value="">全部省份</option>
+          </select>
+          <select class="univ-filter-select" id="univTier" onchange="searchUniversities()">
+            <option value="">全部层次</option>
+            <option value="985">985工程</option>
+            <option value="211">211工程</option>
+            <option value="双一流">双一流</option>
+          </select>
+          <select class="univ-filter-select" id="univType" onchange="searchUniversities()">
+            <option value="">全部类型</option>
+            <option value="综合">综合类</option>
+            <option value="理工">理工类</option>
+            <option value="师范">师范类</option>
+            <option value="财经">财经类</option>
+            <option value="医药">医药类</option>
+            <option value="农业">农林类</option>
+            <option value="政法">政法类</option>
+            <option value="艺术">艺术类</option>
+            <option value="林业">林业类</option>
+          </select>
+          <span class="univ-count" id="univCount"></span>
+        </div>
+        <div class="univ-list" id="univList"></div>
+      </div>
+    </div>
+
+    <!-- 院校详情弹窗 -->
+    <div class="univ-modal-overlay" id="univModalOverlay" onclick="closeUnivModal(event)">
+      <div class="univ-modal" id="univModal" onclick="event.stopPropagation()">
+        <div class="univ-modal-header">
+          <div>
+            <span class="univ-modal-title" id="umName"></span>
+            <span class="univ-modal-subtitle" id="umLocation"></span>
+          </div>
+          <button class="univ-modal-close" onclick="closeUnivModal()">×</button>
+        </div>
+        <div class="univ-modal-body" id="umBody"></div>
+      </div>
+    </div>
+
+    <!-- 每日一练（增强版） -->
+    <div class="page" id="page-daily">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">每日一练</span>
+      </div>
+      <div class="daily-content" id="dailyContent"></div>
+    </div>
+
+    <!-- 院校对比 -->
+    <div class="page" id="page-compare">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">院校对比</span>
+      </div>
+      <div class="compare-content">
+        <div class="compare-selectors">
+          <div class="compare-selector">
+            <label>🏫 院校 A</label>
+            <select id="compareA" onchange="runCompare()">
+              <option value="">-- 选择院校 --</option>
+            </select>
+          </div>
+          <div class="compare-selector">
+            <label>🏫 院校 B</label>
+            <select id="compareB" onchange="runCompare()">
+              <option value="">-- 选择院校 --</option>
+            </select>
+          </div>
+        </div>
+        <div id="compareEmpty" class="compare-empty">
+          <span class="ce-icon">⚖️</span>
+          <span>👆 请在上方选择两所院校进行详细对比分析</span>
+        </div>
+        <div id="compareResult" class="compare-result-wrap"></div>
+      </div>
+    </div>
+
+    <!-- 我的收藏 -->
+    <div class="page" id="page-favorites">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">我的收藏</span>
+      </div>
+      <div class="fav-content" id="favContent"></div>
+    </div>
+
+    <!-- 历史会话 -->
+    <div class="page" id="page-history">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">历史会话</span>
+      </div>
+      <div class="hist-content" id="histContent"></div>
+    </div>
+
+    <!-- 备考进度 -->
+    <div class="page" id="page-progress">
+      <div class="detail-header">
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        <span style="font-weight:600;color:#334155">备考进度</span>
+      </div>
+      <div class="progress-content" id="progressContent"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- 移动端底部导航 -->
+<div class="mobile-tabbar">
+  <div class="tabbar-item active" data-page="index" onclick="switchTab('index')">
+    <span class="tab-icon">🏠</span>首页
+  </div>
+  <div class="tabbar-item" data-page="chat" onclick="switchTab('chat')">
+    <span class="tab-icon">🤖</span>AI规划师
+  </div>
+  <div class="tabbar-item" data-page="knowledge" onclick="switchTab('knowledge')">
+    <span class="tab-icon">📚</span>知识库
+  </div>
+  <div class="tabbar-item" data-page="user" onclick="switchTab('user')">
+    <span class="tab-icon">👤</span>我的
+  </div>
+</div>
+
+<!-- 评价弹窗 -->
+<div class="modal-overlay" id="feedbackModal" style="display:none">
+  <div class="modal">
+    <h3>对AI的回答满意吗？</h3>
+    <div class="stars" id="starRating"></div>
+    <textarea id="feedbackComment" placeholder="写下你的建议..."></textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeFeedback()">取消</button>
+      <button class="btn-submit" onclick="submitFeedback()">提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== 全局状态 ====================
+const BASE_URL = '/api';
+let currentTab = 'index';
+let currentSessionId = null;
+let messages = [];
+let feedbackRating = 0;
+let currentPage = 'index';
+let pageStack = [];
+// 每日一练状态
+let dailyState = {
+  currentSubject: '政治',
+  engMode: 'word2meaning',
+  question: null,
+  displayOptions: [],
+  answered: false,
+  userAnswer: '',
+  selectedLetters: [],
+  result: null,
+  loading: true,
+  excludeIds: { '政治': [], '英语': [] }
+};
+
+// ==================== Toast ====================
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 2000);
+}
+
+// ==================== 页面切换 ====================
+function switchTab(tab) {
+  currentTab = tab;
+  currentPage = tab;
+  pageStack = [];
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  var target = document.getElementById('page-' + tab);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t) { t.classList.remove('active'); });
+  var tabEl = document.querySelector('.mobile-tabbar [data-page="' + tab + '"]');
+  if (tabEl) tabEl.classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(function(t) { t.classList.remove('active'); });
+  var sideEl = document.querySelector('.sidebar [data-page="' + tab + '"]');
+  if (sideEl) sideEl.classList.add('active');
+  var mainEl = document.querySelector('.main-content');
+  if (mainEl) mainEl.scrollTop = 0;
+
+  if (tab === 'knowledge') loadCategories();
+  if (tab === 'chat') scrollChatBottom();
+  if (tab === 'user') renderUserPage();
+}
+
+function navigateTo(page) {
+  pageStack.push(currentPage);
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('page-' + page).classList.add('active');
+  if (page === 'university') loadUniversities();
+  if (page === 'daily') loadDailyPage();
+  if (page === 'compare') loadCompareData();
+  if (page === 'progress') renderProgress();
+  if (page === 'favorites') renderFavorites();
+  if (page === 'history') renderHistory();
+}
+
+function goBack() {
+  var prev = pageStack.pop();
+  if (prev) {
+    currentPage = prev;
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + prev).classList.add('active');
+    if (prev === 'user') renderUserPage();
+  } else {
+    switchTab('index');
+  }
+}
+
+// ==================== API请求 ====================
+async function apiGet(url, params) {
+  var qs = params ? '?' + new URLSearchParams(params).toString() : '';
+  var res = await fetch(BASE_URL + url + qs);
+  return res.json();
+}
+async function apiPost(url, data) {
+  var res = await fetch(BASE_URL + url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+// ==================== 首页 ====================
+function initIndex() {
+  setGreeting();
+  setDailyQuote();
+  updateCountdown();
+  renderFeatures();
+  renderToolbox();
+  loadHotQuestions();
+  document.getElementById('countdownCard').onclick = toggleDatePicker;
+}
+function setGreeting() {
+  var h = new Date().getHours();
+  var g = '早上好';
+  if (h >= 12 && h < 18) g = '下午好';
+  if (h >= 18 || h < 5) g = '晚上好';
+  document.getElementById('greeting').textContent = g + '，考研人 👋';
+}
+function setDailyQuote() {
+  var quotes = [
+    '所有的努力，最终都会绕个大圈回报你',
+    '考研不是唯一的路，但既然选了，就走到底',
+    '今天的每一分钟，都在为未来铺路',
+    '比你优秀的人比你还努力，这不是内卷，是提醒',
+    '放弃不难，但坚持一定很酷',
+    '你背的每一个单词，刷的每一道题，都算数',
+    '乾坤未定，你我皆是黑马',
+    '星光不问赶路人，时光不负有心人'
+  ];
+  document.getElementById('dailyQuote').textContent = quotes[new Date().getDate() % quotes.length];
+}
+function updateCountdown() {
+  var saved = localStorage.getItem('exam_date');
+  var examDate;
+  var display;
+  if (saved) {
+    examDate = new Date(saved + 'T00:00:00');
+    display = saved.replace(/-/g, '年').replace(/(\\d+)年(\\d+)年/, '$1年$2月') + '日';
+  } else {
+    var now = new Date();
+    examDate = new Date(now.getFullYear(), 11, 20);
+    if (now > examDate) examDate = new Date(now.getFullYear() + 1, 11, 20);
+    display = examDate.getFullYear() + '年12月20日（点击设定）';
+  }
+  var diff = Math.ceil((examDate.getTime() - Date.now()) / 86400000);
+  var days = diff < 0 ? 0 : diff;
+  var label = '天';
+  if (days > 200) label = '天 · 打基础好时机';
+  else if (days > 100) label = '天 · 强化阶段';
+  else if (days > 50) label = '天 · 冲刺倒计时';
+  else if (days > 0) label = '天 · 最后冲刺！';
+  else label = '考研加油！';
+  document.getElementById('countdownDays').textContent = days;
+  document.getElementById('countdownLabel').textContent = label;
+  document.getElementById('countdownDate').textContent = display;
+}
+function toggleDatePicker() {
+  var input = document.getElementById('examDateInput');
+  if (input.style.display === 'none') {
+    input.style.display = 'block';
+    input.value = localStorage.getItem('exam_date') || '';
+    input.focus();
+    input.onchange = function() {
+      localStorage.setItem('exam_date', this.value);
+      input.style.display = 'none';
+      updateCountdown();
+    };
+  } else {
+    input.style.display = 'none';
+  }
+}
+function renderFeatures() {
+  var features = [
+    { icon:'🏫', name:'择校分析', desc:'冲刺·稳妥·保底', type:'school', bg:'#eff6ff' },
+    { icon:'📅', name:'备考规划', desc:'三阶段时间线', type:'plan', bg:'#f0fdf4' },
+    { icon:'📚', name:'资料推荐', desc:'名师教辅清单', type:'materials', bg:'#fff7ed' },
+    { icon:'📋', name:'政策解读', desc:'分数线&报录比', type:'policy', bg:'#fef2f2' },
+    { icon:'🎯', name:'复试攻略', desc:'面试&联系导师', type:'interview', bg:'#f5f3ff' },
+    { icon:'💙', name:'心态陪伴', desc:'焦虑减压疏导', type:'mindset', bg:'#fdf2f8' }
+  ];
+  document.getElementById('featureGrid').innerHTML = features.map(function(f) {
+    return '<div class="feature-item" onclick="goToChat(\'' + f.type + '\',\'' + f.name + '\')"><div class="feature-icon-box" style="background:' + f.bg + '">' + f.icon + '</div><span class="feature-name">' + f.name + '</span><span class="feature-desc">' + f.desc + '</span></div>';
+  }).join('');
+}
+function renderToolbox() {
+  var tools = [
+    { icon:'🏫', name:'院校查询', desc:'985/211/双一流', page:'university' },
+    { icon:'⚖️', name:'择校对比', desc:'多校横向PK', page:'compare' },
+    { icon:'📈', name:'备考进度', desc:'学习记录追踪', page:'progress' },
+    { icon:'✏️', name:'每日一练', desc:'每天一题打卡', page:'daily' }
+  ];
+  document.getElementById('toolboxGrid').innerHTML = tools.map(function(t) {
+    return '<div class="toolbox-item" onclick="navigateTo(\'' + t.page + '\')"><span class="toolbox-icon">' + t.icon + '</span><div><span class="toolbox-name">' + t.name + '</span><span class="toolbox-desc">' + t.desc + '</span></div></div>';
+  }).join('');
+}
+function loadHotQuestions() {
+  var questions = [
+    { id:1, content:'如何选择适合自己的目标院校？' },
+    { id:2, content:'考研全年备考应该如何规划？' },
+    { id:3, content:'数学和英语用什么资料比较好？' },
+    { id:4, content:'国家线和院校线有什么区别？' },
+    { id:5, content:'复试面试一般会问什么问题？' },
+    { id:6, content:'跨专业考研需要注意什么？' }
+  ];
+  document.getElementById('hotQuestions').innerHTML = questions.map(function(q, i) {
+    return '<div class="question-item" onclick="goToChatWithQuestion(\'' + q.content.replace(/'/g,"\\'") + '\')"><span class="question-rank">' + (i+1) + '</span><span class="question-text">' + q.content + '</span><span class="question-arrow">→</span></div>';
+  }).join('');
+}
+function goToChat(type, name) {
+  var questions = {
+    school:'你好，我想做一下择校分析，帮我推荐目标院校',
+    plan:'你好，我想制定一份考研全年备考规划',
+    materials:'你好，请帮我推荐各科的复习资料',
+    policy:'你好，我想了解一下考研政策和分数线怎么解读',
+    interview:'你好，请给我讲讲复试的流程和准备方法',
+    mindset:'你好，最近备考压力很大，心态有点崩，能聊聊吗'
+  };
+  switchTab('chat');
+  setTimeout(function() {
+    document.getElementById('chatInput').value = questions[type] || '';
+    document.getElementById('chatTitle').textContent = name || '鹿康研途';
+    sendMessage();
+  }, 300);
+}
+function goToChatWithQuestion(q) {
+  switchTab('chat');
+  setTimeout(function() {
+    document.getElementById('chatInput').value = q;
+    sendMessage();
+  }, 300);
+}
+
+// ==================== AI对话 ====================
+function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var content = input.value.trim();
+  if (!content) return;
+  var btn = document.getElementById('sendBtn');
+  input.value = '';
+  input.disabled = true;
+  btn.disabled = true;
+  var userMsg = { id: Date.now(), role: 'user', content: content, timestamp: Date.now() };
+  messages.push(userMsg);
+  renderMessages();
+  scrollChatBottom();
+  sendToAI(content);
+  // 自动保存到历史记录
+  saveToHistory(content);
+}
+async function sendToAI(content) {
+  var typingId = Date.now() + 1;
+  var typingMsg = { id: typingId, role: 'assistant', content: '', typing: true, timestamp: Date.now() };
+  messages.push(typingMsg);
+  renderMessages();
+  scrollChatBottom();
+  var reply;
+  try {
+    var apiMessages = messages
+      .filter(function(m) { return !m.typing; })
+      .map(function(m) { return { role: m.role, content: m.content }; });
+    var res = await fetch(BASE_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: apiMessages })
+    });
+    var data = await res.json();
+    if (data.code === 0 && data.data && data.data.reply) {
+      reply = data.data.reply;
+    } else {
+      reply = generateAIResponse(content);
+    }
+  } catch (e) {
+    console.warn('AI API 调用失败，使用本地回复:', e);
+    reply = generateAIResponse(content);
+  }
+  var idx = messages.findIndex(function(m) { return m.id === typingId; });
+  if (idx >= 0) {
+    messages[idx] = { id: typingId, role: 'assistant', content: reply, typing: false, timestamp: Date.now() };
+    typewriterEffect(typingId, reply);
+  }
+  document.getElementById('chatInput').disabled = false;
+  document.getElementById('sendBtn').disabled = false;
+  updateHistorySummary(reply);
+}
+
+// ==================== 智能模拟AI回复 ====================
+function generateAIResponse(input) {
+  var q = input.toLowerCase();
+  if (q.includes('择校') || q.includes('院校') || q.includes('选学校') || q.includes('目标院校') || q.includes('推荐')) {
+    return '🎯 择校是一个系统工程，我建议从三个层次来考虑：\n\n**冲刺层（1-2所）**：比你当前水平稍高，搏一搏的梦想院校\n**稳妥层（2-3所）**：与你实力匹配，录取概率较高的院校\n**保底层（1-2所）**：确保有学上的安全选择\n\n💡 具体择校时考虑这几个因素：\n1. **院校排名与专业实力**：985/211/双一流标签\n2. **地理位置**：未来发展城市\n3. **报录比与分数线**：历年数据参考\n4. **专业课难度**：是否统考\n5. **导师资源**：研究方向是否匹配\n\n📊 你可以在「院校查询」页面查看各校详细信息，需要我帮你分析具体某所学校吗？';
+  }
+  if (q.includes('规划') || q.includes('计划') || q.includes('时间线') || q.includes('备考') || q.includes('安排') || q.includes('怎么复习')) {
+    return '📅 考研全年备考规划（三阶段法）：\n\n**🔵 基础阶段（3-6月）**\n• 英语：背单词+长难句+阅读入门\n• 数学：过教材+基础题+建立知识框架\n• 专业课：通读参考书+整理笔记\n• 政治：可暂缓\n\n**🟡 强化阶段（7-9月）**\n• 英语：刷真题阅读+作文模板准备\n• 数学：强化训练+错题本+专项突破\n• 专业课：精读+背诵+真题研究\n• 政治：系统学习+选择题训练\n\n**🔴 冲刺阶段（10-12月）**\n• 全科模拟考试+查漏补缺\n• 政治大题背诵（11月开始）\n• 英语作文每周练习\n• 调整作息+心态管理\n\n💪 每天建议学习8-10小时，合理分配各科时间！';
+  }
+  if (q.includes('资料') || q.includes('教材') || q.includes('书') || q.includes('辅导') || q.includes('用什么')) {
+    return '📚 各科经典资料推荐：\n\n**英语**\n• 单词：《红宝书》/《恋练有词》\n• 阅读：张剑黄皮书（真题）\n• 作文：王江涛《高分写作》\n• 长难句：何凯文系列\n\n**数学**\n• 教材：同济版高数+线代\n• 辅导：李永乐复习全书+660题\n• 真题：张宇真题大全解\n• 模拟：李林四套卷/六套卷\n\n**政治**\n• 精讲：肖秀荣精讲精练\n• 题集：肖秀荣1000题\n• 冲刺：肖四肖八（必背！）\n• 时政：徐涛小黄书\n\n⚠️ 资料不在多，在于精！选一套跟到底，反复刷透比囤积更重要。';
+  }
+  if (q.includes('复试') || q.includes('面试') || q.includes('导师')) {
+    return '🎓 复试全流程攻略：\n\n**1. 笔试准备**\n• 了解报考院校复试笔试科目\n• 复习专业课核心知识点\n• 关注学科前沿动态\n\n**2. 面试环节**\n• 自我介绍（中英文各准备一份）\n• 专业问题：基础概念+热点话题\n• 综合素质：为什么考研/为什么选我们学校\n• 英语口语：日常对话+专业英语\n\n**3. 联系导师**\n• 初试成绩出来后发邮件\n• 邮件突出科研经历和学术兴趣\n• 附上简历和成绩单\n• 不要同时联系多位导师\n\n💡 面试时保持自信、诚实，不知道就说不知道，展示学习态度！';
+  }
+  if (q.includes('调剂') || q.includes('分数线') || q.includes('国家线') || q.includes('政策')) {
+    return '📋 考研政策与分数线解读：\n\n**国家线**：教育部统一划定，分A区/B区\n• A区（经济发达省市）：分数线较高\n• B区（偏远地区）：分数线低5-10分\n\n**院校线**：各校在国家线基础上自主划定\n• 34所自划线院校可以低于国家线\n\n**单科线**：每科有最低分数线要求\n• 总分过线但单科不过也不行\n\n**调剂规则**\n• A区可调A区或B区\n• B区只能调B区\n• 专业代码前两位相同才能调剂\n• 学硕可调专硕，反之不行\n\n📊 建议关注目标院校近3年的分数线和报录比！';
+  }
+  if (q.includes('压力') || q.includes('焦虑') || q.includes('心态') || q.includes('坚持') || q.includes('累') || q.includes('崩溃') || q.includes('难')) {
+    return '💙 考研路上的心态调适：\n\n我理解你的感受，备考路上每个人都会有焦虑和自我怀疑的时刻。\n\n给你几个小建议：\n\n🌿 **适度放松不是罪过**：每周留半天完全放松，去运动、看电影、和朋友聊天\n\n📝 **把大目标拆成小任务**：完成每日计划后给自己肯定，积小胜为大胜\n\n🏃 **保持运动**：每天30分钟运动能显著缓解焦虑，释放压力\n\n💬 **找人倾诉**：家人、研友、甚至是鹿康研途的我，说出来就好多了\n\n🎯 **记住初心**：为什么开始考研？那张录取通知书，那个更好的自己\n\n_"放弃不难，但坚持一定很酷。"_  你已经在变强的路上了，我们一起走下去！';
+  }
+  if (q.includes('跨专业') || q.includes('跨考')) {
+    return '🔄 跨专业考研注意事项：\n\n**优势**\n• 复合背景在某些交叉学科反而是优势\n• 更明确的学习动机和目标感\n\n**挑战**\n• 专业课从零开始，需要更多时间\n• 复试时可能被问到为何跨专业\n\n**建议**\n1. 提前了解目标专业核心课程\n2. 尽量选择与本科专业相关的方向\n3. 如果有相关实习/项目经历会很加分\n4. 初试分数尽量考高，弥补背景差异\n5. 复试展示你对新专业的热情和理解\n\n💪 每年大量跨考生成功上岸，只要准备充分，完全可以！';
+  }
+  if (q.includes('英语') && (q.includes('差') || q.includes('不好') || q.includes('难') || q.includes('怎么学'))) {
+    return '🇬🇧 英语基础薄弱怎么办：\n\n**单词是根基**\n• 每天背50-100个新词+复习旧词\n• 用APP（墨墨/不背单词）利用碎片时间\n\n**阅读是核心**\n• 从真题入手，逐篇精读\n• 先做题→对答案→查生词→分析长难句→总结错因\n• 英语一/二各刷近15年真题\n\n**作文要练习**\n• 10月开始每周写2篇\n• 整理自己的模板，不要死记硬背\n• 找人批改或对照范文修改\n\n**翻译和新题型**\n• 翻译：真题练习+对照答案修正\n• 新题型：掌握技巧，多练\n\n⚠️ 英语没有捷径，但方法对了可以少走弯路。坚持每天学，量变到质变！';
+  }
+  if (q.includes('数学') && (q.includes('差') || q.includes('不好') || q.includes('难') || q.includes('怎么学'))) {
+    return '🔢 数学复习方法论：\n\n**基础为王**\n• 先过教材，概念定理要理解而不是死记\n• 课后习题全做，打牢基础\n\n**刷题顺序**\n1. 教材课后题 → 基础题\n2. 660题/1000题 → 强化\n3. 真题 → 找规律\n4. 模拟卷 → 查漏补缺\n\n**错题本是神器**\n• 每个错题标注：错误原因/正确思路/相关知识点\n• 定期回顾，同样的错误不再犯\n\n**时间分配（每天3-4小时）**\n• 1小时复习概念和公式\n• 2小时做题训练\n• 1小时整理错题和总结\n\n💪 数学需要大量练习，但更要理解！不要为了刷题而刷题。';
+  }
+  if (q.includes('政治')) {
+    return '📖 政治复习策略：\n\n**时间线**\n• 7-8月：看视频课+做1000题第一遍\n• 9-10月：二刷1000题+整理错题\n• 11月：肖八选择题+时政热点\n• 12月：背肖四大题（重中之重！）\n\n**各模块特点**\n• 马原：需要理解，不能死记\n• 毛中特：与时政紧密相关\n• 史纲：时间线梳理很重要\n• 思修：较简单，性价比高\n\n**选择题提分技巧**\n• 多选是拉分关键\n• 排除法+关键词定位\n• 1000题至少刷两遍\n\n⚠️ 政治不用太早开始，但12月要全力冲刺背诵！肖四肖八是必选项，基本人手一份。';
+  }
+  if (q.includes('报录比') || q.includes('招生') || q.includes('录取')) {
+    return '📊 如何解读报录比：\n\n**报录比 = 报名人数 ÷ 录取人数**\n• 10:1以下：竞争较小\n• 10:1 - 20:1：正常竞争\n• 20:1以上：比较激烈\n\n**需要关注的数据**\n1. 近3年报录比（趋势比绝对数值重要）\n2. 推免比例（推免多=统考名额少）\n3. 复试差额比（1:1.2还是1:1.5？）\n4. 实际录取人数 vs 计划招生人数\n\n**数据获取渠道**\n• 目标院校研究生院官网\n• 研招网\n• 考研论坛/经验帖\n\n💡 不要只看报录比，也要看专业课难度和复试风格，综合评估！';
+  }
+  if (q.match(/^(你好|hi|hello|嗨|在吗|在么)/)) {
+    return '你好呀！我是鹿康研途的考研规划师~ 🎓\n\n我可以帮你：\n• 🏫 择校分析与院校推荐\n• 📅 制定全年备考规划\n• 📚 推荐各科复习资料\n• 📋 解读考研政策与分数线\n• 🎯 复试面试准备攻略\n• 💙 心态调整与陪伴\n\n有什么考研问题直接问我吧，我一直在！';
+  }
+  var defaults = [
+    '这个问题问得好！💡 让我从考研规划的角度帮你分析一下：\n\n首先要明确你的目标，然后根据目标倒推需要做什么。考研是一场持久战，科学的规划能让你的努力事半功倍。\n\n📌 你可以尝试这样问：\n• "如何择校？"\n• "全年备考怎么规划？"\n• "各科用什么资料？"\n• "复试怎么准备？"\n\n告诉我更多细节，我能给你更精准的建议~',
+    '关于这个问题，作为你的AI考研规划师，我建议：\n\n1. **先调研**：了解目标院校和专业的具体要求\n2. **定计划**：把大目标拆解成每月每周的小目标\n3. **勤练习**：真题是最好的老师\n4. **稳心态**：按自己的节奏来，不和别人比\n\n有什么我能帮你深入的，继续问我吧！😊',
+    '感谢你的提问！🌟\n\n考研路上每个人都会遇到各种困惑，关键是要找到适合自己的方法。\n\n如果你愿意，可以告诉我更多信息，比如：\n• 你的目标专业和目标院校\n• 目前的复习进度\n• 最让你困扰的是什么\n\n这样我能给你更有针对性的建议~'
+  ];
+  return defaults[Math.floor(Math.random() * defaults.length)];
+}
+function typewriterEffect(msgId, fullText, idx) {
+  idx = idx || 0;
+  if (idx >= fullText.length) { renderMessages(); scrollChatBottom(); return; }
+  var msg = messages.find(function(m) { return m.id === msgId; });
+  if (msg) { msg.displayText = fullText.substring(0, idx + 3); renderMessages(); }
+  setTimeout(function() { typewriterEffect(msgId, fullText, idx + 3); }, 20);
+}
+function renderMessages() {
+  var container = document.getElementById('chatMessages');
+  if (!container) return;
+  if (messages.length === 0) {
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">🤖</span><span class="empty-text">嗨~ 我是你的AI考研规划师<br>告诉我你的困惑，我来帮你！</span></div>';
+    return;
+  }
+  container.innerHTML = messages.map(function(m) {
+    return '<div class="msg ' + m.role + '"><div class="msg-bubble">' + (m.typing ? '<div class="typing-dots"><span></span><span></span><span></span></div>' : formatContent(m.displayText || m.content)) + '<div class="msg-time">' + new Date(m.timestamp).toLocaleTimeString() + '</div>' + (m.role === 'assistant' && !m.typing ? '<div class="msg-actions"><button class="msg-btn" onclick="copyMessage(' + m.id + ')">📋 复制</button><button class="msg-btn" onclick="regenerateMessage(' + m.id + ')">🔄 重新生成</button></div>' : '') + '</div></div>';
+  }).join('');
+}
+function formatContent(text) {
+  if (!text) return '';
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n/g, '<br>');
+}
+function scrollChatBottom() {
+  setTimeout(function() { var c = document.getElementById('chatMessages'); if (c) c.scrollTop = c.scrollHeight; }, 50);
+}
+function copyMessage(id) {
+  var m = messages.find(function(m) { return m.id == id; });
+  if (m) { navigator.clipboard.writeText(m.content).then(function() { showToast('已复制'); }); }
+}
+function regenerateMessage(id) {
+  var idx = messages.findIndex(function(m) { return m.id == id; });
+  if (idx < 0) return;
+  messages = messages.filter(function(m) { return m.id != id; });
+  var prevUser = [].slice.call(messages.slice(0, idx)).reverse().find(function(m) { return m.role === 'user'; });
+  if (prevUser) { sendToAI(prevUser.content); }
+}
+(function() {
+  var templates = [
+    '帮我分析一下目标院校怎么选',
+    '制定一个全年备考时间规划',
+    '推荐数学和英语的复习资料',
+    '考研国家线和院校线怎么看',
+    '复试一般会问什么问题',
+    '备考压力大怎么调节心态'
+  ];
+  document.getElementById('quickTemplates').innerHTML = templates.map(function(t) {
+    return '<div class="qt-item" onclick="useQuickTemplate(\'' + t + '\')">' + t + '</div>';
+  }).join('');
+})();
+function useQuickTemplate(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+document.getElementById('feedbackBtn').onclick = function() {
+  document.getElementById('feedbackModal').style.display = 'flex';
+  feedbackRating = 0;
+  renderStars();
+};
+function renderStars() {
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    html += '<span class="star ' + (i <= feedbackRating ? 'active' : '') + '" onclick="setRating(' + i + ')">' + (i <= feedbackRating ? '⭐' : '☆') + '</span>';
+  }
+  document.getElementById('starRating').innerHTML = html;
+}
+function setRating(r) { feedbackRating = r; renderStars(); }
+function closeFeedback() { document.getElementById('feedbackModal').style.display = 'none'; feedbackRating = 0; }
+function submitFeedback() {
+  if (feedbackRating === 0) { showToast('请先评分'); return; }
+  apiPost('/user/feedback', { sessionId: currentSessionId, rating: feedbackRating, comment: document.getElementById('feedbackComment').value }).then(function() { showToast('感谢您的评价！'); closeFeedback(); }).catch(function() { showToast('提交失败'); });
+}
+
+// ==================== 知识库 ====================
+async function loadCategories() {
+  try {
+    var res = await apiGet('/knowledge/categories');
+    if (res.code === 0) renderCategories(res.data);
+  } catch(e) {
+    renderCategories(CATEGORIES_DATA);
+  }
+}
+var activeCategory = '';
+function renderCategories(cats) {
+  document.getElementById('categories').innerHTML = cats.map(function(c) {
+    return '<span class="cat-tag ' + (c.id === activeCategory ? 'active' : '') + '" onclick="switchCategory(\'' + c.id + '\')">' + (c.icon||'') + ' ' + c.name + '</span>';
+  }).join('');
+  loadKnowledge();
+}
+var CATEGORIES_DATA = [
+  { id:'school', name:'择校分析', icon:'🏫' },
+  { id:'plan', name:'备考规划', icon:'📅' },
+  { id:'materials', name:'资料推荐', icon:'📚' },
+  { id:'policy', name:'政策解读', icon:'📋' },
+  { id:'interview', name:'复试攻略', icon:'🎯' },
+  { id:'mindset', name:'心态调节', icon:'💙' }
+];
+function switchCategory(cat) {
+  activeCategory = activeCategory === cat ? '' : cat;
+  renderCategories(CATEGORIES_DATA);
+}
+async function searchKnowledge() {
+  var keyword = document.getElementById('knowledgeSearch').value;
+  loadKnowledge(keyword);
+}
+// 知识库文章数据（30+ 篇考研干货）
+var KNOWLEDGE_ARTICLES = [
+  // ========== 择校分析 (6篇) ==========
+  { id:'k1', title:'如何科学选择目标院校？三步梯度法', summary:'根据本科背景、专业兴趣和地域偏好，手把手构建冲刺-稳妥-保底的院校梯度方案，避免盲目报考。', category:'school', categoryName:'择校分析', viewCount:12680, likeCount:892, updateTime:'2025-06-20',
+    content:'<h3>第一步：自我定位</h3><p>首先明确自己的本科院校层次和GPA排名。如果你是双非院校但GPA前5%，完全有实力冲击985高校的对口专业。如果GPA中等但科研经历丰富，可以重点考虑学科评估B+以上的211院校。</p><p>关键因素包括：本科院校层次（985/211/双一流/普通）、GPA排名百分比、四六级成绩、科研/竞赛经历、是否有论文发表。</p><h3>第二步：圈定目标范围</h3><p>根据专业学科评估排名筛选院校。以计算机专业为例，A+学科院校包括清华、北大、浙大、国防科大；A级包括北航、北邮、哈工大、上交、南大、华中科大等。不同层次的院校对应不同的备考难度和录取分数。</p><p>地域因素也很关键——想留一线城市建议选当地院校，想降低竞争可考虑西部地区985。</p><h3>第三步：构建梯度方案</h3><p>冲刺层（1-2所）：院校层次高于本科，如普通一本冲刺211，211冲刺985；稳妥层（2-3所）：与本科层次相当或略高，专业方向匹配；保底层（1-2所）：录取把握较大的院校，确保有学可上。最终方案建议5-6所院校，分布在不同的难度层次。</p><h3>常见误区</h3><p>误区一：唯985/211论。部分双非院校的特色专业（如华东政法的法学、南京邮电的通信）就业质量不输985。误区二：盲目扎堆热门城市。北京上海的211竞争可能比西部985还激烈。误区三：忽视专业排名。学校的学科评估等级比综合排名更重要。</p>' },
+
+  { id:'k2', title:'考研 vs 保研：两条路怎么选？', summary:'分析保研和考研各自的优劣势，包括时间成本、机会成本、成功率对比，帮你做出最适合自己的选择。', category:'school', categoryName:'择校分析', viewCount:8950, likeCount:623, updateTime:'2025-06-18',
+    content:'<h3>保研的优势</h3><p>保研不需要参加全国统考，压力小很多。通常大三下学期就知道结果，大四可以安心做毕设和实习。保研生更受导师欢迎，因为已经有了完整的本科成绩单和科研经历做背书。而且保研可以同时申请多所学校，机会更多。</p><h3>保研的劣势</h3><p>保研名额有限，985院校保研率约20%-35%，211院校约10%-20%，普通院校通常只有3%-8%。如果GPA不达标或者没有竞赛/科研加分，很难拿到名额。另外保研通常不允许跨专业太大，对本专业的依赖度更高。</p><h3>考研的优势</h3><p>考研给了"逆袭"的机会。双非同学通过一年努力学习，完全有机会考上985。考研允许跨专业，是转行的重要通道。考研的公平性也更高，全国统考成绩占主导地位。</p><h3>考研的劣势</h3><p>竞争激烈，热门专业报录比可达15:1甚至20:1。备考周期长（通常6-12个月），对自律要求高。如果一战失败，需要面临二战或找工作的压力。</p><h3>决策建议</h3><p>如果你GPA排前20%且有推免资格，优先走保研路线，同时准备考研作为备选。如果GPA不够但目标明确，全力准备考研。跨专业考生建议考研，可以提前联系目标院校导师了解情况。</p>' },
+
+  { id:'k3', title:'A区 vs B区：选错区域可能差50分', summary:'详解考研A区和B区的划分标准、分数线差异和报考策略，告诉你什么情况下该选B区院校。', category:'school', categoryName:'择校分析', viewCount:10240, likeCount:715, updateTime:'2025-06-15',
+    content:'<h3>A区和B区的划分</h3><p>考研将全国分为A区和B区。A区包括北京、天津、上海、江苏、浙江、福建、山东、河南、湖北、湖南、广东等21个省市；B区包括内蒙古、广西、海南、贵州、云南、西藏、甘肃、青海、宁夏、新疆10个省区。</p><h3>分数线差异</h3><p>B区国家线通常比A区低5-10分。以2024年工学为例，A区国家线273分，B区263分，差了整整10分。对于总分徘徊在分数线边缘的考生来说，这10分可能就是上岸和落榜的区别。</p><h3>怎么选？</h3><p>情况一：如果你实力强劲，目标明确，选A区985/211，未来发展空间更大。情况二：如果你是双非出身想上211，B区的云南大学、广西大学、内蒙古大学、新疆大学都是211院校且分数线低于A区同类院校，性价比极高。情况三：如果你预估分数在A区线附近徘徊，果断考虑B区院校作为保底。情况四：如果你想考热门城市但实力不够，B区也有好选择——兰州大学（985）、贵州大学（211）、海南大学（211）等。</p><h3>注意事项</h3><p>B区院校虽然分数线低，但部分专业就业地域性较强，如果毕业后想回A区工作，需要提前规划实习和人脉。另外有些B区院校的复试也存在一定难度，不要因为分数线低就掉以轻心。</p>' },
+
+  { id:'k4', title:'学硕和专硕的区别，90%的人没搞懂', summary:'从培养方向、考试难度、学费住宿、读博通道、就业认可度五个维度深度对比学硕和专硕。', category:'school', categoryName:'择校分析', viewCount:13580, likeCount:987, updateTime:'2025-06-12',
+    content:'<h3>核心区别</h3><p>学硕（学术型硕士）以培养科研人才为目标，侧重理论研究；专硕（专业型硕士）以培养应用型人才为目标，侧重实践技能。学硕学制通常3年，专硕2-3年（以2年为主）。</p><h3>考试难度</h3><p>学硕考英语一，专硕多考英语二（英语一比英语二难约20%）。数学方面，学硕考数一或数三，专硕多考数二或数三（部分不考数学）。总体而言，学硕考试难度大于专硕，尤其是英语和数学。</p><h3>学费与住宿</h3><p>学硕学费通常8000元/年，基本都提供宿舍。专硕学费差异大，普通专业1-2万/年，热门专业（如金融、MBA）可达10万+/年。部分院校专硕不提供宿舍，需自行租房。</p><h3>读博通道</h3><p>学硕可以直接申请硕博连读或审核制读博。专硕读博需要参加考试，个别院校要求工作经历。如果你有明确的读博计划，建议优先选择学硕。</p><h3>就业认可度</h3><p>目前企业招聘对学硕和专硕基本一视同仁，但在高校、科研院所的招聘中，学硕略有优势。公务员和事业单位考试对此不做区分。</p><h3>怎么选？</h3><p>想搞科研、读博、进高校 → 学硕；想早点就业、进企业 → 专硕；跨专业考研 → 专硕竞争相对小；经济条件有限 → 学硕性价比高。</p>' },
+
+  { id:'k5', title:'跨专业考研：从零开始的完整攻略', summary:'跨专业考研的可行性分析、专业选择建议、备考时间规划以及复试加分技巧。', category:'school', categoryName:'择校分析', viewCount:7650, likeCount:534, updateTime:'2025-06-08',
+    content:'<h3>跨专业的可行性</h3><p>每年约有30%的考研人是跨专业报考，成功率与专业跨度密切相关。从理工跨经管、从文史跨教育相对容易；从文科跨理工、从经管跨医学难度极大，需要提前评估可行性。</p><h3>推荐跨考方向</h3><p>法律硕士（非法学）：专门面向非法学本科生，竞争相对公平，就业前景好。新闻传播硕士：跨考友好度高，不需要数理基础。教育硕士：适合想做老师的同学，部分院校限制较少。计算机相关：工科跨考计算机较可行，文科生跨度大建议慎重。</p><h3>备考时间规划</h3><p>跨考生建议比本专业考生提前2-3个月开始复习。大二下学期确定目标，大三上学期开始补修专业基础课（慕课、旁听），大三下学期正式进入备考。专业课需要额外投入400-600小时。</p><h3>复试注意事项</h3><p>跨考生在复试中需要展示你为什么跨专业、你为跨专业做了哪些准备。可以准备1-2个相关的小项目或课程论文来证明学习能力。提前阅读目标专业的经典教材，储备学科基础知识。回答老师提问时要坦诚，不要假装自己很懂。</p>' },
+
+  { id:'k6', title:'985/211/双一流：考研择校必懂的门道', summary:'全面解读三类标签的含义和含金量，分析不同标签院校在考研竞争、就业、考公方面的差异。', category:'school', categoryName:'择校分析', viewCount:11230, likeCount:845, updateTime:'2025-06-05',
+    content:'<h3>985工程院校</h3><p>共39所，是中国最顶尖的高校群体。考研竞争最激烈，推免比例高（40%-60%），留给统考生的名额有限。但985学历在就业市场含金量最高，大型国企、央企在招聘时往往优先985毕业生。985院校的科研经费、师资力量、国际交流机会也远超其他层次。</p><h3>211工程院校</h3><p>共112所（含所有985院校），覆盖各个省份。211的考研竞争较985低，部分211的优势学科实力不输985。例如上海财经大学的金融、中国政法大学的法学、北京邮电大学的通信，在行业内认可度极高。211学历在求职中也能通过大多数"211以上"的简历筛选。</p><h3>双一流院校</h3><p>2017年新推出的评价体系，首轮共137所。双一流分为"一流大学建设高校"和"一流学科建设高校"。部分双非院校入选了一流学科，如南京信息工程大学的大气科学、天津工业大学的纺织工程。这些学校整体排名不高但特定学科实力强劲，考研性价比很高。</p><h3>报考策略</h3><p>实力顶尖 → 冲刺985；实力较强 → 重点211或学科实力强的双一流；实力一般 → 选B区211或特色双一流学科；只为提升学历 → 普通一本硕士即可满足大部分岗位需求。</p>' },
+
+  // ========== 备考规划 (6篇) ==========
+  { id:'k7', title:'考研全年备考时间线（12个月详细版）', summary:'从3月到12月的完整备考日历，含基础轮、强化轮、冲刺轮三个阶段的具体任务和每日时间分配建议。', category:'plan', categoryName:'备考规划', viewCount:18760, likeCount:1523, updateTime:'2025-06-22',
+    content:'<h3>准备阶段（前一年10月-2月）</h3><p>确定目标院校和专业，了解考试科目和参考书目。英语开始背单词（每天50-100个），目标词汇量达到6000+。数学可以开始看教材，回顾高数、线代、概率的基础概念。</p><h3>基础轮（3月-6月）</h3><p>数学：完成高数上下册、线性代数、概率论的第一轮学习，配合课后习题。英语：单词背完一轮，开始做阅读理解真题（每天1-2篇精读）。政治：暂不开始或简单浏览。专业课：完成第一遍教材通读，建立知识框架。</p><p>每日建议时间：数学3h + 英语2h + 专业课1.5h = 6.5h</p><h3>强化轮（7月-9月）</h3><p>这是提分的黄金期，暑假时间一定要利用好！数学：开始刷题（660题/1000题/1800题选一本），错题二刷。英语：阅读真题全部做完，开始翻译和新题型。政治：8月开始看精讲精练+做1000题。专业课：第二轮深度学习，整理笔记和背诵要点。</p><p>每日建议时间：数学3.5h + 英语2h + 政治1.5h + 专业课2h = 9h</p><h3>冲刺轮（10月-12月）</h3><p>数学：刷近20年真题，做模拟卷（李林6+4、张宇8+4等），总结题型方法。英语：模考整套试卷，背作文模板。政治：背肖四肖八，刷选择题。专业课：反复背诵核心考点，做真题和模拟题。</p><p>每日建议时间：数学3h + 英语2h + 政治2.5h + 专业课3h = 10.5h</p><h3>考前一周</h3><p>调整作息，保持手感但不过度用脑。重点看错题和笔记，准备好考试用品。保证每天7-8小时睡眠，适当运动减压。</p>' },
+
+  { id:'k8', title:'英语一和英语二到底差多少？', summary:'从词汇量、题型分布、命题思路到备考策略，全面对比分析英语一和英语二，帮你制定正确的复习方案。', category:'plan', categoryName:'备考规划', viewCount:14250, likeCount:1123, updateTime:'2025-06-20',
+    content:'<h3>适用专业</h3><p>英语一适用于所有学硕和部分专硕（如临床医学、法律硕士等），难度较高。英语二适用于大多数专硕（MBA、MPA等），难度相对较低。</p><h3>词汇量要求</h3><p>英语一要求掌握5500+词汇及词根词缀，超纲词比例约3%。英语二同样5500词但超纲词较少（约1.5%），对熟词僻义的考察也较英语一少。实际考试中，英语一的文章难度明显高于英语二。</p><h3>题型差异</h3><p>完形填空：英语一240-280词，英语二约350词（文章更长但选项更友好）。阅读理解：英语一的题材更学术化，考查深度理解；英语二偏社会生活，更易理解。翻译：英语一翻译5个长难句（约150词），英语二翻译一个段落（约150词），英语二的翻译更容易拿分。新题型：英语一难度大（排序/七选五），英语二相对简单。作文：英语一大作文20分（图画作文），英语二大作文15分（图表作文）。</p><h3>分数差距</h3><p>同等水平的考生，英语二通常比英语一高出8-12分。如果你在英语一和英语二之间可以选择，英语二是更稳妥的选择。</p><h3>备考建议</h3><p>无论考英语一还是二，都建议用英语一的阅读理解真题来训练，因为难度更大，训练效果更好。考前2个月再切换到对应卷种的真题进行适应训练。</p>' },
+
+  { id:'k9', title:'考研政治复习：肖秀荣四件套怎么用？', summary:'详细讲解精讲精练、1000题、肖八、肖四的正确使用方法，以及政治从零到高分的完整路径。', category:'plan', categoryName:'备考规划', viewCount:20890, likeCount:1876, updateTime:'2025-06-18',
+    content:'<h3>肖秀荣四件套简介</h3><p>《精讲精练》：最全面的教材，内容详尽但较厚，适合打基础，8-9月使用。《1000题》：配套选择题练习，必须刷2-3遍，第一遍全做，第二遍只做错题，第三遍只做反复错的题。《肖八》：11月出版，8套模拟卷，重点做选择题，分析题看答案思路。《肖四》：12月出版，4套终极预测卷，分析题必须全部背熟！</p><h3>时间安排</h3><p>8月：每天1.5h，看精讲精练+做对应章节的1000题。9月-10月：每天2h，1000题二刷+错题整理。11月：每天2.5h，肖八到手后重点做选择题（35分+为佳），分析题浏览答案。12月：每天3-4h，肖四到手后背熟所有分析题（考前必背！），再刷一遍1000题错题。</p><h3>历年数据</h3><p>肖四分析题每年能押中60%-80%的考试内容，是考研政治的"救命稻草"。选择题考点覆盖率高，但需要配合1000题的积累才能稳定得分。</p><h3>搭配建议</h3><p>如果你时间充裕，可以配合徐涛的强化课视频学习知识点理解，配合腿姐技巧课提升选择题准确率。但无论怎么搭配，肖四的最后背诵是必不可少的。</p>' },
+
+  { id:'k10', title:'数学零基础到120分：180天逆袭计划', summary:'针对数学基础薄弱的考生，从教材选择到刷题策略，一步步带你构建数学解题能力。', category:'plan', categoryName:'备考规划', viewCount:16540, likeCount:1340, updateTime:'2025-06-15',
+    content:'<h3>阶段一：打地基（第1-60天）</h3><p>不要一上来就刷习题集！先老老实实过教材：同济版《高等数学》、同济版《线性代数》、浙大版《概率论与数理统计》。看完每章做课后习题的基础题，目标是理解概念而非做题量。建议配合汤家凤的基础课视频，老师讲得非常细致，适合零基础。</p><h3>阶段二：刷题型（第61-120天）</h3><p>选择一本习题集开始刷。推荐《汤家凤1800题》的基础篇或《李林880题》，这两本难度适中。每天保证做20-30道题，错题做好标记。遇到不会的题，先独立思考15分钟，再看解析。每周日回顾本周错题。</p><h3>阶段三：刷真题（第121-160天）</h3><p>近20年真题，按年份从远到近做。前10年真题熟悉题型和考点，后10年真题用来模考。做完一套认真分析错题原因：是概念不清、计算错误还是思路不对？真题里的每一道错题都是宝藏。</p><h3>阶段四：冲刺模拟（第161-180天）</h3><p>李林6+4、张宇8+4、合工大超越卷，选2-3套认真做。模拟卷难度一般高于真题，分数低不要慌，关键是保持手感和查漏补缺。考前一周回归基础公式和典型题型，不要再刷新题。</p><h3>核心原则</h3><p>数学复习的重中之重是计算能力，每年大量考生因为计算错误丢分。平时练习要一步不跳地写完整过程，养成良好的计算习惯。</p>' },
+
+  { id:'k11', title:'考研每日作息表：10小时高效学习法', summary:'科学规划每天的学习节奏，包含各科目时间分配、休息策略和防疲劳技巧。', category:'plan', categoryName:'备考规划', viewCount:9870, likeCount:756, updateTime:'2025-06-10',
+    content:'<h3>推荐作息（强化/冲刺阶段）</h3><p>06:30 起床<br>07:00-08:00 早读（英语单词+政治知识点）<br>08:00-08:30 早餐<br>08:30-11:30 上午学习（数学/专业课，难度大的科目放在上午）<br>11:30-12:30 午餐+休息<br>12:30-13:00 午休（20-30分钟，不宜过长）<br>13:00-15:00 下午学习一（英语阅读/翻译）<br>15:00-15:15 休息<br>15:15-17:15 下午学习二（政治/专业课）<br>17:15-18:30 运动+晚餐<br>18:30-21:30 晚上学习（薄弱科目攻坚+复习当天内容）<br>21:30-22:00 复盘（记录今日完成情况，规划明日任务）<br>22:00-23:00 洗漱+放松<br>23:00 睡觉</p><h3>高效学习原则</h3><p>番茄工作法：每学习50分钟休息10分钟，保持专注力。交叉学习：不要连续3小时学同一科目，大脑会疲劳。黄金时段：每个人的高效时段不同，找到自己的黄金时段安排最难的任务。周末策略：周六正常复习，周日上午模考下午休息半天，保持可持续节奏。</p><h3>避坑指南</h3><p>不要熬夜学习！长期睡眠不足会导致记忆力和理解力下降。不要自我感动式学习——在图书馆坐12小时但有效时间只有4小时，不如高效学8小时。每周至少运动2-3次，身体是革命的本钱。</p>' },
+
+  { id:'k12', title:'暑期强化阶段：成败在此两个月', summary:'为什么说暑假是考研的分水岭？详细规划7-8月的学习内容和节奏，让你在强化阶段实现质的飞跃。', category:'plan', categoryName:'备考规划', viewCount:11560, likeCount:923, updateTime:'2025-06-08',
+    content:'<h3>为什么暑假最关键？</h3><p>暑假是考研备考中唯一一段完整的、不受上课干扰的时间。这两个月的学习效率决定了你冲刺阶段的上限。统计显示，暑假每天学习不足6小时的考生，上岸率不足15%；而每天保持8小时+的考生，上岸率超过60%。</p><h3>暑假数学目标</h3><p>完成高数、线代、概率的第二轮强化。至少刷完一本习题集（推荐660题或880题）的基础篇+提高篇。建立起常见题型的解题框架，看到题目知道考什么、用什么方法。到8月底，数学至少稳定在模拟卷90分的水平。</p><h3>暑假英语目标</h3><p>阅读理解真题全部做完一轮（近20年），每篇精读：查生词、分析长难句、总结题型。开始做翻译和新题型。单词完成第二轮背诵，阅读中的生词要做到见到就能认出。</p><h3>暑假政治目标</h3><p>8月初开始即可，不要太早。8月底前过完马原和史纲，做对应1000题。马原需要理解，不要死记硬背。史纲重点是时间线和重大事件的逻辑关系。</p><h3>暑假专业课目标</h3><p>完成第二轮深度学习，每章整理知识框架图。开始接触真题，了解题型和考点分布。整理出需要背诵的核心内容。如果你的专业课参考书超过3本，需要在暑假完成全部通读。</p>' },
+
+  // ========== 资料推荐 (5篇) ==========
+  { id:'k13', title:'考研数学用书终极推荐清单', summary:'按阶段推荐教材、习题集、真题、模拟卷，包含张宇/汤家凤/李永乐/李林等名师的全线产品评价。', category:'materials', categoryName:'资料推荐', viewCount:15980, likeCount:1356, updateTime:'2025-06-22',
+    content:'<h3>教材（必买）</h3><p>高等数学：同济大学第七版《高等数学》上下册（最经典的教材，课后题质量高）。线性代数：同济大学第六版《线性代数》或李永乐《线性代数辅导讲义》（后者更适合备考）。概率论：浙江大学第四版《概率论与数理统计》。</p><h3>习题集（三选一即可）</h3><p>汤家凤《1800题》：题目量大，基础篇适合零基础，提高篇质量高，缺点是重复题偏多。张宇《1000题》：难度偏大，创新性强，适合目标130+的考生，零基础慎入。李林《880题》：难度适中，题目质量高，接近真题风格，适合大部分考生。</p><p>综合推荐：大部分考生选《李林880题》或《汤家凤1800题》；追求高分的加做《张宇1000题》提高篇。</p><h3>真题</h3><p>李永乐《历年真题详解》：解析最全面，按知识点分类归纳。张宇《真题大全解》：包含年份最全（1987-最新），适合成套刷。推荐买李永乐的作为精研用，再找电子版真题做补充练习。</p><h3>模拟卷</h3><p>李林《6套卷+4套卷》：与真题风格最接近，必做。张宇《8套卷+4套卷》：难度偏大，心态容易崩，但能锻炼抗压能力。合工大超越卷：质量高，难度适中。汤家凤《8套卷》：偏基础，适合查漏补缺。建议顺序：先李林6+4，再合工大超越，最后张宇选做。</p>' },
+
+  { id:'k14', title:'考研英语书单：只买这些就够了', summary:'从单词书到真题到作文模板，精选最实用的英语备考书籍，避免买书如山倒。', category:'materials', categoryName:'资料推荐', viewCount:12450, likeCount:1023, updateTime:'2025-06-19',
+    content:'<h3>单词书（二选一）</h3><p>《考研词汇闪过》：按考频分高/中/低频词，背起来有重点，适合时间紧的考生。《红宝书》：词汇量大而全，但缺乏重点分层，适合时间充裕的考生。推荐搭配墨墨背单词APP，利用碎片时间巩固。</p><h3>阅读理解</h3><p>张剑黄皮书《历年真题解析》：考研英语的"圣经"，解析极其详尽，必买。建议买基础版（2001-2009）和提高版（2010-最新）两本，基础版用于前期练习，提高版用于后期模考。</p><h3>长难句</h3><p>何凯文《长难句解密》：适合突破英语语法和长难句瓶颈。如果语法基础较好可以不买，通过精读真题中的长难句来提升。田静《句句真研》：更适合基础薄弱的同学，从简单句讲到复合句。</p><h3>翻译与作文</h3><p>唐静《拆分与组合翻译法》：翻译部分讲得很透彻。王江涛《考研英语高分写作》：作文模板和范文质量高，必背10篇大作文+10篇小作文。潘赟《九宫格写作法》：模板化写作思路清晰，适合写作困难户。</p><h3>阅读外刊推荐</h3><p>《经济学人》《卫报》《大西洋月刊》是考研阅读真题的主要文章来源。建议每天读1篇外刊文章，积累词汇和语感。可以在B站关注一些精读外刊的UP主，跟着读效率更高。</p>' },
+
+  { id:'k15', title:'考研专业课资料怎么找？六个渠道', summary:'从官方渠道到考研论坛，手把手教你找到目标院校的历年真题、笔记和参考书目。', category:'materials', categoryName:'资料推荐', viewCount:10890, likeCount:867, updateTime:'2025-06-17',
+    content:'<h3>渠道一：目标院校研招网</h3><p>最官方的渠道。大部分院校会在研究生院官网公布考试大纲、参考书目、历年报录比。部分院校还提供往年真题下载。先去官网找，这是最可靠的信息来源。</p><h3>渠道二：淘宝/闲鱼</h3><p>搜索"XX大学XX专业考研真题"，能找到历年真题和笔记资料。注意甄别真假，看卖家评价和销量。优先选择标注"电子版"自己打印的，性价比高。价格一般在30-150元之间。</p><h3>渠道三：目标院校打印店</h3><p>很多院校旁边的打印店有历年真题资料，是学长学姐多年来积累的。如果有条件，去目标院校实地考察一番，直接找到最一手的信息。</p><h3>渠道四：QQ群</h3><p>搜索"XX大学考研群"或"XX专业考研群"，很多群里都有学长学姐分享资料。进群后礼貌提问，不要伸手党。有些群需要付费入群（一般几块钱到几十块），资料质量需自行判断。</p><h3>渠道五：微信公众号/B站</h3><p>搜索目标院校+专业名称，关注考研相关公众号。B站上有很多上岸学长学姐的经验分享视频，评论区经常有人分享资料。小红书上也有大量考研资料分享帖。</p><h3>渠道六：联系直系学长学姐</h3><p>最有效的方式。通过本科学校的考研光荣榜、老师介绍等途径找到已经上岸目标院校的学长学姐。礼貌请教，发个小红包表示感谢。学长学姐的一手信息和经验往往比任何资料都珍贵。</p>' },
+
+  { id:'k16', title:'考研政治书单推荐：少而精', summary:'政治复习资料不需要多，精选5本核心资料+2套模拟卷，配合合理的时间安排即可。', category:'materials', categoryName:'资料推荐', viewCount:11870, likeCount:934, updateTime:'2025-06-14',
+    content:'<h3>核心五件套</h3><p>1. 肖秀荣《精讲精练》：最全面的基础教材，适合第一轮学习。2. 肖秀荣《1000题》：配套选择题练习，至少刷2遍。3. 肖秀荣《讲真题》：了解真题命题风格。4. 《肖八》：11月出版，8套模拟卷。5. 《肖四》：12月出版，4套终极预测卷，分析题必背。</p><p>这五本是基础配置，足够应对政治考试。</p><h3>补充提升（可选）</h3><p>徐涛《核心考案》：可以替代精讲精练，更精简实用，配合徐涛视频课效果更好。腿姐《背诵手册》：口袋书大小，适合随身携带背诵，选择题提分利器。腿姐《技巧班讲义》：选择题技巧讲解透彻，推荐看视频课+讲义。</p><h3>不需要买的</h3><p>各种押题卷除了肖四肖八外不需要买太多，肖四的分析题足以覆盖。各种思维导图和知识框架可以自己做或者找免费电子版，不需要花钱买。时政部分等到11月各种时政小册子出来再看即可。</p><h3>省钱建议</h3><p>基础资料买纸质版（精讲精练+1000题+肖四肖八），辅助资料找电子版（思维导图、时政等），模拟卷可以买正版纸质版体验考试手感。总计花费约150-200元。</p>' },
+
+  { id:'k17', title:'各科目网课/视频资源推荐', summary:'按科目推荐张宇/汤家凤/武忠祥/李永乐/唐迟/田静/徐涛/腿姐等名师的课程，含风格对比和适用人群。', category:'materials', categoryName:'资料推荐', viewCount:14320, likeCount:1278, updateTime:'2025-06-11',
+    content:'<h3>数学</h3><p>汤家凤（基础课）：讲得最细致，从零基础到入门的最佳选择，适合基础薄弱者。张宇（强化课）：讲课风趣幽默，解题方法巧妙，适合有一定基础想拔高的同学。武忠祥（高数专项）：17堂课解决高数难点，适合高数有瓶颈的同学。李永乐（线代专项）：线代之王，讲课清晰透彻。余丙森（概率专项）：概率论讲得最好。</p><h3>英语</h3><p>唐迟（阅读理解）：阅读逻辑讲得极好，适合阅读理解得分瓶颈期。田静（语法长难句）：从最基础讲起，适合语法薄弱的同学。王江涛（作文）：考研作文第一人，模板和范文质量高。唐静（翻译）：翻译讲得最细致。宋逸轩（新题型和完形）：技巧性强。</p><h3>政治</h3><p>徐涛（强化课）：讲课生动有趣，知识理解透彻，适合第一轮学习，也是最适合配饭看的视频。腿姐（技巧课）：选择题技巧和主观题模板，性价比极高。肖秀荣（考前点题班）：最后的救命稻草。选择建议：全程跟一个老师即可，不要贪多。推荐组合是：徐涛强化课+腿姐技巧课+肖四背诵。</p>' },
+
+  // ========== 政策解读 (5篇) ==========
+  { id:'k18', title:'2025考研政策全面解读', summary:'包含报名条件、考试方式、调剂规则、专项计划等各类考研政策的最新解读。', category:'policy', categoryName:'政策解读', viewCount:19650, likeCount:1687, updateTime:'2025-06-25',
+    content:'<h3>报名条件</h3><p>国家承认学历的应届本科毕业生（含普通高校、成人高校等）均可报考。本科结业生和专科毕业满2年者可以同等学力身份报考，但部分院校和专业对同等学力考生有额外要求（如发表论文、加试等）。已获硕士或博士学位的人员也可再次报考。</p><h3>考试方式</h3><p>初试方式分为全国统一考试（含联合考试）、单独考试和推荐免试。绝大多数考生参加全国统考。推免生直接进入复试，无需参加统考初试。单独考试主要面向在职人员，由招生单位单独命题。</p><h3>网上报名</h3><p>预报名：每年9月24日-27日，应届生可提前报名。正式报名：每年10月5日-25日，所有考生均可报名。网上确认：每年11月初（各省时间不同），上传照片、确认信息、缴费。准考证打印：考前10天左右开始。</p><h3>专项计划</h3><p>退役大学生士兵计划：每年8000个招生名额，分数线通常低于普通考生20-50分。少数民族骨干计划：面向少数民族考生或在民族地区工作3年以上的汉族考生。对口支援计划：面向中西部地区的定向培养计划。强军计划：面向军队在职干部。</p><h3>调剂政策</h3><p>初试成绩达到国家线但未被第一志愿录取的考生可以申请调剂。调剂需满足：过调入专业的分数线、调入专业与第一志愿相同或相近、初试科目相同或相近。调剂系统通常在3月底-4月底开放，每人可填写3个平行志愿。</p><h3>重要提醒</h3><p>报名时一定要确认报考点选择正确（应届生选学校所在地，往届生选户籍或工作所在地）。网上确认要尽早完成，不要拖到最后一天。保持手机畅通，接收考试院和报考点发送的通知短信。</p>' },
+
+  { id:'k19', title:'考研国家线深度解析：看懂这三条线', summary:'详细讲解国家线、院校线和专业录取线的区别，以及它们如何影响你的初试和录取。', category:'policy', categoryName:'政策解读', viewCount:13580, likeCount:1120, updateTime:'2025-06-22',
+    content:'<h3>国家线</h3><p>国家线是考研的"及格线"，由教育部统一划定。每年3月中旬公布，按学科门类和A/B区分别划线。国家线包含两个分数：总分线和单科线，两项都必须过线。过了国家线才有资格参加复试或申请调剂。</p><h3>院校复试线</h3><p>34所自划线高校可以自行划定复试分数线（通常高于国家线），一般在国家线公布前就发布了。其他院校的复试线由国家线决定，部分热门专业会根据报考情况划定专业线。院校复试线是你进入复试的真正门槛。</p><h3>专业录取线</h3><p>这是最关键的线——复试结束后，按总成绩排名，最后一名被录取的考生的初试分数就是当年的专业录取线。专业录取线高于等于院校复试线。热门专业的录取线可能比复试线高出30-50分。</p><h3>实际案例</h3><p>以2024年某985计算机专业为例：国家线（工学A区）273分，院校复试线330分，实际录取线372分。也就是说，过了国家线只是"有资格"，过了复试线才能"进面试"，实际录取分数远高于复试线。</p><h3>如何利用分数线</h3><p>制定目标分数时，参考目标院校近3年的专业录取线，在此基础上加10-15分作为你的目标。不要只看院校复试线，那是最低门槛而不是保障线。</p>' },
+
+  { id:'k20', title:'考研加分政策全汇总', summary:'各类加分和照顾政策详解，包括大学生士兵、少数民族骨干、援藏计划等专项计划的申请条件。', category:'policy', categoryName:'政策解读', viewCount:8920, likeCount:634, updateTime:'2025-06-19',
+    content:'<h3>初试加分</h3><p>参加"大学生志愿服务西部计划"、"三支一扶计划"、"农村义务教育阶段学校教师特设岗位计划"、"赴外汉语教师志愿者"等项目服务期满考核合格的考生，3年内参加考研初试总分加10分。</p><p>高校学生应征入伍服现役退役，达到报考条件后，3年内参加考研初试总分加10分。如果在部队荣立二等功以上，可申请免初试攻读硕士研究生。</p><h3>专项计划</h3><p>退役大学生士兵计划：单独划线，分数线通常比普通考生低20-50分。报考时不占普通名额，是普通双非考生冲击985的一条捷径。但名额有限（全国8000个），需要提前了解目标院校是否有名额。</p><p>少数民族骨干计划：面向少数民族考生，单独划线。毕业后需回定向地区工作至少5年（硕士）或8年（博士）。如果愿意回民族地区发展，这是非常好的选择。</p><h3>照顾专业</h3><p>工学照顾专业（如力学、冶金工程、水利工程等10个专业）和中医类照顾专业，国家线单独划定，通常比普通专业低5-10分。</p><h3>申请注意事项</h3><p>加分政策不累计，如果同时符合多项，只按最高项加分。专项计划与加分政策可以同时享受。申请加分的材料需要在报名时提交，注意各报考点的截止时间。</p>' },
+
+  { id:'k21', title:'考研报名全流程：手把手教你操作', summary:'从研招网注册到网上确认的每一步操作详解，包含常见问题和避坑指南。', category:'policy', categoryName:'政策解读', viewCount:10240, likeCount:782, updateTime:'2025-06-16',
+    content:'<h3>注册与信息填报</h3><p>登录中国研究生招生信息网（研招网），使用学信网账号登录。如无账号，先用身份证和手机号注册。注册后进入报名系统，逐项填写个人信息：姓名、证件号、学籍学历、户籍档案、家庭主要成员、学习工作经历、奖惩情况、联系方式等。</p><p>关键点：学籍学历信息必须和学信网完全一致，否则验证不通过。奖惩情况如实填写（奖励可填，处分不填一般查不到）。联系方式填你常用的手机号和能收到邮件的邮箱。</p><h3>选择报考单位与专业</h3><p>报考单位就是你要考的目标院校。考试方式选择"全国统考"（绝大多数考生）。专项计划如实选（无/退役士兵/少数民族骨干等）。报考专业、研究方向、学习方式（全日制/非全日制）认真核对再提交。报考类别：无工作选"非定向"，在职考生视情况选"定向"。</p><h3>选择报考点</h3><p>应届生：选择就读学校所在地的报考点。往届生：选择户籍所在地或工作所在地（需提供社保/工作证明）的报考点。每个报考点都有人数限制，热门报考点会满员，建议预报名开放当天就完成报名。</p><h3>网上确认</h3><p>上传本人电子证件照（需符合要求：近3个月、白色背景、不戴帽子、不戴美瞳等）；上传手持身份证照片；上传学历/学籍证明（应届生上传学生证、往届生上传毕业证/学位证）；部分报考点需要上传户籍或工作证明。全部材料审核通过后缴费，报名才算完成。</p><h3>避坑指南</h3><p>报名信息提交后，"报考单位""报考点""考试方式"不可修改，其他信息在报名截止前可修改。如确需修改这三项，只能取消当前报名重新填报（已缴费的会退费）。</p>' },
+
+  { id:'k22', title:'考研调剂全攻略：还有机会', summary:'调剂的时间节点、系统操作、选校策略和面试准备，帮你把握好调剂的第二次机会。', category:'policy', categoryName:'政策解读', viewCount:7680, likeCount:567, updateTime:'2025-06-12',
+    content:'<h3>调剂的基本条件</h3><p>初试成绩达到国家线（总分+单科均达标）；未被第一志愿录取或未进入第一志愿复试；调入专业与第一志愿专业相同或相近；初试科目与调入专业初试科目相同或相近。</p><h3>调剂时间线</h3><p>2月下旬：初试成绩公布。3月中旬：国家线公布。3月下旬-4月底：调剂系统开放，这是调剂的关键窗口期。4月中旬：大部分院校完成调剂复试。4月底：调剂系统关闭，基本尘埃落定。</p><h3>调剂系统操作</h3><p>每人可填写3个平行志愿。学校查看后会有三种状态：已查看（学校看到了但还没回复）、复试通知（你被邀请复试了）、拒绝（没戏了换下一个）。如果48小时内学校没有回复，可以修改志愿换其他学校。</p><h3>调剂选校策略</h3><p>不要全冲热门院校，合理搭配：1个冲刺档（211/双一流）、1个稳妥档（普通一本）、1个保底档。关注新开专业的院校（第一年招生的专业竞争小）。关注B区院校（分数低、名额多）。关注往年有大量调剂名额的院校（说明一志愿经常招不满）。</p><h3>调剂注意事项</h3><p>可以接受多个复试通知，只要时间不冲突。一旦在调剂系统中确认录取，就不能再接受其他学校的复试了。调剂面试同样需要认真准备，不要因为是调剂就掉以轻心。</p>' },
+
+  // ========== 复试攻略 (5篇) ==========
+  { id:'k23', title:'复试综合面试：导师最常问的20个问题', summary:'整理历年复试中导师最爱问的问题及其回答思路，帮你做好充分准备。', category:'interview', categoryName:'复试攻略', viewCount:16540, likeCount:1456, updateTime:'2025-06-24',
+    content:'<h3>必问的基础问题</h3><p>1. 请做一个简单的自我介绍（中英文都要准备）。2. 为什么选择我们学校/这个专业？3. 你的本科毕业论文/设计做了什么？4. 你读过哪些本专业的经典著作？5. 你对哪位导师的研究方向最感兴趣？6. 你本科期间最大的收获是什么？</p><p>回答要点：自我介绍控制在2-3分钟，突出学术能力和科研经历。选择该校的理由要具体，不要说"因为学校好"，要说"因为贵校在XX领域的研究非常领先"。论文问题要能说清研究方法和结论。</p><h3>专业能力问题</h3><p>7. 解释一下XX概念/理论（随机抽查专业知识）。8. 你认为本领域目前最大的挑战是什么？9. 你关注过哪些本专业的学术前沿？10. 如果你被录取，研究生期间有什么研究计划？11. 你有哪些科研/竞赛经历？</p><p>回答要点：专业问题实事求是，不会就说不会但要表达学习意愿。研究计划不需要太具体，但要展现你的思考路径和学术兴趣方向。</p><h3>个人素质问题</h3><p>12. 你的优势和劣势是什么？13. 遇到过最大的挫折是什么，怎么克服的？14. 如果和导师/同学产生分歧怎么办？15. 你如何平衡学习和生活？16. 你是否考虑读博？</p><p>回答要点：劣势要说真实的但非致命的（比如英语口语需要提高），同时说明在做什么改进。挫折问题要体现你的成长和抗压能力。读博问题面学硕可以表达意愿，面专硕可以坦诚说暂时以就业为目标。</p><h3>英语口语问题</h3><p>17. Please introduce your hometown. 18. What is your greatest strength/weakness? 19. Why do you choose our university? 20. Please describe your research interests.</p><p>建议提前准备10个常见英语问题的回答模板并反复练习，做到自然流畅而非背诵感。发音比语法重要，自信比词汇量重要。</p>' },
+
+  { id:'k24', title:'复试简历怎么写？让导师眼前一亮的模板', summary:'从简历结构到内容表达，教你写出一份让导师看了就想录你的复试简历。', category:'interview', categoryName:'复试攻略', viewCount:12340, likeCount:1023, updateTime:'2025-06-21',
+    content:'<h3>简历基本结构</h3><p>1. 基本信息：姓名、电话、邮箱、照片（一寸证件照）。2. 教育背景：本科院校、专业、GPA、排名、核心课程。3. 科研经历：项目名称、你的角色、研究方法和成果（最重要！）。4. 竞赛获奖：国家级/省部级/校级竞赛及奖项。5. 实践经历：实习、社团、志愿者等。6. 技能证书：英语六级/雅思、计算机等级、专业证书。7. 自我评价：2-3句话概括。</p><h3>导师最看重什么</h3><p>科研经历 > 竞赛获奖 > GPA排名 > 本科院校 > 实践经历。导师招你是来搞科研的，科研经历是最大的加分项。即使只是参与过老师的课题、做过小项目、写过课程论文，都要写上去。</p><h3>科研经历怎么包装</h3><p>普通项目也可以写出彩。不要说"参与了XX项目"，要说"在XX项目中负责数据收集与统计分析，使用SPSS处理了300份问卷数据，发现了XX相关性"。用STAR法则（情境-任务-行动-结果）来描述每个经历。</p><h3>避坑指南</h3><p>简历控制在一页A4纸以内（导师没有时间看两页）。不要放生活照/艺术照，用正式的一寸证件照。不要列一堆"熟悉""了解"的技能，如果你真的不会，面试时被问到就尴尬了。不要夸大或造假，导师都是专家学者，很容易识破。</p>' },
+
+  { id:'k25', title:'复试英语口语：备考7天速成方案', summary:'从自我介绍到专业英语，七天带你突破复试英语口语关，包含常见问答模板和高频词汇。', category:'interview', categoryName:'复试攻略', viewCount:11340, likeCount:987, updateTime:'2025-06-19',
+    content:'<h3>Day 1-2：准备自我介绍</h3><p>准备2分钟和1分钟两个版本的英文自我介绍。内容包括：基本信息、本科学校专业、学术兴趣、研究经历（1个亮点）、选择该校该专业的原因、未来规划。熟读成诵但要注意语调自然，不要像机器人背稿。录音后自己听，调整不自然的地方。</p><h3>Day 3-4：准备常见问答</h3><p>准备10个高频问题的英文回答：self-introduction, hometown, university and major, research interests, strengths and weaknesses, career plan, why this school, favorite course, hobbies, a book you read recently。每个问题准备3-5句话，不要写小作文。</p><h3>Day 5：专业英语</h3><p>收集目标专业的核心术语英文表达（约50-100个词条）。准备用英文解释2-3个专业概念。如果能用英语说出你本科论文的摘要，这是很大的加分项。</p><h3>Day 6：模拟练习</h3><p>找同学或自己对着镜子全英文模拟面试。重点是：听懂问题（没听懂可以说"Could you please repeat the question?"）、回答流畅（宁可用简单词也不卡壳）、保持微笑和眼神交流。</p><h3>Day 7：查漏补缺</h3><p>复习所有准备的内容，重点练习不流利的部分。当天保证充足睡眠，保持放松心态。记住：大多数导师的英语水平也一般，你的目标是沟通能力而非托福口语满分。</p>' },
+
+  { id:'k26', title:'复试联系导师：邮件的正确打开方式', summary:'从什么时候联系、邮件怎么写、导师不回复怎么办，全方位解析联系导师的策略和技巧。', category:'interview', categoryName:'复试攻略', viewCount:9870, likeCount:823, updateTime:'2025-06-16',
+    content:'<h3>什么时候联系</h3><p>初试成绩出来之后、复试之前联系是最合适的时机。太早联系导师会忘记你，太晚联系名额可能已经被预定。如果初试分数很高，成绩一出来就可以发邮件。如果分数中等，可以在准备复试的同时联系。</p><h3>邮件怎么写</h3><p>主题行：2025考研自荐-XXX（姓名）-XX专业-初试XXX分。正文：第一段自我介绍（姓名、本科院校专业、初试分数）。第二段表达对导师研究方向的兴趣（一定要具体提到导师的某篇论文或研究方向，说明你真的了解过）。第三段简述你的科研经历/学术能力。第四段表达期待和感谢。</p><p>附件：个人简历PDF、本科成绩单、获奖证书扫描件。不要发超大附件，控制在5MB以内。</p><h3>导师不回复怎么办</h3><p>等待3-5天，如果没回复可以再发一封简短的follow-up邮件。如果第二次也不回复，不要过度解读——可能导师平时不看邮箱或者已经招满了。可以同时联系2-3位导师（但同一学院不要同时联系多位，导师之间会交流）。</p><h3>禁忌事项</h3><p>不要群发邮件（一看就看得出来）。不要用QQ邮箱（不够正式，用163或学校邮箱）。不要在邮件中过分夸大或说谎。不要频繁催促导师回复。不要送礼物或试图以不正当方式获取名额。</p>' },
+
+  { id:'k27', title:'复试被刷了怎么办？还有这些出路', summary:'复试被刷后的心理调整和后续规划：调剂、二战、找工作、出国，分析每条路的利弊。', category:'interview', categoryName:'复试攻略', viewCount:7650, likeCount:576, updateTime:'2025-06-13',
+    content:'<h3>立即行动：抓调剂</h3><p>复试结果出来当天就要进入调剂状态。登录调剂系统查看还有哪些学校有余额。重点关注：B区院校、往年调剂大户院校、新开专业。调剂复试的准备要快，通常从收到通知到面试只有3-5天时间。准备好通用的面试问题和自我介绍，以便快速应战。</p><h3>理性选择：要不要二战？</h3><p>适合二战的信号：初试分数和复试线很接近（差10分以内），你知道自己的薄弱环节且有信心弥补，家庭经济条件允许再脱产一年。不适合二战的信号：初试分数和复试线差距大、不知道今年为什么失败、心理压力已经很大。</p><p>如果决定二战，建议分析失败原因：是公共课拖后腿还是专业课拉了胯？是学习方法不对还是时间投入不够？二战要调整策略而非简单重复去年的做法。</p><h3>调整心态</h3><p>复试被刷不是终点。很多人在调剂后找到了更适合自己的方向，工作几年后考研目标更明确的人也很多。你的价值不取决于一次考试的结果。给自己3-5天时间接受和消化，然后制定新的计划。</p><h3>其他出路</h3><p>春招：3-5月还有很多企业招聘，尤其是国企和事业单位，不要错过。考公务员/事业单位：省考一般在3-4月，但需要提前准备。实习转正：通过实习进入一家好公司也是不错的选择。出国读研：如果英语不错且经济条件允许，可以考虑申请国外的硕士项目。</p>' },
+
+  // ========== 心态调节 (4篇) ==========
+  { id:'k28', title:'考研焦虑怎么办？5个科学应对方法', summary:'从认知行为疗法到正念冥想，从运动减压到社交支持，用科学方法帮你战胜备考焦虑。', category:'mindset', categoryName:'心态调节', viewCount:14560, likeCount:1289, updateTime:'2025-06-23',
+    content:'<h3>方法一：接纳焦虑，而非对抗</h3><p>一定程度的焦虑是正常的，它说明你在乎这件事。试图消灭焦虑往往会因为"越不想焦虑就越焦虑"而陷入恶性循环。正确的做法是：承认我现在很焦虑，但我知道这是人之常情，它不会影响我继续学习。把焦虑当成背景噪音，专注在眼前的学习任务上。</p><h3>方法二：拆解目标，聚焦当下</h3><p>焦虑的根源往往是对未来的不确定感。"我能不能考上？"这个问题你无法回答自己，但"今天数学第三章要完成"是你可以控制的。把注意力从不可控的结果转移到可控的过程上。每天列出3-5个具体任务，完成一个划掉一个，这种成就感会逐渐驱散焦虑。</p><h3>方法三：规律运动</h3><p>运动是经过科学验证的最有效的抗焦虑方法之一。每周3-4次30分钟的中等强度运动（慢跑、游泳、打球），能显著降低焦虑水平。运动促进大脑分泌内啡肽和多巴胺，让你感到愉悦和放松。考研期间的运动不是为了身材，而是为了心理健康。</p><h3>方法四：建立支持系统</h3><p>找一个考研搭子，互相打卡和鼓励。每周和家人打一次电话，倾诉备考的酸甜苦辣。加入正向的考研交流群（远离贩卖焦虑的群）。当你感到特别崩溃时，不要硬撑，找信任的人说出来。</p><h3>方法五：给自己留白</h3><p>每周至少安排半天完全放空的时间：看电影、吃美食、逛公园，做什么都行就是不要想考研的事。大脑需要休息才能更好地工作。半天不学习不会让你落后，但长期不放空会让你崩溃。保持7-8小时的睡眠，熬夜学习效率很低。</p>' },
+
+  { id:'k29', title:'考研人最容易陷入的5个心态陷阱', summary:'完美主义、攀比焦虑、自我怀疑、过度乐观和执着于结果，识别这些陷阱并学会及时走出来。', category:'mindset', categoryName:'心态调节', viewCount:11230, likeCount:987, updateTime:'2025-06-20',
+    content:'<h3>陷阱一：完美主义</h3><p>"我今天计划学10小时只学了8小时，我好失败"——这种想法很危险。完美主义会让你因为做不到100分而放弃80分的努力。记住：完成比完美更重要。8小时的有效学习已经很棒了，比因为追求10小时而焦虑到学不进去要好得多。</p><h3>陷阱二：攀比焦虑</h3><p>"别人数学都刷完两本习题集了我第一本才一半"——每个人的基础、目标院校和学习节奏都不同，攀比毫无意义。你看到的别人的进度可能只是TA展示给你的那部分。专注于自己的学习计划，按照自己的节奏来。</p><h3>陷阱三：自我怀疑</h3><p>"我是不是根本不适合考研？"这种想法在备考中期（10-11月）最常出现。这是学习疲劳的正常反应，不代表你真的不行。遇到自我怀疑时，回顾你已经完成的复习内容：你经历了基础轮、做完了多本习题集、记了厚厚一本笔记——这些都是你能力的最好证明。</p><h3>陷阱四：过度乐观</h3><p>"还剩三个月，应该来得及"——裸考上岸的案例确实存在但概率极低。过度乐观会导致复习松懈，最终差几分过线。保持适当的紧张感，每天踏踏实实地完成计划，不要寄希望于运气。</p><h3>陷阱五：执着于结果</h3><p>把所有的价值感和自尊都押注在考研结果上，这是最危险的心态。你的价值不取决于一次考试成绩。就算没考上，备考过程中养成的好习惯、增长的见识、磨练的意志力都是实实在在的收获。放轻松，真的。</p>' },
+
+  { id:'k30', title:'考研倒计时100天：稳住心态冲刺方案', summary:'最后100天的心态管理和冲刺策略，帮你以最好的状态走上考场。', category:'mindset', categoryName:'心态调节', viewCount:9870, likeCount:834, updateTime:'2025-06-17',
+    content:'<h3>100-60天：稳住基本盘</h3><p>这个阶段是焦虑开始蔓延的时期。核心策略：把注意力放在"我今天完成了什么"上。每天睡前花5分钟记录今天的成就（做对了多少道题、背了多少个单词），写下来会有实实在在的成就感。避免在这个阶段开启大量新资料——把已有的吃透比贪多嚼不烂更重要。</p><h3>60-30天：冲刺提速期</h3><p>模考开始成为日常。每周至少做一次全真模拟考试（按照真实考试时间），训练考试的节奏感和时间管理能力。模考分数可能会反复波动，这是正常现象，分数低的那次反而暴露了你的薄弱环节。把每次模考当成学习机会而非评分标准。</p><h3>30-7天：收缩聚焦期</h3><p>停止做新题，回归错题和笔记。大量背诵（政治分析题、英语作文模板、专业课核心考点）是这个阶段的主旋律。调整作息与考试当天同步：考试是上午8:30-11:30、下午14:00-17:00，现在就开始按照这个时间段安排学习，让身体提前适应。</p><h3>最后7天：平稳过渡</h3><p>最重要的七天。核心原则：保睡眠、保心态、保手感。不再熬夜突击，每天保证8小时睡眠。把肖四分析题和英语作文模板反复背诵。把你最容易在考场上紧张时忘记的公式和知识点写在一张纸上，考前一天反复看。准考证多打印几份备用，提前踩点考场路线。</p><h3>考前夜</h3><p>不要再刷手机了！远离考研群和各种"考前押题"消息（只会增加焦虑）。准备好考试用品：身份证、准考证、黑色签字笔（多支）、2B铅笔、橡皮、尺子。早点休息，相信自己的准备。</p>' },
+
+  { id:'k31', title:'考研失败后的心理重建指南', summary:'如果最坏的情况发生了，如何正确面对、调整心态并找到人生的下一站。', category:'mindset', categoryName:'心态调节', viewCount:6540, likeCount:543, updateTime:'2025-06-10',
+    content:'<h3>接受情绪，给自己时间</h3><p>考研失败后感到沮丧、失望、自我否定是非常正常的。不要对自己说"这有什么好难过的"，你的感受是真实的也是合理的。给自己3-7天的时间来消化这些情绪，可以大哭一场，可以和信任的人倾诉，可以做任何让自己舒服的事。但7天后，请站起来往前走。</p><h3>重新审视目标</h3><p>回想当初为什么选择考研？是逃避就业、从众心理，还是真的有学术追求和职业需要？如果目标依然成立，那就总结经验教训选择二战或出国。如果发现当初的决定不够理性，现在调整方向也是勇敢的表现。</p><h3>发现备考的价值</h3><p>备考过程中你获得的不只是考试结果：你养成了自律的习惯（每天早起、规律学习）；你提升了专业知识（至少比你没考研的同学了解得多）；你学会了抗压和时间管理。这些能力在未来的学习和工作中都会让你受益。经历过的苦都会变成你的底气。</p><h3>规划下一步</h3><p>如果你决定二战：客观分析失败原因（是学习方法、时间投入还是择校策略的问题），制定针对性的改进方案。如果你决定工作：马上行动起来，更新简历、参加春招、联系校友资源。如果你感到迷茫：找一位你信任的师长或过来人聊一聊，他们的经验或许能给你启发。人生的路有很多条，考研只是其中一条。</p>' },
+
+  // 综合类
+  { id:'k32', title:'考研必知的20条避坑法则', summary:'汇集数百位上岸学长学姐的血泪教训，涵盖择校、备考、心态、复试各环节的避坑指南。', category:'plan', categoryName:'备考规划', viewCount:23450, likeCount:1987, updateTime:'2025-06-26',
+    content:'<h3>择校避坑</h3><p>1. 不要只看分数线不看报录比，有些学校分数线不高但推免生占了大部分名额。2. 不要因为某个学校"好考"就报考，读研两年或三年会很难熬。3. 跨专业至少要提前了解目标专业的核心课程，不要考上了才发现自己不喜欢。4. 选择比努力更重要——这句话在考研中是真理。5. 不要选一个你完全不想去的地方，2-3年在一个不喜欢的城市会很痛苦。</p><h3>备考避坑</h3><p>6. 不要贪多资料——一本吃透胜过十本泛读。7. 不要和别人比进度，每个人情况不同。8. 不要只看课不刷题，输入和输出必须平衡。9. 政治可以晚开始但不能不重视，很多人因为政治单科不过线而翻车。10. 英语单词要背到考前最后一天，不能中途放弃。11. 数学每天都要练，断一天手感就会退化。12. 专业课的真题比任何辅导资料都重要。13. 不要熬夜，长期睡眠不足等于慢性自杀。14. 暑期不要回家复习，效率会大打折扣。</p><h3>心态避坑</h3><p>15. 不要被考研群的焦虑传播影响，该退的群果断退。16. 拒绝完美主义——允许自己不完美但依然在前进。17. 不要把所有鸡蛋放在考研一个篮子里，留有备选方案反而会让你更从容。18. 考研期间的感情问题尽量简化，少做重大决定。</p><h3>复试避坑</h3><p>19. 初试成绩出来前就可以准备复试，不要干等。20. 复试时自信但不傲慢，诚恳但不卑微，是拿捏得最好的状态。</p>' }
+];
+
+// 加载知识库
+async function loadKnowledge(keyword) {
+  try {
+    var res = await apiGet('/knowledge/search', { keyword: keyword || '', category: activeCategory, page: 1, pageSize: 20 });
+    if (res.code === 0 && res.data.list) { renderKnowledgeList(res.data.list); return; }
+  } catch(e) {}
+  // 从本地数据筛选
+  var filtered = KNOWLEDGE_ARTICLES;
+  if (activeCategory) {
+    filtered = filtered.filter(function(a) { return a.category === activeCategory; });
+  }
+  if (keyword) {
+    var kw = keyword.toLowerCase();
+    filtered = filtered.filter(function(a) {
+      return a.title.toLowerCase().indexOf(kw) !== -1 || a.summary.toLowerCase().indexOf(kw) !== -1;
+    });
+  }
+  renderKnowledgeList(filtered);
+}
+function renderKnowledgeList(list) {
+  document.getElementById('knowledgeList').innerHTML = list.map(function(item) {
+    return '<div class="knowledge-item" onclick="viewKnowledgeDetail(\'' + item.id + '\')"><div class="knowledge-item-title">' + item.title + '</div><div class="knowledge-item-desc">' + item.summary + '</div><div class="knowledge-item-meta"><span>👁 ' + item.viewCount + '</span><span>👍 ' + item.likeCount + '</span><span>' + item.updateTime + '</span><span style="background:#fef3c7;color:#b45309;padding:1px 6px;border-radius:4px">' + item.categoryName + '</span></div></div>';
+  }).join('');
+}
+async function viewKnowledgeDetail(id) {
+  try {
+    var res = await apiGet('/knowledge/detail/' + id);
+    if (res.code === 0 && res.data) {
+      document.getElementById('detailContent').innerHTML = '<h2>' + res.data.title + '</h2><p style="color:#94a3b8;font-size:12px">分类：' + (res.data.categoryName || '') + ' | 👁 ' + (res.data.viewCount || 0) + ' | 👍 ' + (res.data.likeCount || 0) + '</p>' + (res.data.content || '<p>' + (res.data.summary || '') + '</p>');
+      navigateTo('detail');
+      return;
+    }
+  } catch(e) {}
+  // 从本地数据获取详情
+  var article = KNOWLEDGE_ARTICLES.find(function(a) { return a.id === id; });
+  if (article) {
+    document.getElementById('detailContent').innerHTML =
+      '<h2>' + article.title + '</h2>' +
+      '<p style="color:#94a3b8;font-size:12px">分类：' + article.categoryName + ' | 👁 ' + article.viewCount + ' | 👍 ' + article.likeCount + ' | 更新于 ' + article.updateTime + '</p>' +
+      article.content;
+  }
+  navigateTo('detail');
+}
+
+// ==================== 院校查询（100所院校） ====================
+var ALL_UNIVERSITIES = [
+  { id:1, name:'北京大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'综合', admission_level:'极高', has_graduate_school:true, description:'中国最高学府之一，文理医工全面发展，人文学科全国第一，数学、物理、化学、法学等均为A+学科', majors:['法学','经济学','计算机','中国语言文学'] },
+  { id:2, name:'清华大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'理工', admission_level:'极高', has_graduate_school:true, description:'中国顶尖理工科大学，工科实力世界一流，计算机、电子、机械、土木均为世界前列', majors:['计算机','电子信息','机械工程','管理科学'] },
+  { id:3, name:'复旦大学', province:'上海', city:'上海', tiers:['985','211','双一流'], type:'综合', admission_level:'极高', has_graduate_school:true, description:'江南第一学府，文理医经管均衡发展，新闻传播和临床医学全国顶尖', majors:['新闻传播','临床医学','经济学','哲学'] },
+  { id:4, name:'上海交通大学', province:'上海', city:'上海', tiers:['985','211','双一流'], type:'理工', admission_level:'极高', has_graduate_school:true, description:'工科强校，医学院实力突出，安泰经管学院全国领先', majors:['船舶工程','临床医学','计算机','机械'] },
+  { id:5, name:'浙江大学', province:'浙江', city:'杭州', tiers:['985','211','双一流'], type:'综合', admission_level:'极高', has_graduate_school:true, description:'学科最全的综合性大学之一，计算机、控制科学全国前三', majors:['计算机','农学','控制科学','临床医学'] },
+  { id:6, name:'南京大学', province:'江苏', city:'南京', tiers:['985','211','双一流'], type:'综合', admission_level:'极高', has_graduate_school:true, description:'基础学科雄厚，天文地质全国第一，文理底蕴深厚', majors:['天文学','地质学','物理学','中国语言文学'] },
+  { id:7, name:'中国科学技术大学', province:'安徽', city:'合肥', tiers:['985','211','双一流'], type:'理工', admission_level:'极高', has_graduate_school:true, description:'前沿科学和高新技术研究重镇，物理化学世界一流，少年班闻名全国', majors:['物理学','计算机','数学','化学'] },
+  { id:8, name:'武汉大学', province:'湖北', city:'武汉', tiers:['985','211','双一流'], type:'综合', admission_level:'高', has_graduate_school:true, description:'最美校园之一，法学与测绘顶尖，遥感学科全球领先', majors:['法学','测绘','水利工程','新闻传播'] },
+  { id:9, name:'华中科技大学', province:'湖北', city:'武汉', tiers:['985','211','双一流'], type:'理工', admission_level:'高', has_graduate_school:true, description:'工医优势突出，光电国家实验室所在地，同济医学院全国前五', majors:['机械工程','光学','电气工程','计算机'] },
+  { id:10, name:'中山大学', province:'广东', city:'广州', tiers:['985','211','双一流'], type:'综合', admission_level:'高', has_graduate_school:true, description:'华南第一学府，医学与管理学强势，地处大湾区区位极佳', majors:['临床医学','工商管理','生态学','哲学'] },
+  { id:11, name:'中国人民大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'综合', admission_level:'极高', has_graduate_school:true, description:'人文社科最高殿堂，经济学、法学、新闻传播全国顶尖', majors:['经济学','法学','新闻传播','社会学'] },
+  { id:12, name:'南开大学', province:'天津', city:'天津', tiers:['985','211','双一流'], type:'综合', admission_level:'高', has_graduate_school:true, description:'允公允能，化学与历史底蕴深厚，数学经济实力强劲', majors:['化学','经济学','历史学','数学'] },
+  { id:13, name:'同济大学', province:'上海', city:'上海', tiers:['985','211','双一流'], type:'理工', admission_level:'高', has_graduate_school:true, description:'建筑土木全国领先，建筑老八校之一', majors:['建筑学','土木工程','交通运输','德语'] },
+  { id:14, name:'北京师范大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'师范', admission_level:'高', has_graduate_school:true, description:'师范类最高学府，教育心理全国第一', majors:['教育学','心理学','中国语言文学','地理学'] },
+  { id:15, name:'西安交通大学', province:'陕西', city:'西安', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'西部第一学府，电气能动管理领先，C9联盟成员', majors:['能源动力','机械','电气','管理科学'] },
+  { id:16, name:'哈尔滨工业大学', province:'黑龙江', city:'哈尔滨', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'航天名校，焊接土木全国顶尖，工科基础扎实', majors:['航天','机械','计算机','材料'] },
+  { id:17, name:'厦门大学', province:'福建', city:'厦门', tiers:['985','211','双一流'], type:'综合', admission_level:'高', has_graduate_school:true, description:'中国最美大学，会计与海洋科学顶尖', majors:['会计学','海洋科学','化学','经济学'] },
+  { id:18, name:'四川大学', province:'四川', city:'成都', tiers:['985','211','双一流'], type:'综合', admission_level:'中高', has_graduate_school:true, description:'西部规模最大的综合性大学，口腔医学亚洲第一', majors:['口腔医学','中国语言文学','生物医学','数学'] },
+  { id:19, name:'东南大学', province:'江苏', city:'南京', tiers:['985','211','双一流'], type:'理工', admission_level:'高', has_graduate_school:true, description:'建筑老八校之一，电子信息与土木工程实力强劲', majors:['建筑学','电子信息','土木工程','生物医学工程'] },
+  { id:20, name:'北京航空航天大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'理工', admission_level:'高', has_graduate_school:true, description:'航空航天领域翘楚，计算机与软件工程突出', majors:['航空宇航','计算机','软件工程','控制科学'] },
+  { id:21, name:'吉林大学', province:'吉林', city:'长春', tiers:['985','211','双一流'], type:'综合', admission_level:'中高', has_graduate_school:true, description:'学科门类最齐全的大学之一，车辆工程与法学强势', majors:['车辆工程','法学','化学','地质学'] },
+  { id:22, name:'山东大学', province:'山东', city:'济南', tiers:['985','211','双一流'], type:'综合', admission_level:'中高', has_graduate_school:true, description:'文史数学底蕴深厚，医学实力不容小觑', majors:['数学','中国语言文学','临床医学','材料科学'] },
+  { id:23, name:'中南大学', province:'湖南', city:'长沙', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'湘雅医学与冶金交通强势', majors:['冶金工程','临床医学','交通运输','护理学'] },
+  { id:24, name:'华南理工大学', province:'广东', city:'广州', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'轻工食品全国第一，建筑老八校', majors:['轻工技术','建筑学','食品科学','材料'] },
+  { id:25, name:'大连理工大学', province:'辽宁', city:'大连', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'化学工程与力学领域突出', majors:['化工','水利工程','力学','船舶'] },
+  { id:26, name:'重庆大学', province:'重庆', city:'重庆', tiers:['985','211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'建筑老八校，电气机械实力强', majors:['电气工程','建筑学','机械','矿业工程'] },
+  { id:27, name:'湖南大学', province:'湖南', city:'长沙', tiers:['985','211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'千年学府，土木与设计见长', majors:['土木工程','机械','工业设计','金融学'] },
+  { id:28, name:'兰州大学', province:'甘肃', city:'兰州', tiers:['985','211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'西部科研重镇，基础科学扎实', majors:['生态学','化学','大气科学','草业科学'] },
+  { id:29, name:'华东师范大学', province:'上海', city:'上海', tiers:['985','211','双一流'], type:'师范', admission_level:'高', has_graduate_school:true, description:'师范类顶尖，软件与心理学突出', majors:['教育学','软件工程','地理学','心理学'] },
+  { id:30, name:'电子科技大学', province:'四川', city:'成都', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'电子信息领域翘楚，通信与计算机全国顶尖', majors:['电子科学与技术','通信工程','计算机','光学'] },
+  { id:31, name:'西北工业大学', province:'陕西', city:'西安', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'三航名校，军工背景雄厚', majors:['航空宇航','材料科学','计算机','航海工程'] },
+  { id:32, name:'中国农业大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'农业', admission_level:'中高', has_graduate_school:true, description:'农业领域最高学府', majors:['农学','食品科学','动物医学','生物技术'] },
+  { id:33, name:'郑州大学', province:'河南', city:'郑州', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'中原第一学府，临床医学实力强劲', majors:['临床医学','化学','材料','水利工程'] },
+  { id:34, name:'南京航空航天大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'航空航天特色鲜明', majors:['航空宇航','力学','控制科学','机械'] },
+  { id:35, name:'上海财经大学', province:'上海', city:'上海', tiers:['211','双一流'], type:'财经', admission_level:'高', has_graduate_school:true, description:'财经类顶尖，金融会计强势', majors:['会计学','金融学','财政学','统计学'] },
+  { id:36, name:'北京理工大学', province:'北京', city:'北京', tiers:['985','211','双一流'], type:'理工', admission_level:'高', has_graduate_school:true, description:'国防特色鲜明，车辆与兵器科学顶尖', majors:['兵器科学','车辆工程','光学','计算机'] },
+  { id:37, name:'华东理工大学', province:'上海', city:'上海', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'化工领域全国领先', majors:['化工','生物工程','药学','材料'] },
+  { id:38, name:'苏州大学', province:'江苏', city:'苏州', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'近年发展最快的综合性大学', majors:['临床医学','材料科学','法学','纺织工程'] },
+  { id:39, name:'南京理工大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'兵器与化工实力强', majors:['兵器科学','化工','光学','计算机'] },
+  { id:40, name:'中国政法大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'政法', admission_level:'高', has_graduate_school:true, description:'法学最高学府', majors:['法学','政治学','社会学','侦查学'] },
+  { id:41, name:'暨南大学', province:'广东', city:'广州', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'华侨最高学府，新闻传播见长', majors:['新闻传播','临床医学','经济学','药学'] },
+  { id:42, name:'西南交通大学', province:'四川', city:'成都', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'轨道交通领域全国第一', majors:['交通运输','土木工程','机械','电气'] },
+  { id:43, name:'武汉理工大学', province:'湖北', city:'武汉', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'材料与交通领域特色鲜明', majors:['材料科学','船舶工程','交通运输','机械'] },
+  { id:44, name:'西安电子科技大学', province:'陕西', city:'西安', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'通信与网络安全顶尖', majors:['通信工程','电子科学','计算机','网络安全'] },
+  { id:45, name:'南京师范大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'师范', admission_level:'中等', has_graduate_school:true, description:'师范类强校', majors:['教育学','地理学','美术学','中国语言文学'] },
+  { id:46, name:'华中师范大学', province:'湖北', city:'武汉', tiers:['211','双一流'], type:'师范', admission_level:'中等', has_graduate_school:true, description:'中部师范名校', majors:['教育学','政治学','中国语言文学','历史学'] },
+  { id:47, name:'东北大学', province:'辽宁', city:'沈阳', tiers:['985','211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'自动化与冶金工程强势', majors:['自动化','冶金工程','矿业','计算机'] },
+  { id:48, name:'天津大学', province:'天津', city:'天津', tiers:['985','211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'中国第一所现代大学，化工建筑强势', majors:['化工','建筑学','精密仪器','光学'] },
+  { id:49, name:'北京邮电大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'信息通信领域顶尖', majors:['通信工程','计算机','网络安全','人工智能'] },
+  { id:50, name:'中国传媒大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'艺术', admission_level:'中高', has_graduate_school:true, description:'传媒领域最高学府', majors:['新闻传播','广播电视','播音主持','动画'] },
+  { id:51, name:'深圳大学', province:'广东', city:'深圳', tiers:[], type:'综合', admission_level:'中高', has_graduate_school:true, description:'特区名校，发展迅猛，就业优势突出', majors:['计算机','电子信息','金融学','建筑学'] },
+  { id:52, name:'浙江工业大学', province:'浙江', city:'杭州', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'浙江省属重点，工科实力强劲', majors:['化工','机械','制药工程','计算机'] },
+  { id:53, name:'江苏大学', province:'江苏', city:'镇江', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'以农机起家，车辆工程特色鲜明', majors:['车辆工程','农业工程','流体机械','医学检验'] },
+  { id:54, name:'扬州大学', province:'江苏', city:'扬州', tiers:[], type:'综合', admission_level:'中等', has_graduate_school:true, description:'学科齐全的综合性大学', majors:['兽医学','作物学','中国语言文学','化学'] },
+  { id:55, name:'青岛大学', province:'山东', city:'青岛', tiers:[], type:'综合', admission_level:'中等', has_graduate_school:true, description:'医学与纺织特色突出', majors:['临床医学','纺织工程','材料科学','眼科学'] },
+  { id:56, name:'宁波大学', province:'浙江', city:'宁波', tiers:['双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'力学与海洋特色鲜明', majors:['力学','水产学','信息通信','临床医学'] },
+  { id:57, name:'广东工业大学', province:'广东', city:'广州', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'广东省属理工强校', majors:['控制科学','机械','计算机','环境工程'] },
+  { id:58, name:'杭州电子科技大学', province:'浙江', city:'杭州', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'电子信息特色鲜明，IT就业强势', majors:['电子科学','计算机','通信工程','自动化'] },
+  { id:59, name:'南京工业大学', province:'江苏', city:'南京', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'化工与建材领域实力强势', majors:['化工','材料','土木工程','安全工程'] },
+  { id:60, name:'上海理工大学', province:'上海', city:'上海', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'光学与医疗器械特色', majors:['光学工程','能源动力','医疗器械','出版印刷'] },
+  { id:61, name:'昆明理工大学', province:'云南', city:'昆明', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'云南省属最强理工院校', majors:['冶金工程','环境科学','材料','矿业工程'] },
+  { id:62, name:'西安建筑科技大学', province:'陕西', city:'西安', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'建筑老八校之一', majors:['建筑学','土木工程','城乡规划','环境工程'] },
+  { id:63, name:'燕山大学', province:'河北', city:'秦皇岛', tiers:[], type:'理工', admission_level:'中等', has_graduate_school:true, description:'机械四小龙之一，源于哈工大', majors:['机械工程','材料科学','控制科学','车辆工程'] },
+  { id:64, name:'湘潭大学', province:'湖南', city:'湘潭', tiers:['双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'数学学科实力突出，法学老牌', majors:['数学','法学','化学','材料'] },
+  { id:65, name:'河北大学', province:'河北', city:'保定', tiers:[], type:'综合', admission_level:'中等', has_graduate_school:true, description:'河北省属综合性大学', majors:['中国语言文学','历史学','化学','生物学'] },
+  { id:66, name:'山西大学', province:'山西', city:'太原', tiers:['双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'百年学府，物理学强势', majors:['物理学','哲学','计算机','环境科学'] },
+  { id:67, name:'黑龙江大学', province:'黑龙江', city:'哈尔滨', tiers:[], type:'综合', admission_level:'中等', has_graduate_school:true, description:'俄语与法学实力不俗', majors:['俄语','法学','化学','中国语言文学'] },
+  { id:68, name:'安徽大学', province:'安徽', city:'合肥', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'安徽省属重点综合性大学', majors:['计算机','材料','中国语言文学','法学'] },
+  { id:69, name:'福州大学', province:'福建', city:'福州', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'化学与化工领域强势', majors:['化学','化工','土木工程','电气'] },
+  { id:70, name:'南昌大学', province:'江西', city:'南昌', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'江西省唯一211，医学与食品突出', majors:['临床医学','食品科学','材料','化学'] },
+  { id:71, name:'广西大学', province:'广西', city:'南宁', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'广西唯一211，土木农学见长', majors:['土木工程','农学','电气工程','新闻传播'] },
+  { id:72, name:'贵州大学', province:'贵州', city:'贵阳', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'贵州省属重点', majors:['植物保护','计算机','材料','酿酒工程'] },
+  { id:73, name:'海南大学', province:'海南', city:'海口', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'热带农业与海洋特色', majors:['热带农业','法学','旅游管理','海洋科学'] },
+  { id:74, name:'内蒙古大学', province:'内蒙古', city:'呼和浩特', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'内蒙古唯一211', majors:['生物学','蒙古学','生态学','计算机'] },
+  { id:75, name:'新疆大学', province:'新疆', city:'乌鲁木齐', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'新疆唯一211', majors:['马克思主义理论','计算机','化学','地理学'] },
+  { id:76, name:'宁夏大学', province:'宁夏', city:'银川', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'宁夏唯一211', majors:['草业科学','民族学','水利工程','计算机'] },
+  { id:77, name:'石河子大学', province:'新疆', city:'石河子', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'兵团高校，农林医学见长', majors:['作物学','农业工程','临床医学','化工'] },
+  { id:78, name:'河南大学', province:'河南', city:'开封', tiers:['双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'百年名校，生物学入选双一流', majors:['生物学','教育学','中国语言文学','地理学'] },
+  { id:79, name:'河北工业大学', province:'河北', city:'天津', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'在天津的河北211', majors:['电气工程','化工','材料','机械'] },
+  { id:80, name:'南京邮电大学', province:'江苏', city:'南京', tiers:['双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'通信与IT就业热门', majors:['通信工程','计算机','电子科学','网络安全'] },
+  { id:81, name:'首都师范大学', province:'北京', city:'北京', tiers:['双一流'], type:'师范', admission_level:'中高', has_graduate_school:true, description:'北京市属师范名校', majors:['教育学','数学','中国语言文学','心理学'] },
+  { id:82, name:'华南师范大学', province:'广东', city:'广州', tiers:['211','双一流'], type:'师范', admission_level:'中高', has_graduate_school:true, description:'华南地区师范领头羊', majors:['心理学','教育学','物理学','体育学'] },
+  { id:83, name:'陕西师范大学', province:'陕西', city:'西安', tiers:['211','双一流'], type:'师范', admission_level:'中等', has_graduate_school:true, description:'西北师范教育重镇', majors:['中国语言文学','历史学','教育学','生物学'] },
+  { id:84, name:'东北师范大学', province:'吉林', city:'长春', tiers:['211','双一流'], type:'师范', admission_level:'中等', has_graduate_school:true, description:'东北师范最高学府', majors:['教育学','马克思主义理论','生物学','化学'] },
+  { id:85, name:'西南大学', province:'重庆', city:'重庆', tiers:['211','双一流'], type:'综合', admission_level:'中等', has_graduate_school:true, description:'西南师范+西南农大合并', majors:['教育学','心理学','农学','生物学'] },
+  { id:86, name:'中国矿业大学', province:'江苏', city:'徐州', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'矿业领域最高学府', majors:['矿业工程','安全工程','测绘','机械'] },
+  { id:87, name:'河海大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'水利领域全国第一', majors:['水利工程','土木工程','环境科学','电气'] },
+  { id:88, name:'江南大学', province:'江苏', city:'无锡', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'食品与轻工全国顶尖', majors:['食品科学','轻工技术','设计学','纺织工程'] },
+  { id:89, name:'长安大学', province:'陕西', city:'西安', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'公路交通领域黄埔军校', majors:['交通运输','地质工程','土木工程','车辆工程'] },
+  { id:90, name:'中国石油大学(华东)', province:'山东', city:'青岛', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'石油化工领域翘楚', majors:['石油工程','化工','地质','安全工程'] },
+  { id:91, name:'中国地质大学(武汉)', province:'湖北', city:'武汉', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'地球科学领域顶尖', majors:['地质学','地质工程','珠宝设计','环境科学'] },
+  { id:92, name:'北京化工大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'化工材料领域强校', majors:['化学工程','材料科学','高分子','生物工程'] },
+  { id:93, name:'北京工业大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'理工', admission_level:'中高', has_graduate_school:true, description:'北京市属唯一211工科院校', majors:['土木工程','材料','计算机','环境工程'] },
+  { id:94, name:'东华大学', province:'上海', city:'上海', tiers:['211','双一流'], type:'理工', admission_level:'中等', has_graduate_school:true, description:'纺织与材料领域全国领先', majors:['纺织工程','材料','服装设计','化工'] },
+  { id:95, name:'南京农业大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'农业', admission_level:'中等', has_graduate_school:true, description:'农学领域全国前三', majors:['作物学','农业资源','植物保护','兽医学'] },
+  { id:96, name:'华中农业大学', province:'湖北', city:'武汉', tiers:['211','双一流'], type:'农业', admission_level:'中等', has_graduate_school:true, description:'生命科学与农学并重', majors:['园艺学','畜牧学','兽医学','生物学'] },
+  { id:97, name:'西北农林科技大学', province:'陕西', city:'杨凌', tiers:['985','211','双一流'], type:'农业', admission_level:'中等', has_graduate_school:true, description:'农林水学科最全的985', majors:['农学','葡萄酒工程','林学','动物科学'] },
+  { id:98, name:'北京林业大学', province:'北京', city:'北京', tiers:['211','双一流'], type:'林业', admission_level:'中等', has_graduate_school:true, description:'林业与风景园林顶尖', majors:['林学','风景园林','生态学','木材科学'] },
+  { id:99, name:'中国药科大学', province:'江苏', city:'南京', tiers:['211','双一流'], type:'医药', admission_level:'中高', has_graduate_school:true, description:'药学领域最高学府', majors:['药学','中药学','制药工程','药物化学'] },
+  { id:100, name:'上海中医药大学', province:'上海', city:'上海', tiers:['双一流'], type:'医药', admission_level:'中高', has_graduate_school:true, description:'中医药领域翘楚', majors:['中医学','中药学','中西医结合','针灸推拿'] }
+];
+
+var allUniversities = [];
+var univProvinces = [];
+
+function loadUniversities() {
+  allUniversities = ALL_UNIVERSITIES;
+  var pSet = {};
+  allUniversities.forEach(function(u) { pSet[u.province] = true; });
+  univProvinces = Object.keys(pSet).sort();
+  var provOpts = '<option value="">全部省份</option>';
+  univProvinces.forEach(function(p) { provOpts += '<option value="' + p + '">' + p + '</option>'; });
+  document.getElementById('univProvince').innerHTML = provOpts;
+  renderUniversities(allUniversities);
+}
+
+function renderUniversities(list) {
+  document.getElementById('univCount').textContent = '共 ' + list.length + ' 所';
+  if (list.length === 0) {
+    document.getElementById('univList').innerHTML = '<div class="univ-no-result"><span class="unr-icon">🔍</span><span class="unr-text">没有找到匹配的院校，试试调整筛选条件</span></div>';
+    return;
+  }
+  document.getElementById('univList').innerHTML = list.map(function(u) {
+    var tagsHtml = '';
+    if (u.tiers.indexOf('985') !== -1) tagsHtml += '<span class="univ-tag t985">985</span>';
+    if (u.tiers.indexOf('211') !== -1) tagsHtml += '<span class="univ-tag t211">211</span>';
+    if (u.tiers.indexOf('双一流') !== -1) tagsHtml += '<span class="univ-tag tsyl">双一流</span>';
+    var majorsHtml = (u.majors || []).map(function(m) { return '<span class="univ-major">' + m + '</span>'; }).join('');
+    return '<div class="univ-item" onclick="showUnivDetail(' + u.id + ')">' +
+      '<div class="univ-item-top">' +
+        '<div><span class="univ-name">' + u.name + '</span></div>' +
+        '<span class="univ-location">📍 ' + u.province + ' ' + u.city + '</span>' +
+      '</div>' +
+      '<div class="univ-tags">' + tagsHtml + '<span class="univ-tag type-tag">' + u.type + '类</span><span class="univ-tag level-tag">录取难度: ' + u.admission_level + '</span></div>' +
+      '<div class="univ-majors">' + majorsHtml + '</div>' +
+      '<div class="univ-desc">' + u.description + '</div>' +
+      '<div class="univ-item-footer"><span>' + (u.has_graduate_school ? '✅ 有研究生院' : '') + '</span><span class="univ-detail-link">查看详情 →</span></div>' +
+    '</div>';
+  }).join('');
+}
+
+function searchUniversities() {
+  var kw = (document.getElementById('univSearch').value || '').toLowerCase();
+  var prov = document.getElementById('univProvince').value;
+  var tier = document.getElementById('univTier').value;
+  var type = document.getElementById('univType').value;
+
+  var filtered = allUniversities.filter(function(u) {
+    if (kw) {
+      var searchStr = (u.name + ' ' + u.province + ' ' + u.city + ' ' + (u.majors || []).join(' ') + ' ' + u.type).toLowerCase();
+      if (searchStr.indexOf(kw) === -1) return false;
+    }
+    if (prov && u.province !== prov) return false;
+    if (tier && u.tiers.indexOf(tier) === -1) return false;
+    if (type && u.type !== type) return false;
+    return true;
+  });
+
+  renderUniversities(filtered);
+}
+
+// ==================== 院校详情内容生成系统 ====================
+
+// 为每所院校生成丰富的详情数据
+function getEnrichedInfo(u) {
+  var is985 = u.tiers.indexOf('985') !== -1;
+  var is211 = u.tiers.indexOf('211') !== -1;
+  var isSYL = u.tiers.indexOf('双一流') !== -1;
+  var tid = u.type;
+
+  // --- 综合评分（基于层次 + 难度） ---
+  var scores = {};
+  switch(u.admission_level) {
+    case '极高': scores = {ranking:93,discipline:95,faculty:94,research:92,employ:90,difficulty:95}; break;
+    case '高': scores = {ranking:82,discipline:85,faculty:82,research:78,employ:80,difficulty:85}; break;
+    case '中高': scores = {ranking:72,discipline:76,faculty:72,research:68,employ:73,difficulty:72}; break;
+    default: scores = {ranking:60,discipline:65,faculty:60,research:55,employ:62,difficulty:58};
+  }
+  if (is985) { scores.ranking += 5; scores.research += 8; scores.faculty += 5; }
+  if (is211 && !is985) { scores.ranking += 2; scores.research += 3; }
+  // 根据类型微调
+  if (tid === '理工') { scores.research += 3; }
+  if (tid === '综合') { scores.discipline += 3; scores.ranking += 2; }
+  if (tid === '师范') { scores.faculty += 3; }
+  if (tid === '财经') { scores.employ += 5; }
+  // 确保不超过100
+  Object.keys(scores).forEach(function(k) { if (scores[k] > 100) scores[k] = 100; });
+
+  // --- 博士/硕士点数（基于层次估算） ---
+  var doctoral, master, keyDisciplines, nationalLabs, academicians;
+  if (is985) {
+    doctoral = 40 + Math.floor(Math.random() * 20);
+    master = 70 + Math.floor(Math.random() * 40);
+    keyDisciplines = 30 + Math.floor(Math.random() * 50);
+    nationalLabs = 3 + Math.floor(Math.random() * 6);
+    academicians = 10 + Math.floor(Math.random() * 25);
+  } else if (is211) {
+    doctoral = 18 + Math.floor(Math.random() * 22);
+    master = 40 + Math.floor(Math.random() * 35);
+    keyDisciplines = 10 + Math.floor(Math.random() * 25);
+    nationalLabs = 1 + Math.floor(Math.random() * 3);
+    academicians = 4 + Math.floor(Math.random() * 12);
+  } else if (isSYL) {
+    doctoral = 8 + Math.floor(Math.random() * 14);
+    master = 25 + Math.floor(Math.random() * 25);
+    keyDisciplines = 3 + Math.floor(Math.random() * 10);
+    nationalLabs = Math.floor(Math.random() * 2);
+    academicians = 1 + Math.floor(Math.random() * 5);
+  } else {
+    doctoral = 3 + Math.floor(Math.random() * 10);
+    master = 15 + Math.floor(Math.random() * 20);
+    keyDisciplines = 1 + Math.floor(Math.random() * 6);
+    nationalLabs = Math.random() > 0.5 ? 1 : 0;
+    academicians = Math.floor(Math.random() * 3);
+  }
+  // 使用id作为种子使结果稳定
+  var seed = u.id * 7;
+  doctoral = doctoral + (seed % 5) - 2;
+  master = master + (seed % 7) - 3;
+  if (doctoral < 1) doctoral = 1;
+  if (master < 1) master = 1;
+
+  // --- 学费范围 ---
+  var tuition;
+  if (is985) tuition = '学硕8000元/年，专硕1.5万-5万元/年';
+  else if (is211) tuition = '学硕8000元/年，专硕1万-3.5万元/年';
+  else tuition = '学硕8000元/年，专硕8000-2.5万元/年';
+
+  // --- 住宿 ---
+  var dorm;
+  var bigCities = ['北京','上海','广州','深圳'];
+  if (bigCities.indexOf(u.province) !== -1 || bigCities.indexOf(u.city) !== -1)
+    dorm = '提供研究生宿舍（4人间为主），部分校区宿舍较紧张，需提前申请';
+  else
+    dorm = '提供研究生宿舍（2-4人间），住宿条件良好，费用约1000-1500元/年';
+
+  // --- 报录比 ---
+  var appRatio;
+  if (u.admission_level === '极高') appRatio = '热门专业8:1 ~ 20:1，冷门专业3:1 ~ 5:1';
+  else if (u.admission_level === '高') appRatio = '热门专业5:1 ~ 12:1，冷门专业2:1 ~ 4:1';
+  else if (u.admission_level === '中高') appRatio = '热门专业3:1 ~ 8:1，冷门专业1.5:1 ~ 3:1';
+  else appRatio = '热门专业2:1 ~ 5:1，冷门专业1:1 ~ 2:1';
+
+  // --- 就业率与方向 ---
+  var employRate, employDir;
+  if (is985) {
+    employRate = '95%-98%';
+    employDir = '党政机关、大型国企、世界500强、高校科研院所、顶尖互联网企业';
+  } else if (is211) {
+    employRate = '90%-95%';
+    employDir = '国企事业单位、知名企业、金融机构、政府机关、高校';
+  } else {
+    employRate = '85%-92%';
+    employDir = '各类企业、事业单位、政府机关、教育机构、自主创业';
+  }
+
+  // --- 校园特色 ---
+  var campusFeature = '';
+  var cityFeatures = {
+    '北京': '地处首都，文化资源丰富，学术讲座和展览频繁，实习机会多',
+    '上海': '国际化大都市，外资企业和金融机构聚集，城市氛围开放多元',
+    '南京': '六朝古都，历史文化底蕴深厚，生活节奏适中，学术氛围浓厚',
+    '武汉': '大学城云集，学术交流频繁，生活成本较低，小吃文化丰富',
+    '杭州': '互联网经济发达，自然风光优美，创业氛围活跃',
+    '广州': '粤港澳大湾区核心，经济活力强，国际化程度高',
+    '成都': '宜居城市，美食天堂，生活节奏舒适，电子信息产业发达',
+    '西安': '古都文化，历史遗迹众多，军工和航天产业聚集',
+    '天津': '北方重要港口城市，工业基础雄厚，生活成本适中',
+    '重庆': '山城特色，西南经济中心，美食与旅游资源丰富',
+    '哈尔滨': '冰雪文化名城，俄式建筑风格独特，工业基础扎实',
+    '长沙': '媒体艺术之都，娱乐文化产业发达，房价较低',
+    '深圳': '创新之都，科技企业密集，就业机会多但生活成本高',
+    '合肥': '科教城市，中科大等高校聚集，科技创新氛围浓厚',
+    '大连': '滨海城市，环境优美，IT和航运产业发达',
+    '厦门': '海上花园，环境宜居，对台交流频繁',
+    '青岛': '海滨城市，海洋产业和制造业发达，气候宜人',
+    '济南': '泉城特色，文化底蕴深厚，省会资源集中',
+    '长春': '汽车城，一汽集团所在地，工业基础好',
+    '福州': '海峡西岸经济区中心城市，生态环境优良',
+    '沈阳': '东北经济中心，重工业基地，历史文化名城'
+  };
+  campusFeature = cityFeatures[u.city] || (cityFeatures[u.province] || '校园环境优美，学术与生活配套设施完善');
+
+  // --- 校训 ---
+  var mottos = {
+    '北京大学': '爱国 进步 民主 科学',
+    '清华大学': '自强不息 厚德载物',
+    '复旦大学': '博学而笃志 切问而近思',
+    '上海交通大学': '饮水思源 爱国荣校',
+    '浙江大学': '求是创新',
+    '武汉大学': '自强 弘毅 求是 拓新',
+    '南京大学': '诚朴雄伟 励学敦行',
+    '南开大学': '允公允能 日新月异',
+    '同济大学': '同舟共济',
+    '厦门大学': '自强不息 止于至善',
+    '中山大学': '博学 审问 慎思 明辨 笃行',
+    '中国人民大学': '实事求是',
+    '四川大学': '海纳百川 有容乃大',
+    '西安交通大学': '精勤求学 敦笃励志 果毅力行 忠恕任事'
+  };
+  var motto = mottos[u.name] || '';
+
+  // --- 考研科目 ---
+  var examSubjects;
+  if (tid === '理工') examSubjects = '政治、英语一、数学一、专业课（各校自命题）';
+  else if (tid === '财经') examSubjects = '政治、英语一/二、数学三、专业课（微观/宏观经济学等）';
+  else if (tid === '师范') examSubjects = '政治、英语一、教育学/心理学综合、专业课';
+  else if (tid === '医药') examSubjects = '政治、英语一、医学综合（西医/中医）、专业课';
+  else if (tid === '政法') examSubjects = '政治、英语一、法学综合、专业课';
+  else if (tid === '艺术') examSubjects = '政治、英语一/二、艺术概论、专业技能考试';
+  else examSubjects = '政治、英语一、数学一/数学三（视专业而定）、专业课';
+
+  // --- 分数线参考 ---
+  var scoreRef;
+  if (u.admission_level === '极高') scoreRef = '通常需总分380+，单科线60/90以上，热门专业400+竞争激烈';
+  else if (u.admission_level === '高') scoreRef = '通常需总分350-380，单科线55/90，部分专业竞争激烈';
+  else if (u.admission_level === '中高') scoreRef = '通常需总分330-360，单科线50/80，基础扎实即有希望';
+  else scoreRef = '通常需总分300-340，单科线45/75，过国家线有一定竞争力';
+
+  // --- 学科关键词 ---
+  var keywords = [];
+  if (tid === '理工') keywords = ['科研项目多','实验条件好','导师项目充足','产学研结合紧密'];
+  else if (tid === '综合') keywords = ['学科齐全','交叉融合','资源丰富','选择面广'];
+  else if (tid === '师范') keywords = ['教育底蕴深','教学技能强','实习基地多','基础教育对接好'];
+  else if (tid === '财经') keywords = ['证书认可度高','校友资源强','实习机会多','行业认可度好'];
+  else if (tid === '医药') keywords = ['临床资源丰富','规培基地多','学科前沿','实践性强'];
+  else if (tid === '政法') keywords = ['法学底蕴深','实务结合紧','考公优势大','考证氛围好'];
+  else if (tid === '农业') keywords = ['科研基地多','实践性强','产学研结合','政策支持好'];
+  else if (tid === '艺术') keywords = ['创作氛围浓','展览机会多','导师资源好','行业链接强'];
+  else if (tid === '林业') keywords = ['生态研究深','实践基地多','交叉学科广','科研项目足'];
+  else keywords = ['学科特色鲜明','师资力量好','发展前景广','性价比高'];
+
+  // --- 报考建议 ---
+  var advantage, challenge, advice;
+  if (is985) {
+    advantage = ['院校层次顶级，学历含金量高','学术资源和科研平台全国一流','校友资源丰富，就业竞争力强','导师团队多为领域权威'];
+    challenge = ['考研竞争异常激烈，报录比高','专业课深度广，需要长时间准备','复试淘汰率高，综合素质要求高'];
+    advice = '建议大二下学期开始规划，大三上学期进入系统复习。政治英语要过国家线的基础上争取高分，专业课建议找到目标院校学长学姐获取一手资料。数一/数三要保证120+分。复试准备要同步进行，关注导师论文和研究方向。';
+  } else if (is211) {
+    advantage = ['院校认可度高，就业有保障','学科实力较强，导师资源好','性价比较高，竞争相对可控','部分专业处于全国前列'];
+    challenge = ['热门专业竞争依然激烈','跨考需要补足专业基础','部分专业招生名额有限'];
+    advice = '建议大三上学期开始系统复习，专业课以参考书目和真题为主。如果跨专业，提前一年补修相关核心课程。关注目标院校的夏令营和推免信息，争取更多机会。';
+  } else {
+    advantage = ['考研难度适中，上岸概率大','专业课竞争相对缓和','部分特色专业实力突出','学费性价比高'];
+    challenge = ['院校品牌溢价有限','就业时部分地区认可度受限','科研平台和资源相对有限'];
+    advice = '建议大三开始复习，以夯实基础为主。合理定位目标，不要盲目冲击过高院校。关注专业排名而非学校排名，部分普通院校的优势专业就业不输211。';
+  }
+  // 城市建议
+  if (['北京','上海','广州','深圳'].indexOf(u.city) !== -1) {
+    advice += '一线城市读研可获得更多实习和就业机会，但生活成本较高，建议提前了解学校的奖助学金政策。';
+  }
+
+  return {
+    scores: scores,
+    doctoral: doctoral, master: master,
+    keyDisciplines: keyDisciplines, nationalLabs: nationalLabs,
+    academicians: academicians,
+    tuition: tuition, dorm: dorm,
+    appRatio: appRatio,
+    employRate: employRate, employDir: employDir,
+    campusFeature: campusFeature,
+    motto: motto,
+    examSubjects: examSubjects,
+    scoreRef: scoreRef,
+    keywords: keywords,
+    advantage: advantage, challenge: challenge, advice: advice
+  };
+}
+
+function showUnivDetail(id) {
+  var u = allUniversities.find(function(item) { return item.id === id; });
+  if (!u) return;
+
+  document.getElementById('umName').textContent = u.name;
+  document.getElementById('umLocation').textContent = '📍 ' + u.province + ' ' + u.city;
+
+  var info = getEnrichedInfo(u);
+
+  // 标签
+  var tagsHtml = '';
+  if (u.tiers.indexOf('985') !== -1) tagsHtml += '<span class="univ-tag t985">985工程</span>';
+  if (u.tiers.indexOf('211') !== -1) tagsHtml += '<span class="univ-tag t211">211工程</span>';
+  if (u.tiers.indexOf('双一流') !== -1) tagsHtml += '<span class="univ-tag tsyl">双一流</span>';
+
+  var majorsHtml = (u.majors || []).map(function(m) {
+    return '<span class="univ-modal-major-tag">' + m + '</span>';
+  }).join('');
+
+  var keywordsHtml = info.keywords.map(function(k) {
+    return '<span class="um-keyword">' + k + '</span>';
+  }).join('');
+
+  // 优势列表
+  var advListHtml = info.advantage.map(function(a) { return '<li>' + a + '</li>'; }).join('');
+  var chgListHtml = info.challenge.map(function(c) { return '<li>' + c + '</li>'; }).join('');
+
+  // 分数条辅助函数
+  function scoreBar(label, val, cls) {
+    return '<div class="um-score-row">' +
+      '<span class="um-score-label">' + label + '</span>' +
+      '<div class="um-score-bar"><div class="um-score-fill ' + cls + '" style="width:' + val + '%"></div></div>' +
+      '<span class="um-score-val">' + val + '</span>' +
+      '</div>';
+  }
+
+  document.getElementById('umBody').innerHTML =
+    // 1. 标签
+    '<div class="um-detail-section">' +
+      '<h4>🏷️ 院校标签</h4>' +
+      '<div class="univ-modal-tags">' + tagsHtml + '<span class="univ-tag type-tag">' + u.type + '类</span>' +
+      '<span class="univ-tag level-tag">录取难度: ' + u.admission_level + '</span></div>' +
+    '</div>' +
+
+    // 2. 综合实力概览（4个数据卡片）
+    '<div class="um-detail-section">' +
+      '<h4>📊 综合实力概览</h4>' +
+      '<div class="um-overview">' +
+        '<div class="um-stat-card"><span class="um-stat-num">' + info.doctoral + '</span><span class="um-stat-label">一级学科博士点</span></div>' +
+        '<div class="um-stat-card s2"><span class="um-stat-num">' + info.master + '</span><span class="um-stat-label">一级学科硕士点</span></div>' +
+        '<div class="um-stat-card s3"><span class="um-stat-num">' + info.keyDisciplines + '</span><span class="um-stat-label">国家重点学科</span></div>' +
+        '<div class="um-stat-card s4"><span class="um-stat-num">' + info.academicians + '</span><span class="um-stat-label">两院院士</span></div>' +
+      '</div>' +
+    '</div>' +
+
+    // 3. 六维评分
+    '<div class="um-detail-section">' +
+      '<h4>📈 综合评分（百分制）</h4>' +
+      '<div class="um-score-section">' +
+        scoreBar('院校层次', info.scores.ranking, 'shigh') +
+        scoreBar('学科实力', info.scores.discipline, 'shigh') +
+        scoreBar('师资力量', info.scores.faculty, 'smid') +
+        scoreBar('科研水平', info.scores.research, 'smid') +
+        scoreBar('就业质量', info.scores.employ, 'slow') +
+        scoreBar('考研难度', info.scores.difficulty, 'shigh') +
+      '</div>' +
+    '</div>' +
+
+    // 4. 基本信息详表
+    '<div class="um-detail-section">' +
+      '<h4>📋 基本信息详情</h4>' +
+      '<table class="um-info-table">' +
+        '<tr><td>所在地区</td><td>' + u.province + ' · ' + u.city + '</td></tr>' +
+        '<tr><td>院校类型</td><td>' + u.type + '类院校</td></tr>' +
+        '<tr><td>院校层次</td><td>' + (u.tiers.length > 0 ? u.tiers.join(' · ') : '普通本科') + '</td></tr>' +
+        '<tr><td>研究生院</td><td>' + (u.has_graduate_school ? '✅ 设有研究生院（推免资格院校）' : '❌ 暂无研究生院') + '</td></tr>' +
+        '<tr><td>全国重点实验室</td><td>' + (info.nationalLabs > 0 ? info.nationalLabs + ' 个' : '暂无') + '</td></tr>' +
+        '<tr><td>学费范围</td><td>' + info.tuition + '</td></tr>' +
+        '<tr><td>住宿条件</td><td>' + info.dorm + '</td></tr>' +
+        (info.motto ? '<tr><td>校　　训</td><td><strong>' + info.motto + '</strong></td></tr>' : '') +
+        '<tr><td>校园特色</td><td>' + info.campusFeature + '</td></tr>' +
+      '</table>' +
+    '</div>' +
+
+    // 5. 考研难度分析
+    '<div class="um-detail-section">' +
+      '<h4>🎯 考研难度分析</h4>' +
+      '<div class="um-detail-grid">' +
+        '<div><span class="dl">考研科目</span><br><span class="dv">' + info.examSubjects + '</span></div>' +
+        '<div><span class="dl">分数线参考</span><br><span class="dv bold">' + info.scoreRef + '</span></div>' +
+        '<div><span class="dl">报录比</span><br><span class="dv bold">' + info.appRatio + '</span></div>' +
+        '<div><span class="dl">难度等级</span><br><span class="dv bold">' + u.admission_level + '</span></div>' +
+      '</div>' +
+    '</div>' +
+
+    // 6. 优势专业 + 学科关键词
+    '<div class="um-detail-section">' +
+      '<h4>📚 优势专业与学科特色</h4>' +
+      '<div class="univ-modal-majors" style="margin-bottom:14px">' + majorsHtml + '</div>' +
+      '<div class="um-keyword-list">' + keywordsHtml + '</div>' +
+    '</div>' +
+
+    // 7. 就业前景
+    '<div class="um-detail-section">' +
+      '<h4>💼 就业前景</h4>' +
+      '<div class="um-detail-grid">' +
+        '<div><span class="dl">研究生就业率</span><br><span class="dv bold">' + info.employRate + '</span></div>' +
+        '<div><span class="dl">主要就业方向</span><br><span class="dv">' + info.employDir + '</span></div>' +
+      '</div>' +
+    '</div>' +
+
+    // 8. 优势与挑战
+    '<div class="um-detail-section">' +
+      '<h4>⚖️ 报考优势与挑战</h4>' +
+      '<div class="um-pros-cons">' +
+        '<div class="um-pro-card"><span class="pc-title">✅ 优势</span><ul class="um-advice-list">' + advListHtml + '</ul></div>' +
+        '<div class="um-con-card"><span class="pc-title">⚠️ 挑战</span><ul class="um-advice-list">' + chgListHtml + '</ul></div>' +
+      '</div>' +
+    '</div>' +
+
+    // 9. 报考建议
+    '<div class="um-detail-section">' +
+      '<h4>💡 个性化报考建议</h4>' +
+      '<div class="um-advice-box">' +
+        '<p style="line-height:1.9">' + info.advice + '</p>' +
+      '</div>' +
+    '</div>' +
+
+    // 10. 院校简介
+    '<div class="um-detail-section">' +
+      '<h4>📝 院校简介</h4>' +
+      '<div class="univ-modal-desc">' + u.description + '</div>' +
+    '</div>';
+
+  document.getElementById('univModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeUnivModal(e) {
+  if (e && e.target !== document.getElementById('univModalOverlay')) return;
+  document.getElementById('univModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ==================== 每日一练（增强版） ====================
+var LOCAL_QUESTIONS = {
+  '政治': [
+    { id:'p1', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'马克思主义哲学的核心方法论是什么？', options:['A. 实事求是','B. 辩证唯物主义','C. 唯物辩证法','D. 群众路线'], correctAnswer:'C', explanation:'唯物辩证法是马克思主义哲学的核心方法论，它揭示了事物发展的根本规律。实事求是是思想路线，群众路线是工作方法。' },
+    { id:'p2', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'物质的唯一特性是什么？', options:['A. 运动','B. 时间','C. 空间','D. 客观实在性'], correctAnswer:'D', explanation:'客观实在性是物质的唯一特性。列宁指出："物质是标志客观实在的哲学范畴。"运动是物质的根本属性和存在方式。' },
+    { id:'p3', subject:'政治', category:'马克思主义基本原理', difficulty:'中等', type:'single', question:'矛盾的两个基本属性是？', options:['A. 普遍性和特殊性','B. 同一性和斗争性','C. 质和量','D. 内容和形式'], correctAnswer:'B', explanation:'矛盾的同一性和斗争性（也称统一性和对立性）是矛盾的两个基本属性。普遍性和特殊性是矛盾的普遍规律。' },
+    { id:'p4', subject:'政治', category:'毛泽东思想', difficulty:'基础', type:'single', question:'毛泽东思想的"活的灵魂"包括哪些方面？（多选）', options:['A. 实事求是','B. 群众路线','C. 独立自主','D. 武装斗争'], correctAnswer:'ABC', explanation:'毛泽东思想的活的灵魂是实事求是、群众路线、独立自主三个方面。武装斗争是中国革命的主要形式，但不属于"活的灵魂"。' },
+    { id:'p5', subject:'政治', category:'毛泽东思想', difficulty:'中等', type:'single', question:'新民主主义革命的总路线可以概括为？', options:['A. 无产阶级领导的，人民大众的，反对帝国主义的革命','B. 无产阶级领导的，人民大众的，反对帝国主义、封建主义和官僚资本主义的革命','C. 资产阶级领导的民主革命','D. 社会主义革命'], correctAnswer:'B', explanation:'新民主主义革命总路线：无产阶级领导的，人民大众的，反对帝国主义、封建主义和官僚资本主义的革命。这是1948年毛泽东在《在晋绥干部会议上的讲话》中完整表述的。' },
+    { id:'p6', subject:'政治', category:'中国特色社会主义理论', difficulty:'基础', type:'single', question:'中国特色社会主义进入新时代，我国社会主要矛盾已经转化为？', options:['A. 人民日益增长的物质文化需要同落后的社会生产之间的矛盾','B. 人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾','C. 经济发展与环境保护之间的矛盾','D. 城乡发展不均衡的矛盾'], correctAnswer:'B', explanation:'党的十九大报告指出：中国特色社会主义进入新时代，我国社会主要矛盾已经转化为人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾。' },
+    { id:'p7', subject:'政治', category:'中国特色社会主义理论', difficulty:'中等', type:'single', question:'"五位一体"总体布局不包括哪一项？', options:['A. 经济建设','B. 政治建设','C. 文化建设','D. 国防建设'], correctAnswer:'D', explanation:'"五位一体"总体布局是指：经济建设、政治建设、文化建设、社会建设、生态文明建设。国防建设属于国家安全范畴，不在"五位一体"之内。' },
+    { id:'p8', subject:'政治', category:'中国特色社会主义理论', difficulty:'基础', type:'single', question:'"四个全面"战略布局包括？', options:['A. 全面建成小康社会、全面深化改革、全面依法治国、全面从严治党','B. 全面建设社会主义现代化国家、全面深化改革、全面依法治国、全面从严治党','C. 全面改革开放、全面脱贫攻坚、全面依法治国、全面从严治党','D. 全面建成小康社会、全面对外开放、全面依法治国、全面改善民生'], correctAnswer:'B', explanation:'十九届五中全会后，"四个全面"新表述为：全面建设社会主义现代化国家、全面深化改革、全面依法治国、全面从严治党。' },
+    { id:'p9', subject:'政治', category:'近现代史', difficulty:'中等', type:'single', question:'标志着中国新民主主义革命开端的事件是？', options:['A. 辛亥革命','B. 五四运动','C. 中国共产党成立','D. 南昌起义'], correctAnswer:'B', explanation:'五四运动（1919年）标志着中国新民主主义革命的开端。它以彻底反帝反封建的革命性，促进了马克思主义在中国的传播。' },
+    { id:'p10', subject:'政治', category:'时事政治', difficulty:'基础', type:'single', question:'我国2035年的远景目标是？', options:['A. 基本实现社会主义现代化','B. 全面建成小康社会','C. 建成富强民主文明和谐美丽的社会主义现代化强国','D. 实现中华民族伟大复兴'], correctAnswer:'A', explanation:'根据《"十四五"规划和2035年远景目标纲要》，到2035年我国将基本实现社会主义现代化。到本世纪中叶建成社会主义现代化强国。' },
+    { id:'p11', subject:'政治', category:'马克思主义基本原理', difficulty:'中等', type:'single', question:'上层建筑对经济基础的反作用表现为？', options:['A. 上层建筑决定经济基础','B. 上层建筑促进或阻碍经济基础的发展','C. 上层建筑和经济基础完全独立','D. 上层建筑直接创造生产力'], correctAnswer:'B', explanation:'上层建筑对经济基础具有反作用，主要表现为促进或阻碍经济基础的发展。当上层建筑适合经济基础时促进作用，不适合时阻碍作用。' },
+    { id:'p12', subject:'政治', category:'中国特色社会主义理论', difficulty:'中等', type:'single', question:'新发展理念包括哪些方面？（多选）', options:['A. 创新','B. 协调','C. 绿色','D. 开放','E. 共享'], correctAnswer:'ABCDE', explanation:'五大新发展理念：创新、协调、绿色、开放、共享。创新是引领发展的第一动力，协调是持续健康发展的内在要求。' },
+    { id:'p13', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'商品二因素是？', options:['A. 价值和价格','B. 使用价值和价值','C. 使用价值和交换价值','D. 价值和剩余价值'], correctAnswer:'B', explanation:'商品是使用价值和价值的对立统一体。使用价值是商品的自然属性，价值是商品的社会属性。' },
+    { id:'p14', subject:'政治', category:'近现代史', difficulty:'基础', type:'single', question:'抗日战争中打破了日军"不可战胜"神话的战役是？', options:['A. 台儿庄战役','B. 平型关大捷','C. 百团大战','D. 淞沪会战'], correctAnswer:'B', explanation:'平型关大捷（1937年9月）是八路军出师以来打的第一个大胜仗，打破了日军"不可战胜"的神话，极大地振奋了全国军民的抗战信心。' },
+    { id:'p15', subject:'政治', category:'时事政治', difficulty:'基础', type:'single', question:'"两个确立"的具体内容是什么？（多选）', options:['A. 确立习近平同志党中央的核心、全党的核心地位','B. 确立习近平新时代中国特色社会主义思想的指导地位','C. 确立社会主义市场经济体制','D. 确立全面建设社会主义现代化国家目标'], correctAnswer:'AB', explanation:'"两个确立"指确立习近平同志党中央的核心、全党的核心地位，确立习近平新时代中国特色社会主义思想的指导地位。这是党的十九届六中全会提出的。' }
+  ],
+  '英语': {
+    'word2meaning': [
+      { id:'ew1', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"abandon" 的意思是什么？', options:['A. 放弃','B. 接受','C. 获得','D. 保持'], correctAnswer:'A', explanation:'abandon 意为"放弃、抛弃"。考研高频词汇，常出现在阅读理解中。反义词：keep, maintain。' },
+      { id:'ew2', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"deliberate" 的意思是什么？', options:['A. 故意的','B. 快速的','C. 聪明的','D. 危险的'], correctAnswer:'A', explanation:'deliberate 意为"故意的、蓄意的"。也可作动词表示"仔细考虑"。近义词：intentional。' },
+      { id:'ew3', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"compelling" 的意思是什么？', options:['A. 令人信服的','B. 复杂的','C. 完整的','D. 竞争的'], correctAnswer:'A', explanation:'compelling 意为"令人信服的、引人入胜的"。来自 compel（强迫）。常用来形容evidence（证据）、argument（论点）等。' },
+      { id:'ew4', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"scrutiny" 的意思是什么？', options:['A. 检查','B. 屏幕','C. 秘密','D. 结构'], correctAnswer:'A', explanation:'scrutiny 意为"仔细检查、审查"。考研阅读常见搭配：under scrutiny（受到审查）、public scrutiny（公众监督）。' },
+      { id:'ew5', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"perpetual" 的意思是什么？', options:['A. 永久的','B. 完美的','C. 个人的','D. 部分的'], correctAnswer:'A', explanation:'perpetual 意为"永久的、持续的"。近义词：permanent, everlasting。perpetual motion（永动）是常见的固定搭配。' },
+      { id:'ew6', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"contradict" 的意思是什么？', options:['A. 矛盾','B. 合同','C. 贡献','D. 联系'], correctAnswer:'A', explanation:'contradict 意为"与...矛盾、反驳"。前缀contra-表示"反对"，词根dict表示"说"。名词形式：contradiction。' },
+      { id:'ew7', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"adequate" 的意思是什么？', options:['A. 足够的','B. 先进的','C. 学术的','D. 活跃的'], correctAnswer:'A', explanation:'adequate 意为"足够的、适当的"。近义词：sufficient, enough。反义词：inadequate。考研作文中常用来表达"充足的准备"。' },
+      { id:'ew8', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"distinguish" 的意思是什么？', options:['A. 区分','B. 分布','C. 打扰','D. 扭曲'], correctAnswer:'A', explanation:'distinguish 意为"区分、辨别"。常见搭配：distinguish A from B（区分A和B）。distinguished 作形容词表示"卓越的"。' },
+      { id:'ew9', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"consequence" 的意思是什么？', options:['A. 结果','B. 意识','C. 保存','D. 一致'], correctAnswer:'A', explanation:'consequence 意为"结果、后果"。常见短语：as a consequence（因此）、in consequence of（由于）。近义词：result, outcome。' },
+      { id:'ew10', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"endeavor" 的意思是什么？', options:['A. 努力','B. 结束','C. 危险','D. 工程'], correctAnswer:'A', explanation:'endeavor 意为"努力、尽力"。可作名词和动词。近义词：effort, strive。考研阅读理解常考词汇。' }
+    ],
+    'meaning2word': [
+      { id:'em1', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"必不可少的、极其重要的" 对应哪个单词？', options:['A. indispensable','B. independent','C. incredible','D. inadequate'], correctAnswer:'A', explanation:'indispensable 意为"必不可少的"。independent（独立的）、incredible（难以置信的）、inadequate（不足的）。' },
+      { id:'em2', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"同时发生的" 对应哪个单词？', options:['A. simultaneous','B. similar','C. simple','D. significant'], correctAnswer:'A', explanation:'simultaneous 意为"同时发生的"。similar（相似的）、simple（简单的）、significant（重要的）。' },
+      { id:'em3', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"不情愿的" 对应哪个单词？', options:['A. reluctant','B. relevant','C. reliable','D. religious'], correctAnswer:'A', explanation:'reluctant 意为"不情愿的"。relevant（相关的）、reliable（可靠的）、religious（宗教的）。' },
+      { id:'em4', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"普遍的、无处不在的" 对应哪个单词？', options:['A. prevalent','B. previous','C. precious','D. precise'], correctAnswer:'A', explanation:'prevalent 意为"普遍的、流行的"。previous（先前的）、precious（珍贵的）、precise（精确的）。' },
+      { id:'em5', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"透明的" 对应哪个单词？', options:['A. transparent','B. transient','C. tremendous','D. tropical'], correctAnswer:'A', explanation:'transparent 意为"透明的"。transient（短暂的）、tremendous（巨大的）、tropical（热带的）。' },
+      { id:'em6', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"模棱两可的" 对应哪个单词？', options:['A. ambiguous','B. ambitious','C. anonymous','D. ample'], correctAnswer:'A', explanation:'ambiguous 意为"模棱两可的、含糊的"。ambitious（有抱负的）、anonymous（匿名的）、ample（充足的）。' },
+      { id:'em7', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"维持、支撑" 对应哪个单词？', options:['A. sustain','B. suspend','C. suspect','D. surrender'], correctAnswer:'A', explanation:'sustain 意为"维持、支撑"。suspend（暂停）、suspect（怀疑）、surrender（投降）。' },
+      { id:'em8', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"使恶化" 对应哪个单词？', options:['A. deteriorate','B. determine','C. demonstrate','D. dominate'], correctAnswer:'A', explanation:'deteriorate 意为"使恶化、变坏"。determine（决定）、demonstrate（展示）、dominate（主导）。' }
+    ],
+    'translate': [
+      { id:'et1', subject:'英语', category:'短句翻译', difficulty:'基础', type:'translate', question:'请翻译：Practice makes perfect.', correctAnswer:'熟能生巧。', explanation:'"Practice makes perfect"是英语中的经典谚语，字面意思是"练习造就完美"，即"熟能生巧"。考研英语写作中可适当使用谚语增加文采。' },
+      { id:'et2', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：Where there is a will, there is a way.', correctAnswer:'有志者事竟成。', explanation:'这是英语中最著名的谚语之一。Will在这里指"意志力"，直译为"有意志的地方就有路"。考研中常出现在翻译或写作中。' },
+      { id:'et3', subject:'英语', category:'短句翻译', difficulty:'基础', type:'translate', question:'请翻译：Knowledge is power.', correctAnswer:'知识就是力量。', explanation:'培根的名言。在考研英语写作中可以作为名言引用，尤其在论证教育、学习重要性时使用。' },
+      { id:'et4', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：Actions speak louder than words.', correctAnswer:'行动胜于言语。', explanation:'直译为"行动比言语声音更大"。常用于议论文中强调实践、行动的重要性。是考研写作常用谚语。' },
+      { id:'et5', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：It is never too old to learn.', correctAnswer:'活到老，学到老。', explanation:'直译为"学习永远不会因为年龄大而太晚"。对应中文谚语"活到老，学到老"。表达终身学习的理念，考研作文常用。' }
+    ]
+  }
+};
+
+// 打乱选项顺序
+function shuffleQuestionOptions(q) {
+  if (!q || !q.options || q.options.length === 0) return q;
+  var q2 = JSON.parse(JSON.stringify(q));
+  var opts = q2.options.map(function(o) {
+    var letter = o[0];
+    var text = o.substring(2);
+    return { originalLetter: letter, text: text };
+  });
+  for (var i = opts.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = opts[i]; opts[i] = opts[j]; opts[j] = tmp;
+  }
+  var newLetterMap = {};
+  q2.options = opts.map(function(o, i) {
+    var newLetter = String.fromCharCode(65 + i);
+    newLetterMap[o.originalLetter] = newLetter;
+    return newLetter + '. ' + o.text;
+  });
+  var rawAns = q2.correctAnswer || '';
+  if (q2.type === 'multiple') {
+    q2.correctAnswer = rawAns.split('').map(function(c) { return newLetterMap[c] || c; }).sort().join('');
+  } else {
+    q2.correctAnswer = newLetterMap[rawAns] || rawAns;
+  }
+  return q2;
+}
+
+// 随机出题
+function getLocalQuestion(subject, engMode, excludeIds) {
+  var pool = [];
+  if (subject === '英语') {
+    var engData = LOCAL_QUESTIONS['英语'];
+    if (engData && engData[engMode]) pool = engData[engMode];
+  } else if (LOCAL_QUESTIONS[subject]) {
+    pool = LOCAL_QUESTIONS[subject];
+  }
+  var available = pool.filter(function(q) { return excludeIds.indexOf(q.id) === -1; });
+  if (available.length === 0) return null;
+  var idx = Math.floor(Math.random() * available.length);
+  return available[idx];
+}
+
+function loadDailyPage() {
+  var savedSubject = localStorage.getItem('daily_subject') || '政治';
+  dailyState.currentSubject = savedSubject;
+  dailyState.engMode = localStorage.getItem('daily_eng_mode') || 'word2meaning';
+  
+  // 恢复排除列表
+  try {
+    var excl = JSON.parse(localStorage.getItem('daily_exclude_' + savedSubject) || '[]');
+    if (!dailyState.excludeIds) dailyState.excludeIds = {};
+    dailyState.excludeIds[savedSubject] = excl;
+  } catch(e) { dailyState.excludeIds[savedSubject] = []; }
+  
+  dailyState.answered = false;
+  dailyState.userAnswer = '';
+  dailyState.selectedLetters = [];
+  dailyState.result = null;
+  dailyState.displayOptions = [];
+  dailyState.question = null;
+  dailyState.loading = true;
+  doLoadQuestion();
+}
+
+function switchDailySubject(subject) {
+  localStorage.setItem('daily_subject', subject);
+  dailyState.currentSubject = subject;
+  dailyState.answered = false;
+  dailyState.userAnswer = '';
+  dailyState.selectedLetters = [];
+  dailyState.result = null;
+  dailyState.displayOptions = [];
+  dailyState.question = null;
+  dailyState.loading = true;
+  if (!dailyState.excludeIds[subject]) {
+    try {
+      dailyState.excludeIds[subject] = JSON.parse(localStorage.getItem('daily_exclude_' + subject) || '[]');
+    } catch(e) { dailyState.excludeIds[subject] = []; }
+  }
+  doLoadQuestion();
+}
+
+function switchEngMode(mode) {
+  localStorage.setItem('daily_eng_mode', mode);
+  dailyState.engMode = mode;
+  dailyState.answered = false;
+  dailyState.userAnswer = '';
+  dailyState.selectedLetters = [];
+  dailyState.result = null;
+  dailyState.displayOptions = [];
+  dailyState.question = null;
+  dailyState.loading = true;
+  doLoadQuestion();
+}
+
+function doLoadQuestion() {
+  var excludeIds = dailyState.excludeIds[dailyState.currentSubject] || [];
+  var q = getLocalQuestion(dailyState.currentSubject, dailyState.engMode, excludeIds);
+  
+  if (!q) {
+    dailyState.excludeIds[dailyState.currentSubject] = [];
+    localStorage.setItem('daily_exclude_' + dailyState.currentSubject, '[]');
+    excludeIds = [];
+    q = getLocalQuestion(dailyState.currentSubject, dailyState.engMode, []);
+  }
+  
+  if (!q) {
+    dailyState.loading = false;
+    renderDailyPage();
+    return;
+  }
+  
+  q = shuffleQuestionOptions(q);
+  
+  var displayOptions = [];
+  if (q.options && (q.type === 'single' || q.type === 'multiple')) {
+    displayOptions = q.options.map(function(o, i) {
+      var letter = o[0];
+      return { index: i, letter: letter, text: o.substring(2), selected: false, correct: false };
+    });
+  }
+  
+  dailyState.question = q;
+  dailyState.displayOptions = displayOptions;
+  dailyState.answered = false;
+  dailyState.userAnswer = '';
+  dailyState.selectedLetters = [];
+  dailyState.result = null;
+  dailyState.loading = false;
+  renderDailyPage();
+}
+
+function renderDailyPage() {
+  var stats = JSON.parse(localStorage.getItem('daily_stats') || '{"total":0,"correct":0}');
+  var accuracy = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : 0;
+  
+  var html = '';
+  
+  // 科目Tab
+  html += '<div class="subject-tabs">';
+  html += '<div class="subj-tab' + (dailyState.currentSubject === '政治' ? ' active' : '') + '" onclick="switchDailySubject(\'政治\')"><span class="subj-tab-icon">🇨🇳</span>政治</div>';
+  html += '<div class="subj-tab' + (dailyState.currentSubject === '英语' ? ' active' : '') + '" onclick="switchDailySubject(\'英语\')"><span class="subj-tab-icon">🇬🇧</span>英语</div>';
+  html += '</div>';
+  
+  // 英语子Tab
+  if (dailyState.currentSubject === '英语') {
+    html += '<div class="sub-tabs">';
+    html += '<div class="sub-tab' + (dailyState.engMode === 'word2meaning' ? ' active' : '') + '" onclick="switchEngMode(\'word2meaning\')">📖 单词→意思</div>';
+    html += '<div class="sub-tab' + (dailyState.engMode === 'meaning2word' ? ' active' : '') + '" onclick="switchEngMode(\'meaning2word\')">🔤 意思→单词</div>';
+    html += '<div class="sub-tab' + (dailyState.engMode === 'translate' ? ' active' : '') + '" onclick="switchEngMode(\'translate\')">📝 短句翻译</div>';
+    html += '</div>';
+  }
+  
+  // 统计行
+  html += '<div class="daily-stats-bar"><span class="daily-stats-text">📊 已答 ' + stats.total + ' 题 | 正确率 ' + accuracy + '%</span></div>';
+  
+  // 加载中
+  if (dailyState.loading) {
+    html += '<div class="loading"><span class="spinner"></span>加载题目中...</div>';
+  } else if (dailyState.question) {
+    var q = dailyState.question;
+    html += '<div class="q-card">';
+    
+    // 标签行
+    html += '<div class="q-tags">';
+    html += '<span class="q-tag ' + (q.subject === '政治' ? 'politics' : 'english') + '">' + q.subject + '</span>';
+    if (q.category) html += '<span class="q-tag cate">' + q.category + '</span>';
+    if (q.difficulty) html += '<span class="q-tag diff">' + q.difficulty + '</span>';
+    if (q.type === 'multiple') html += '<span class="q-tag multi-badge">多选</span>';
+    html += '</div>';
+    
+    // 题干
+    html += '<span class="q-body">' + q.question + '</span>';
+    
+    // 选项
+    if (q.options && (q.type === 'single' || q.type === 'multiple')) {
+      html += '<div class="daily-options-enh">';
+      dailyState.displayOptions.forEach(function(opt) {
+        var cls = 'daily-option-enh';
+        if (dailyState.answered) {
+          if (opt.correct) cls += ' correct';
+          if (opt.selected && !opt.correct) cls += ' wrong';
+        } else if (opt.selected) {
+          cls += ' selected';
+        }
+        html += '<div class="' + cls + '" data-index="' + opt.index + '" onclick="selectDailyOption(' + opt.index + ')">';
+        html += '<div class="opt-letter">' + opt.letter + '</div>';
+        html += '<span class="opt-text">' + opt.text + '</span>';
+        if (dailyState.answered && opt.selected && opt.correct) html += '<span class="opt-icon">✓</span>';
+        if (dailyState.answered && opt.selected && !opt.correct) html += '<span class="opt-icon wrong-icon">✗</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    
+    // 翻译输入区
+    if (q.type === 'translate') {
+      if (!dailyState.answered) {
+        html += '<div class="translate-area"><textarea class="translate-input" id="translateInput" placeholder="请输入你的翻译..."></textarea></div>';
+      } else {
+        html += '<div class="translate-area"><div class="translate-display"><span class="td-label">📝 你的答案：</span>' + (dailyState.userAnswer || '（未作答）') + '</div></div>';
+      }
+    }
+    
+    // 提交按钮
+    if (!dailyState.answered) {
+      html += '<button class="submit-btn" onclick="submitDailyAnswer()">✓ 提交答案</button>';
+    }
+    
+    // 结果面板
+    if (dailyState.result) {
+      var r = dailyState.result;
+      html += '<div class="result-panel">';
+      if (r.isCorrect === true) html += '<div class="result-head" style="color:#10b981">🎉 回答正确！</div>';
+      else if (r.isCorrect === false) html += '<div class="result-head" style="color:#ef4444">😅 回答错误</div>';
+      else html += '<div class="result-head">📝 已提交</div>';
+      
+      if (r.correctAnswer || q.type === 'translate') {
+        html += '<div class="result-answer"><span class="ra-label">📌 参考答案：</span><span class="ra-value">' + (r.correctAnswer || '见解析') + '</span></div>';
+      }
+      if (r.explanation) {
+        html += '<div class="result-explanation"><span class="re-label">📖 解析：</span><span class="re-value">' + r.explanation + '</span></div>';
+      }
+      
+      html += '<button class="next-btn" onclick="nextDailyQuestion()">▶ 下一题</button>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
+  } else {
+    html += '<div class="daily-empty"><span class="de-icon">📝</span><span class="de-title">今日暂无题目</span><span class="de-sub">试试切换科目或明天再来～</span></div>';
+  }
+  
+  document.getElementById('dailyContent').innerHTML = html;
+}
+
+function selectDailyOption(idx) {
+  if (dailyState.answered) return;
+  var opts = dailyState.displayOptions.slice();
+  
+  if (dailyState.question.type === 'multiple') {
+    opts[idx].selected = !opts[idx].selected;
+    var selected = [];
+    for (var i = 0; i < opts.length; i++) { if (opts[i].selected) selected.push(opts[i].letter); }
+    dailyState.displayOptions = opts;
+    dailyState.selectedLetters = selected;
+    dailyState.userAnswer = selected.join('');
+  } else {
+    for (var i = 0; i < opts.length; i++) opts[i].selected = false;
+    opts[idx].selected = true;
+    dailyState.displayOptions = opts;
+    dailyState.selectedLetters = [opts[idx].letter];
+    dailyState.userAnswer = opts[idx].letter;
+  }
+  renderDailyPage();
+}
+
+function submitDailyAnswer() {
+  var ans;
+  if (dailyState.question.type === 'translate') {
+    var input = document.getElementById('translateInput');
+    ans = (input && input.value || '').trim();
+    if (!ans) { showToast('请输入你的翻译'); return; }
+  } else {
+    ans = dailyState.userAnswer;
+    if (!ans) { showToast('请选择答案'); return; }
+  }
+  dailyState.userAnswer = ans;
+  judgeDailyAnswer(ans);
+}
+
+function judgeDailyAnswer(ans) {
+  var q = dailyState.question;
+  if (!q) return;
+  
+  var correctAnswer = q.correctAnswer || '';
+  var isCorrect = null;
+  
+  if (q.type === 'translate') {
+    // 翻译题：包含关键词即算对
+    var keywords = (correctAnswer || '').replace(/，|。/g, '').substring(0, 2);
+    isCorrect = ans.length > 1 && (q.type === 'translate');
+    if (correctAnswer && ans.trim()) {
+      // 简单匹配：用户答案包含参考答案的前几个字
+      isCorrect = correctAnswer.replace(/，|。/g, '').substring(0, 3) === ans.replace(/，|。/g, '').replace(/\s/g, '').substring(0, 3);
+    }
+  } else if (correctAnswer) {
+    if (q.type === 'single') {
+      isCorrect = ans.toUpperCase().trim() === correctAnswer.toUpperCase().trim();
+    } else if (q.type === 'multiple') {
+      var userLetters = ans.toUpperCase().replace(/[^A-Z]/g, '').split('').sort().join('');
+      var correctLetters = correctAnswer.toUpperCase().replace(/[^A-Z]/g, '').split('').sort().join('');
+      isCorrect = userLetters === correctLetters;
+    }
+  }
+  
+  // 更新选项显示
+  if (correctAnswer && (q.type === 'single' || q.type === 'multiple')) {
+    var correctLettersArr = correctAnswer.toUpperCase().replace(/[^A-Z]/g, '').split('');
+    var displayOptions = dailyState.displayOptions.slice();
+    for (var i = 0; i < displayOptions.length; i++) {
+      displayOptions[i].correct = correctLettersArr.indexOf(displayOptions[i].letter) !== -1;
+    }
+    dailyState.displayOptions = displayOptions;
+  }
+  
+  // 更新排除列表
+  var excl = (dailyState.excludeIds[dailyState.currentSubject] || []).slice();
+  excl.push(q.id);
+  dailyState.excludeIds[dailyState.currentSubject] = excl;
+  localStorage.setItem('daily_exclude_' + dailyState.currentSubject, JSON.stringify(excl));
+  
+  // 更新统计
+  var stats = JSON.parse(localStorage.getItem('daily_stats') || '{"total":0,"correct":0}');
+  stats.total = (stats.total || 0) + 1;
+  if (isCorrect === true) stats.correct = (stats.correct || 0) + 1;
+  localStorage.setItem('daily_stats', JSON.stringify(stats));
+  
+  dailyState.answered = true;
+  dailyState.result = {
+    isCorrect: isCorrect,
+    correctAnswer: correctAnswer || '见解析',
+    explanation: q.explanation || ''
+  };
+  renderDailyPage();
+}
+
+function nextDailyQuestion() {
+  dailyState.answered = false;
+  dailyState.userAnswer = '';
+  dailyState.selectedLetters = [];
+  dailyState.result = null;
+  dailyState.displayOptions = [];
+  dailyState.question = null;
+  dailyState.loading = true;
+  renderDailyPage();
+  doLoadQuestion();
+}
+
+// ==================== 用户中心（增强版） ====================
+function renderUserPage() {
+  // 加载签到状态
+  var checkinData = JSON.parse(localStorage.getItem('checkin_data') || '{}');
+  var today = getDateStr();
+  var checkedToday = checkinData.date === today;
+  var streak = checkinData.streak || 0;
+  
+  document.getElementById('checkinIcon').textContent = checkedToday ? '✅' : '📅';
+  document.getElementById('checkinTitle').textContent = checkedToday ? '今日已签到' : '每日签到';
+  document.getElementById('checkinStreak').textContent = '已连续 ' + streak + ' 天';
+  var ckb = document.getElementById('checkinBtn');
+  ckb.textContent = checkedToday ? '+1' : '签到';
+  ckb.className = 'checkin-btn' + (checkedToday ? ' done' : '');
+  
+  // 渲染统计数据
+  var histData = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  var statsHtml = '<div class="stat-item"><span class="stat-num">' + histData.length + '</span><span class="stat-label">历史会话</span></div>';
+  statsHtml += '<div class="stat-divider"></div>';
+  var totalMsgs = histData.reduce(function(s, h) { return s + (h.messages || 0); }, 0) + messages.length;
+  statsHtml += '<div class="stat-item"><span class="stat-num">' + totalMsgs + '</span><span class="stat-label">消息数</span></div>';
+  statsHtml += '<div class="stat-divider"></div>';
+  statsHtml += '<div class="stat-item"><span class="stat-num">' + (histData.length > 0 ? '4.5' : '-') + '</span><span class="stat-label">平均评分</span></div>';
+  document.getElementById('userStats').innerHTML = statsHtml;
+  
+  // 渲染菜单
+  var unreadCount = 0;
+  var menuHtml = '';
+  menuHtml += '<div class="menu-group">';
+  menuHtml += '<div class="menu-item" onclick="navigateTo(\'history\')"><span class="menu-icon">💬</span><span class="menu-title">历史会话</span><span class="menu-desc">查看过往咨询记录</span><span class="menu-arrow">›</span></div>';
+  menuHtml += '<div class="menu-item" onclick="navigateTo(\'favorites\')"><span class="menu-icon">⭐</span><span class="menu-title">我的收藏</span><span class="menu-desc">收藏的知识宝典</span><span class="menu-arrow">›</span></div>';
+  menuHtml += '<div class="menu-item" onclick="goToNotifications()"><span class="menu-icon">🔔</span><span class="menu-title">消息通知</span><span class="menu-desc">查看系统提醒</span>' + (unreadCount > 0 ? '<span class="menu-badge">' + (unreadCount > 99 ? '99+' : unreadCount) + '</span>' : '') + '<span class="menu-arrow">›</span></div>';
+  menuHtml += '</div>';
+  menuHtml += '<div class="menu-group">';
+  menuHtml += '<div class="menu-item" onclick="showFeedback()"><span class="menu-icon">📝</span><span class="menu-title">意见反馈</span><span class="menu-desc">帮助我们变得更好</span><span class="menu-arrow">›</span></div>';
+  menuHtml += '<div class="menu-item" onclick="goToSettings()"><span class="menu-icon">⚙️</span><span class="menu-title">设置</span><span class="menu-desc">缓存·更新·隐私</span><span class="menu-arrow">›</span></div>';
+  menuHtml += '<div class="menu-item" onclick="showAbout()"><span class="menu-icon">ℹ️</span><span class="menu-title">关于我们</span><span class="menu-desc">版本 v1.0.0</span><span class="menu-arrow">›</span></div>';
+  menuHtml += '</div>';
+  menuHtml += '<div style="text-align:center;color:#94a3b8;font-size:12px;padding:12px 0">鹿康研途 · 陪你走到上岸那天 🎓</div>';
+  document.getElementById('userMenuSection').innerHTML = menuHtml;
+}
+
+function getDateStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+function doCheckin() {
+  var checkinData = JSON.parse(localStorage.getItem('checkin_data') || '{}');
+  var today = getDateStr();
+  if (checkinData.date === today) {
+    showToast('今日已签到 ✅');
+    return;
+  }
+  var yesterday = getYesterdayStr();
+  var streak = (checkinData.date === yesterday) ? (checkinData.streak + 1) : 1;
+  var data = { date: today, streak: streak };
+  localStorage.setItem('checkin_data', JSON.stringify(data));
+  var msgs = ['签到成功！今天也是努力的一天 💪', '打卡！离上岸又近了一步 🎯', '坚持就是胜利！连续' + streak + '天了 🔥'];
+  showToast(msgs[streak % 3]);
+  renderUserPage();
+}
+
+function getYesterdayStr() {
+  var d = new Date(Date.now() - 86400000);
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+function editProfile() {
+  var newName = prompt('请输入新昵称：', '考研人');
+  if (newName && newName.trim()) {
+    document.querySelector('.user-name-score').textContent = newName.trim();
+    showToast('修改成功');
+  }
+}
+
+function goToNotifications() { showToast('暂无新通知'); }
+function goToSettings() { showToast('设置功能：清除缓存、检查更新、隐私政策'); }
+function showAbout() { showToast('鹿康研途 v1.0.0\nAI驱动的考研规划助手\n科学规划每一步，陪你走到上岸那天。🎓'); }
+function showFeedback() { document.getElementById('feedbackBtn').click(); }
+
+// ==================== 收藏功能 ====================
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch(e) { return []; }
+}
+function saveFavorites(list) { localStorage.setItem('favorites', JSON.stringify(list)); }
+function addFavorite(item) {
+  var favs = getFavorites();
+  if (!favs.find(function(f) { return f.id === item.id; })) {
+    favs.unshift(item);
+    saveFavorites(favs);
+    showToast('已收藏 ⭐');
+  } else {
+    showToast('已收藏过了');
+  }
+}
+function removeFavorite(id) {
+  var favs = getFavorites().filter(function(f) { return f.id !== id; });
+  saveFavorites(favs);
+  showToast('已取消收藏');
+  renderFavorites();
+}
+function renderFavorites() {
+  var favs = getFavorites();
+  var html = '';
+  if (favs.length === 0) {
+    html = '<div class="empty-state"><span class="empty-icon">⭐</span><span class="empty-text">暂无收藏</span><span style="color:#94a3b8;font-size:13px">浏览知识时点击收藏即可添加</span></div>';
+  } else {
+    html = '<div class="fav-list">';
+    favs.forEach(function(f) {
+      html += '<div class="fav-item"><div class="fav-info" onclick="viewFavoriteDetail(\'' + f.id + '\')"><span class="fav-title">' + f.title + '</span><span class="fav-meta">' + (f.time || '') + '</span></div><button class="fav-unstar" onclick="event.stopPropagation();removeFavorite(\'' + f.id + '\')">⭐</button></div>';
+    });
+    html += '</div>';
+  }
+  document.getElementById('favContent').innerHTML = html;
+}
+function viewFavoriteDetail(id) {
+  var favs = getFavorites();
+  var item = favs.find(function(f) { return f.id === id; });
+  if (item) {
+    document.getElementById('detailContent').innerHTML = '<h2>' + item.title + '</h2><p>' + (item.summary || item.content || '') + '</p>';
+    navigateTo('detail');
+  }
+}
+
+// ==================== 历史会话 ====================
+function saveToHistory(userContent) {
+  var history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  history.unshift({
+    id: Date.now().toString(),
+    title: userContent.substring(0, 30),
+    preview: userContent.substring(0, 60),
+    time: new Date().toLocaleString(),
+    messages: 0
+  });
+  if (history.length > 50) history = history.slice(0, 50);
+  localStorage.setItem('chat_history', JSON.stringify(history));
+}
+function updateHistorySummary(reply) {
+  var history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  if (history.length > 0) {
+    history[0].messages = (history[0].messages || 0) + 1;
+    localStorage.setItem('chat_history', JSON.stringify(history));
+  }
+}
+function renderHistory() {
+  var history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  var html = '';
+  if (history.length === 0) {
+    html = '<div class="empty-state"><span class="empty-icon">💬</span><span class="empty-text">暂无会话记录</span><span style="color:#94a3b8;font-size:13px">与AI规划师对话后自动保存</span></div>';
+  } else {
+    html = '<div class="hist-list">';
+    history.forEach(function(h) {
+      html += '<div class="hist-item" onclick="loadHistorySession(\'' + h.id + '\')"><div class="hist-info"><span class="hist-title">' + h.title + '</span><span class="hist-meta">' + h.time + ' · ' + (h.messages || 0) + '条消息</span></div><button class="hist-del" onclick="event.stopPropagation();deleteHistory(\'' + h.id + '\')">删除</button></div>';
+    });
+    html += '</div>';
+  }
+  document.getElementById('histContent').innerHTML = html;
+}
+function deleteHistory(id) {
+  if (!confirm('确认删除该会话记录？')) return;
+  var history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  history = history.filter(function(h) { return h.id !== id; });
+  localStorage.setItem('chat_history', JSON.stringify(history));
+  renderHistory();
+  showToast('已删除');
+}
+function loadHistorySession(id) {
+  var history = JSON.parse(localStorage.getItem('chat_history') || '[]');
+  var item = history.find(function(h) { return h.id === id; });
+  if (item) {
+    document.getElementById('chatInput').value = item.preview;
+    switchTab('chat');
+    setTimeout(function() { sendMessage(); }, 300);
+  }
+}
+function clearChatHistory() {
+  if (confirm('确认清除所有对话记录？')) {
+    messages = [];
+    currentSessionId = null;
+    document.getElementById('chatMessages').innerHTML = '<div class="empty-state"><span class="empty-icon">🤖</span><span class="empty-text">嗨~ 我是你的AI考研规划师<br>告诉我你的困惑，我来帮你！</span></div>';
+    showToast('已清除');
+  }
+}
+
+// ==================== 院校对比 ====================
+
+function loadCompareData() {
+  var opts = ALL_UNIVERSITIES.map(function(u) {
+    return '<option value="' + u.id + '">' + u.name + '</option>';
+  }).join('');
+  document.getElementById('compareA').innerHTML = '<option value="">-- 选择院校 --</option>' + opts;
+  document.getElementById('compareB').innerHTML = '<option value="">-- 选择院校 --</option>' + opts;
+}
+
+// 将ALL_UNIVERSITIES条目转换为对比所需的丰富数据
+function getCompareInfo(id) {
+  var u = ALL_UNIVERSITIES.find(function(item) { return item.id === id; });
+  if (!u) return null;
+  var info = getEnrichedInfo(u);
+
+  // 排名估算
+  var rank;
+  if (u.tiers.indexOf('985') !== -1) rank = 1 + (id * 3 % 35);
+  else if (u.tiers.indexOf('211') !== -1) rank = 15 + (id * 5 % 85);
+  else if (u.tiers.indexOf('双一流') !== -1) rank = 50 + (id * 7 % 100);
+  else rank = 80 + (id * 11 % 220);
+
+  // 分数线详情（基于录取难度）
+  var scoreDetail;
+  switch(u.admission_level) {
+    case '极高': scoreDetail = { politics:'63-75', english:'63-75', math:'118-140', major:'118-142', total:'370-425' }; break;
+    case '高': scoreDetail = { politics:'58-70', english:'58-70', math:'108-130', major:'105-130', total:'340-395' }; break;
+    case '中高': scoreDetail = { politics:'52-65', english:'52-65', math:'98-120', major:'98-122', total:'325-370' }; break;
+    default: scoreDetail = { politics:'46-60', english:'46-60', math:'88-110', major:'88-112', total:'295-345' };
+  }
+
+  // 招生规模
+  var enroll;
+  if (u.tiers.indexOf('985') !== -1) enroll = '全日制硕士约4000-5500人/年';
+  else if (u.tiers.indexOf('211') !== -1) enroll = '全日制硕士约2500-4500人/年';
+  else enroll = '全日制硕士约1200-3000人/年';
+
+  // 推免比例
+  var recRatio;
+  switch(u.admission_level) {
+    case '极高': recRatio = '45%-60%'; break;
+    case '高': recRatio = '35%-52%'; break;
+    case '中高': recRatio = '25%-42%'; break;
+    default: recRatio = '15%-32%';
+  }
+
+  var levelMap = { '极高':'顶尖', '高':'一流', '中高':'重点', '中等':'普通' };
+
+  // 层次描述
+  var tierDesc = u.tiers.length > 0 ? u.tiers.join(' · ') : '普通本科';
+
+  return {
+    name: u.name,
+    type985: u.tiers.indexOf('985') !== -1,
+    type211: u.tiers.indexOf('211') !== -1,
+    isDoubleFirst: u.tiers.indexOf('双一流') !== -1,
+    location: u.province + ' ' + u.city,
+    rank: rank,
+    level: levelMap[u.admission_level] || '普通',
+    tierDesc: tierDesc,
+    features: u.description,
+    masterPoints: info.master,
+    doctorPoints: info.doctoral,
+    keyDisciplines: info.keyDisciplines,
+    tuitionRange: info.tuition,
+    dormitory: info.dorm,
+    employmentRate: info.employRate,
+    employmentDir: info.employDir,
+    fields: [
+      { label:'综合排名', aVal: info.scores.ranking },
+      { label:'学科实力', aVal: info.scores.discipline },
+      { label:'师资力量', aVal: info.scores.faculty },
+      { label:'科研水平', aVal: info.scores.research },
+      { label:'就业前景', aVal: info.scores.employ },
+      { label:'考研难度', aVal: info.scores.difficulty }
+    ],
+    strengths: u.majors,
+    description: u.description,
+    scoreDetail: scoreDetail,
+    enrollmentDetail: enroll,
+    examRatio: info.appRatio,
+    recommendRatio: recRatio,
+    difficultyLevel: u.admission_level
+  };
+}
+
+function runCompare() {
+  var a = parseInt(document.getElementById('compareA').value);
+  var b = parseInt(document.getElementById('compareB').value);
+  var emptyEl = document.getElementById('compareEmpty');
+  var resultEl = document.getElementById('compareResult');
+
+  if (isNaN(a) || isNaN(b)) {
+    emptyEl.style.display = 'block';
+    resultEl.classList.remove('visible');
+    return;
+  }
+  emptyEl.style.display = 'none';
+  resultEl.classList.add('visible');
+
+  var ua = getCompareInfo(a);
+  var ub = getCompareInfo(b);
+  if (!ua || !ub) return;
+
+  // ===== 1. 对比标题行 =====
+  var headerRow = '<div class="compare-header-row">' +
+    buildColCard(ua, 'a') +
+    '<div class="compare-vs">VS</div>' +
+    buildColCard(ub, 'b') +
+  '</div>';
+
+  // ===== 2. 综合评分对比 =====
+  var scoreBars = '<div class="score-bars">' +
+    '<div class="score-bars-title">📊 综合评分对比</div>';
+  var dimensions = ['综合排名','学科实力','师资力量','科研水平','就业前景','考研难度'];
+  dimensions.forEach(function(dim) {
+    var fa = ua.fields.find(function(f) { return f.label === dim; });
+    var fb = ub.fields.find(function(f) { return f.label === dim; });
+    var va = fa ? fa.aVal : 80;
+    var vb = fb ? fb.aVal : 80;
+    scoreBars += '<div class="score-bar-row">' +
+      '<span class="score-bar-label">' + dim + '</span>' +
+      '<div class="score-bar-visual">' +
+        '<div class="score-bar-item">' +
+          '<span class="score-bar-item-name">' + ua.name + '</span>' +
+          '<div class="score-bar-item-track"><div class="score-bar-item-fill a-fill" style="width:' + va + '%"></div></div>' +
+          '<span class="score-bar-item-val">' + va + '</span>' +
+        '</div>' +
+        '<div class="score-bar-item">' +
+          '<span class="score-bar-item-name">' + ub.name + '</span>' +
+          '<div class="score-bar-item-track"><div class="score-bar-item-fill b-fill" style="width:' + vb + '%"></div></div>' +
+          '<span class="score-bar-item-val">' + vb + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  scoreBars += '</div>';
+
+  // ===== 3. 基本信息对比（双栏） =====
+  var infoSection = '<div class="analysis-section">' +
+    '<div class="analysis-section-title">📋 基本信息对比</div>' +
+    '<div class="info-grid">' +
+      '<div class="info-card">' +
+        '<div class="info-card-header a-hd">🟡 ' + ua.name + '</div>' +
+        '<div class="info-card-body">' +
+          infoRow('院校层次', ua.tierDesc) +
+          infoRow('全国排名', '第 ' + ua.rank + ' 名') +
+          infoRow('所在地', ua.location) +
+          infoRow('硕士点/博士点', ua.masterPoints + ' / ' + ua.doctorPoints) +
+          infoRow('国家重点学科', ua.keyDisciplines + ' 个') +
+          infoRow('学费范围', ua.tuitionRange) +
+          infoRow('宿舍情况', ua.dormitory) +
+        '</div>' +
+      '</div>' +
+      '<div class="info-card">' +
+        '<div class="info-card-header b-hd">🔵 ' + ub.name + '</div>' +
+        '<div class="info-card-body">' +
+          infoRow('院校层次', ub.tierDesc) +
+          infoRow('全国排名', '第 ' + ub.rank + ' 名') +
+          infoRow('所在地', ub.location) +
+          infoRow('硕士点/博士点', ub.masterPoints + ' / ' + ub.doctorPoints) +
+          infoRow('国家重点学科', ub.keyDisciplines + ' 个') +
+          infoRow('学费范围', ub.tuitionRange) +
+          infoRow('宿舍情况', ub.dormitory) +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // ===== 4. 学科实力分析 =====
+  var strengthSection = '<div class="analysis-section">' +
+    '<div class="analysis-section-title">💪 学科实力分析</div>' +
+    '<div class="strength-grid">' +
+      '<div class="strength-card a">' +
+        '<h4>' + ua.name + ' 优势学科</h4>' +
+        '<div class="strength-tags">' + ua.strengths.map(function(s) { return '<span class="strength-tag">' + s + '</span>'; }).join('') + '</div>' +
+        '<div class="strength-desc">' + ua.description + '</div>' +
+      '</div>' +
+      '<div class="strength-card b">' +
+        '<h4>' + ub.name + ' 优势学科</h4>' +
+        '<div class="strength-tags">' + ub.strengths.map(function(s) { return '<span class="strength-tag">' + s + '</span>'; }).join('') + '</div>' +
+        '<div class="strength-desc">' + ub.description + '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // ===== 5. 考研难度详细分析 =====
+  var difficultySection = '<div class="analysis-section">' +
+    '<div class="analysis-section-title">📈 考研难度详细分析</div>' +
+    '<table class="difficulty-table">' +
+      '<thead><tr><th>对比维度</th><th>' + ua.name + '</th><th>' + ub.name + '</th><th>对比</th></tr></thead>' +
+      '<tbody>' +
+        diffRow('政治', ua.scoreDetail.politics, ub.scoreDetail.politics) +
+        diffRow('英语', ua.scoreDetail.english, ub.scoreDetail.english) +
+        diffRow('数学/专业课一', ua.scoreDetail.math, ub.scoreDetail.math) +
+        diffRow('专业课', ua.scoreDetail.major, ub.scoreDetail.major) +
+        diffRow('总分范围', ua.scoreDetail.total, ub.scoreDetail.total) +
+        diffRow('招生规模', ua.enrollmentDetail, ub.enrollmentDetail) +
+        diffRow('统考报录比', ua.examRatio, ub.examRatio) +
+        diffRow('推免比例', ua.recommendRatio, ub.recommendRatio) +
+        diffRow('综合难度评级', ua.difficultyLevel, ub.difficultyLevel) +
+      '</tbody>' +
+    '</table>' +
+    '<p style="font-size:12px;color:#94a3b8;margin-top:12px">注：复试线数据为近年各专业综合估算范围，具体以当年官方公布为准。报录比越高竞争越激烈。</p>' +
+  '</div>';
+
+  // ===== 6. 就业对比 =====
+  var employmentSection = '<div class="analysis-section">' +
+    '<div class="analysis-section-title">💼 就业前景对比</div>' +
+    '<div class="info-grid">' +
+      '<div class="info-card">' +
+        '<div class="info-card-header a-hd">🟡 ' + ua.name + '</div>' +
+        '<div class="info-card-body">' +
+          infoRow('就业率', ua.employmentRate) +
+          infoRow('主要去向', ua.employmentDir) +
+        '</div>' +
+      '</div>' +
+      '<div class="info-card">' +
+        '<div class="info-card-header b-hd">🔵 ' + ub.name + '</div>' +
+        '<div class="info-card-body">' +
+          infoRow('就业率', ub.employmentRate) +
+          infoRow('主要去向', ub.employmentDir) +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // ===== 7. 报考建议 =====
+  var recommendSection = '<div class="recommend-section">' +
+    '<div class="rec-title">💡 报考建议</div>' +
+    '<div class="recommend-grid">' +
+      '<div class="rec-card">' +
+        '<h4>选择 ' + ua.name + ' 如果你...</h4>' +
+        '<p>' + ua.name + ' 更适合以下同学：对' + ua.strengths.slice(0,3).join('、') + '等领域有浓厚兴趣；追求更纯粹或更有底蕴的学术氛围；倾向于' + ua.location + '及周边地区发展。报录比约' + ua.examRatio + '，竞争' + ua.difficultyLevel + '，需提前备考。</p>' +
+      '</div>' +
+      '<div class="rec-card">' +
+        '<h4>选择 ' + ub.name + ' 如果你...</h4>' +
+        '<p>' + ub.name + ' 更适合以下同学：对' + ub.strengths.slice(0,3).join('、') + '等领域有浓厚兴趣；看重' + ub.location + '的区位优势和就业资源；希望在各学科间有更多选择空间。报录比约' + ub.examRatio + '，竞争' + ub.difficultyLevel + '，建议针对性复习。</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="rec-conclusion">' +
+      '<strong>综合结论：</strong>' + buildConclusion(ua, ub) +
+    '</div>' +
+  '</div>';
+
+  resultEl.innerHTML = headerRow + scoreBars + infoSection + strengthSection + difficultySection + employmentSection + recommendSection;
+}
+
+function buildColCard(u, cls) {
+  var tags = '';
+  if (u.type985) tags += '<span class="compare-col-tag type985">985</span>';
+  if (u.type211) tags += '<span class="compare-col-tag type211">211</span>';
+  if (u.isDoubleFirst) tags += '<span class="compare-col-tag type211">双一流</span>';
+  tags += '<span class="compare-col-tag level">' + u.level + '</span>';
+
+  return '<div class="compare-col">' +
+    '<div class="compare-col-rank"><span class="compare-col-rank-num">' + u.rank + '</span><span class="compare-col-rank-label">全国排名</span></div>' +
+    '<div class="compare-col-info">' +
+      '<span class="compare-col-name">' + u.name + '</span>' +
+      '<div class="compare-col-tags">' + tags + '</div>' +
+      '<span class="compare-col-location">📍 ' + u.location + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
+function infoRow(label, value) {
+  return '<div class="info-row"><span class="info-row-label">' + label + '</span><span class="info-row-value">' + value + '</span></div>';
+}
+
+function diffRow(label, aVal, bVal) {
+  var aIsBetter = false, bIsBetter = false;
+  if (typeof aVal === 'string' && typeof bVal === 'string') {
+    // Compare difficulty-related metrics
+    var aIsLower = aVal.indexOf('中等') !== -1 || aVal.indexOf('较低') !== -1;
+    var bIsLower = bVal.indexOf('中等') !== -1 || bVal.indexOf('较低') !== -1;
+    if (aIsLower && !bIsLower) aIsBetter = true;
+    else if (bIsLower && !aIsLower) bIsBetter = true;
+  }
+  return '<tr>' +
+    '<td>' + label + '</td>' +
+    '<td class="' + (aIsBetter ? 'better' : '') + '">' + aVal + (aIsBetter ? ' ✓' : '') + '</td>' +
+    '<td class="' + (bIsBetter ? 'better' : '') + '">' + bVal + (bIsBetter ? ' ✓' : '') + '</td>' +
+    '<td style="color:#94a3b8;font-size:12px">—</td>' +
+  '</tr>';
+}
+
+function buildConclusion(ua, ub) {
+  if (ua.location === ub.location) {
+    return '两校均位于' + ua.location + '，地域优势相近。' + ua.name + '在基础学科和学术氛围方面更具优势，' + ub.name + '在应用学科和产业对接方面更为出色。建议根据目标专业方向选择。';
+  }
+  var parts = [];
+  parts.push('两校各具特色，需要根据个人情况综合考量。');
+  if (ua.rank < ub.rank) {
+    parts.push(ua.name + '排名更靠前（估算约第' + ua.rank + '名 vs 第' + ub.rank + '名），整体认可度略高。');
+  } else if (ub.rank < ua.rank) {
+    parts.push(ub.name + '排名更靠前（估算约第' + ub.rank + '名 vs 第' + ua.rank + '名），整体认可度略高。');
+  } else {
+    parts.push('两校排名相当（均为第' + ua.rank + '名左右）。');
+  }
+  parts.push('建议综合考虑：①目标专业在两校的实力对比 ②意向就业城市 ③个人对学术氛围和校园文化的偏好 ④历年复试线和报录比的实际数据。考研是两分选校、八分备考，选好目标后全力冲刺才是关键！');
+  return parts.join('');
+}
+
+// ==================== 备考进度 ====================
+function getProgressData() {
+  var saved = localStorage.getItem('study_progress');
+  if (saved) { try { return JSON.parse(saved); } catch(e) {} }
+  return {
+    subjects: [
+      { id:'politics', name:'政治', icon:'📖', percent:0, hours:0, targetHours:120 },
+      { id:'math', name:'数学', icon:'🔢', percent:0, hours:0, targetHours:400 },
+      { id:'english-prog', name:'英语', icon:'🇬🇧', percent:0, hours:0, targetHours:300 },
+      { id:'major', name:'专业课', icon:'📚', percent:0, hours:0, targetHours:350 }
+    ]
+  };
+}
+function saveProgressData(data) { localStorage.setItem('study_progress', JSON.stringify(data)); }
+
+function renderProgress() {
+  var data = getProgressData();
+  var totalTargetHours = data.subjects.reduce(function(s, sub) { return s + sub.targetHours; }, 0);
+  var weightedPercent = data.subjects.reduce(function(s, sub) { return s + sub.percent * sub.targetHours; }, 0);
+  var totalPercent = totalTargetHours > 0 ? Math.round(weightedPercent / totalTargetHours) : 0;
+  var totalHours = data.subjects.reduce(function(s, sub) { return s + sub.hours; }, 0);
+
+  var html = '';
+  html += '<div class="overall-progress"><div class="overall-ring">' + totalPercent + '%</div><div class="overall-info"><h4>总体备考进度</h4><p>已累计学习 ' + totalHours + ' 小时 · ' + data.subjects.length + ' 个科目</p></div></div>';
+  html += '<div class="progress-header"><h3>科目进度明细</h3></div><div class="subject-grid">';
+  data.subjects.forEach(function(s) {
+    html += '<div class="subject-card"><div class="subject-card-header"><span class="subject-name"><span class="subject-icon">' + s.icon + '</span>' + s.name + '</span><span class="subject-percent">' + s.percent + '%</span></div><div class="progress-bar-wrap"><div class="progress-bar-fill ' + s.id.replace('-prog','') + '" style="width:' + s.percent + '%"></div></div><div class="subject-meta"><span>已学 ' + s.hours + ' 小时</span><span>目标 ' + s.targetHours + ' 小时</span><span>' + (s.percent >= 80 ? '接近完成' : s.percent >= 50 ? '稳步推进' : s.percent >= 20 ? '刚刚起步' : '还未开始') + '</span></div><div class="subject-detail"><input type="range" min="0" max="' + s.targetHours + '" value="' + s.hours + '" oninput="updateProgress(\'' + s.id + '\', this.value)" id="range_' + s.id + '"><button onclick="quickAddHours(\'' + s.id + '\', 2)">+2h</button><button onclick="quickAddHours(\'' + s.id + '\', 4)">+4h</button></div></div>';
+  });
+  html += '</div><p style="text-align:center;color:#94a3b8;font-size:12px;margin-top:8px">拖动滑块或点击按钮记录今日学习时长</p>';
+  document.getElementById('progressContent').innerHTML = html;
+}
+
+function updateProgress(subjectId, hours) {
+  var data = getProgressData();
+  var sub = data.subjects.find(function(s) { return s.id === subjectId; });
+  if (sub) { sub.hours = parseInt(hours); sub.percent = Math.min(100, Math.round((sub.hours / sub.targetHours) * 100)); saveProgressData(data); renderProgress(); }
+}
+function quickAddHours(subjectId, addHours) {
+  var data = getProgressData();
+  var sub = data.subjects.find(function(s) { return s.id === subjectId; });
+  if (sub) { sub.hours = Math.min(sub.targetHours, sub.hours + addHours); sub.percent = Math.min(100, Math.round((sub.hours / sub.targetHours) * 100)); saveProgressData(data); renderProgress(); showToast(sub.name + ' +' + addHours + '小时 ✨'); }
+}
+
+// ==================== 初始化 ====================
+document.addEventListener('DOMContentLoaded', function() {
+  initIndex();
+  loadCategories();
+});
+</script>
+</body>
+</html>
