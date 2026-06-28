@@ -64,7 +64,7 @@ app.post('/api/chat', async (req, res) => {
         model: 'deepseek-chat',
         messages: apiMessages,
         temperature: 0.7,
-        max_tokens: 1000
+        max_tokens: 600
       })
     });
 

@@ -1181,7 +1181,8 @@ async function sendToAI(content) {
   var idx = messages.findIndex(function(m) { return m.id === typingId; });
   if (idx >= 0) {
     messages[idx] = { id: typingId, role: 'assistant', content: reply, typing: false, timestamp: Date.now() };
-    typewriterEffect(typingId, reply);
+    renderMessages();
+    scrollChatBottom();
   }
   document.getElementById('chatInput').disabled = false;
   document.getElementById('sendBtn').disabled = false;
