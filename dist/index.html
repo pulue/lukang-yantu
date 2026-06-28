@@ -1158,7 +1158,6 @@ async function sendToAI(content) {
   messages.push(typingMsg);
   renderMessages();
   scrollChatBottom();
-  var reply;
   try {
     var apiMessages = messages
       .filter(function(m) { return !m.typing; })
@@ -1168,25 +1167,42 @@ async function sendToAI(content) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: apiMessages })
     });
-    var data = await res.json();
-    if (data.code === 0 && data.data && data.data.reply) {
-      reply = data.data.reply;
-    } else {
-      reply = generateAIResponse(content);
+    if (!res.ok) throw new Error('API error');
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var fullReply = '';
+    while (true) {
+      var _ref = await reader.read();
+      var done = _ref.done, value = _ref.value;
+      if (done) break;
+      var token = decoder.decode(value);
+      fullReply += token;
+      var idx = messages.findIndex(function(m) { return m.id === typingId; });
+      if (idx >= 0) {
+        messages[idx] = { id: typingId, role: 'assistant', content: fullReply, typing: true, timestamp: Date.now() };
+        renderMessages();
+        scrollChatBottom();
+      }
     }
+    var idx2 = messages.findIndex(function(m) { return m.id === typingId; });
+    if (idx2 >= 0) {
+      messages[idx2] = { id: typingId, role: 'assistant', content: fullReply, typing: false, timestamp: Date.now() };
+      renderMessages();
+    }
+    updateHistorySummary(fullReply);
   } catch (e) {
     console.warn('AI API 调用失败，使用本地回复:', e);
-    reply = generateAIResponse(content);
-  }
-  var idx = messages.findIndex(function(m) { return m.id === typingId; });
-  if (idx >= 0) {
-    messages[idx] = { id: typingId, role: 'assistant', content: reply, typing: false, timestamp: Date.now() };
-    renderMessages();
-    scrollChatBottom();
+    var fallback = generateAIResponse(content);
+    var idx3 = messages.findIndex(function(m) { return m.id === typingId; });
+    if (idx3 >= 0) {
+      messages[idx3] = { id: typingId, role: 'assistant', content: fallback, typing: false, timestamp: Date.now() };
+      renderMessages();
+      scrollChatBottom();
+    }
+    updateHistorySummary(fallback);
   }
   document.getElementById('chatInput').disabled = false;
   document.getElementById('sendBtn').disabled = false;
-  updateHistorySummary(reply);
 }
 
 // ==================== 智能模拟AI回复 ====================

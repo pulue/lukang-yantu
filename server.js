@@ -64,7 +64,8 @@ app.post('/api/chat', async (req, res) => {
         model: 'deepseek-chat',
         messages: apiMessages,
         temperature: 0.7,
-        max_tokens: 600
+        max_tokens: 1200,
+        stream: true
       })
     });
 
@@ -74,10 +75,32 @@ app.post('/api/chat', async (req, res) => {
       return res.status(response.status).json({ code: -1, msg: 'AI 服务暂时不可用，请稍后重试' });
     }
 
-    const data = await response.json();
-    const reply = data.choices[0].message.content;
+    // 流式输出：把 DeepSeek 的 SSE 流直接转发给前端
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
-    res.json({ code: 0, data: { reply } });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line.trim() !== 'data: [DONE]') {
+          try {
+            const json = JSON.parse(line.slice(6));
+            const token = json.choices?.[0]?.delta?.content;
+            if (token) res.write(token);
+          } catch (e) { /* ignore */ }
+        }
+      }
+    }
+    res.end();
   } catch (err) {
     console.error('Chat proxy error:', err);
     res.status(500).json({ code: -1, msg: '服务器内部错误' });
