@@ -45,15 +45,18 @@ app.post('/api/chat', async (req, res) => {
 - 语气温暖鼓励，像学长学姐在聊天
 - 如果用户问的问题超出考研范围，礼貌引导回考研话题
 - 如果信息不足，主动追问用户背景信息以给出更精准建议
+- 排版自然，不要用 ### 或 ** 等 markdown 语法，用自然的段落和 emoji 来分隔内容
 
 ## 禁止行为
 - 不要编造具体院校的分数线、报录比等精确数据（除非你知道）
 - 不要给出绝对化的保证（如"你一定能考上"）
-- 不要建议用户做违法违规的事情`
+- 不要建议用户做违法违规的事情
+- 不要在回复中使用 markdown 标题（###）或加粗语法
     };
 
     const apiMessages = [systemPrompt, ...messages];
 
+    // 先拿完整回复（非流式，速度快），再在前端做打字机效果
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
@@ -64,8 +67,7 @@ app.post('/api/chat', async (req, res) => {
         model: 'deepseek-chat',
         messages: apiMessages,
         temperature: 0.7,
-        max_tokens: 1200,
-        stream: true
+        max_tokens: 1200
       })
     });
 
@@ -75,32 +77,9 @@ app.post('/api/chat', async (req, res) => {
       return res.status(response.status).json({ code: -1, msg: 'AI 服务暂时不可用，请稍后重试' });
     }
 
-    // 流式输出：把 DeepSeek 的 SSE 流直接转发给前端
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-      for (const line of lines) {
-        if (line.startsWith('data: ') && line.trim() !== 'data: [DONE]') {
-          try {
-            const json = JSON.parse(line.slice(6));
-            const token = json.choices?.[0]?.delta?.content;
-            if (token) res.write(token);
-          } catch (e) { /* ignore */ }
-        }
-      }
-    }
-    res.end();
+    const data = await response.json();
+    const reply = data.choices[0].message.content;
+    res.json({ code: 0, data: { reply } });
   } catch (err) {
     console.error('Chat proxy error:', err);
     res.status(500).json({ code: -1, msg: '服务器内部错误' });

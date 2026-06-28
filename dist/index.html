@@ -1167,29 +1167,25 @@ async function sendToAI(content) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: apiMessages })
     });
-    if (!res.ok) throw new Error('API error');
-    var reader = res.body.getReader();
-    var decoder = new TextDecoder();
-    var fullReply = '';
-    while (true) {
-      var _ref = await reader.read();
-      var done = _ref.done, value = _ref.value;
-      if (done) break;
-      var token = decoder.decode(value);
-      fullReply += token;
+    var data = await res.json();
+    if (data.code === 0 && data.data && data.data.reply) {
+      var fullReply = data.data.reply;
+      // 打字机效果：逐字显示
       var idx = messages.findIndex(function(m) { return m.id === typingId; });
-      if (idx >= 0) {
-        messages[idx] = { id: typingId, role: 'assistant', content: fullReply, typing: true, timestamp: Date.now() };
-        renderMessages();
-        scrollChatBottom();
+      for (var i = 0; i < fullReply.length; i++) {
+        if (idx < 0) break;
+        messages[idx] = { id: typingId, role: 'assistant', content: fullReply.substring(0, i + 1), typing: true, timestamp: Date.now() };
+        updateTypingMessage(typingId);
+        await new Promise(function(r) { setTimeout(r, 20); });
       }
+      if (idx >= 0) {
+        messages[idx] = { id: typingId, role: 'assistant', content: fullReply, typing: false, timestamp: Date.now() };
+        renderMessages();
+      }
+      updateHistorySummary(fullReply);
+    } else {
+      throw new Error('API error');
     }
-    var idx2 = messages.findIndex(function(m) { return m.id === typingId; });
-    if (idx2 >= 0) {
-      messages[idx2] = { id: typingId, role: 'assistant', content: fullReply, typing: false, timestamp: Date.now() };
-      renderMessages();
-    }
-    updateHistorySummary(fullReply);
   } catch (e) {
     console.warn('AI API 调用失败，使用本地回复:', e);
     var fallback = generateAIResponse(content);
@@ -1203,6 +1199,18 @@ async function sendToAI(content) {
   }
   document.getElementById('chatInput').disabled = false;
   document.getElementById('sendBtn').disabled = false;
+}
+
+// 只更新打字消息的 DOM，不重新渲染整个聊天
+function updateTypingMessage(msgId) {
+  var msg = messages.find(function(m) { return m.id === msgId; });
+  if (!msg) return;
+  var el = document.getElementById('msg-' + msgId);
+  if (el) {
+    var bubble = el.querySelector('.message-bubble');
+    if (bubble) bubble.textContent = msg.content;
+  }
+  scrollChatBottom();
 }
 
 // ==================== 智能模拟AI回复 ====================
@@ -1274,7 +1282,13 @@ function formatContent(text) {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\n/g, '<br>');
 }
 function scrollChatBottom() {
-  setTimeout(function() { var c = document.getElementById('chatMessages'); if (c) c.scrollTop = c.scrollHeight; }, 50);
+  var c = document.getElementById('chatMessages');
+  if (!c) return;
+  // 只有用户接近底部时才自动滚动（距离底部小于100px）
+  var nearBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 100;
+  if (nearBottom) {
+    setTimeout(function() { c.scrollTop = c.scrollHeight; }, 50);
+  }
 }
 function copyMessage(id) {
   var m = messages.find(function(m) { return m.id == id; });
