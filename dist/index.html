@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>鹿康研途 · AI考研规划师</title>
+<script src="questions.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
@@ -19,13 +20,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 #app{display:flex;padding-top:56px;min-height:100vh}
 
 /* 侧边栏 */
-.sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e2e8f0;height:calc(100vh - 56px);position:sticky;top:56px;overflow-y:auto;padding:20px 14px;flex-shrink:0}
-.sidebar-section{margin-bottom:20px}
-.sidebar-section-title{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:6px}
-.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:#475569;transition:all .2s;border:none;background:none;width:100%;text-align:left}
+.sidebar{width:260px;min-width:260px;background:#fff;border-right:1px solid #e2e8f0;height:calc(100vh - 56px);position:sticky;top:56px;overflow-y:auto;padding:32px 20px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
+.sidebar-section{margin-bottom:28px}
+.sidebar-section-title{font-size:13px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;padding:0 10px;margin-bottom:14px}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:14px 12px;border-radius:10px;cursor:pointer;font-size:16px;font-weight:500;color:#475569;transition:all .2s;border:none;background:none;width:100%;text-align:left}
 .sidebar-item:hover{background:#f8fafc;color:#334155}
 .sidebar-item.active{background:#fef3c7;color:#b45309;font-weight:600}
-.sidebar-item .si-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.sidebar-item .si-icon{font-size:20px;width:26px;text-align:center;flex-shrink:0}
 .sidebar-item .si-badge{margin-left:auto;background:#ef4444;color:#fff;font-size:10px;padding:1px 6px;border-radius:8px}
 
 /* 主内容区 */
@@ -36,7 +37,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .page.active{display:block}
 
 /* ======== 首页布局（两栏） ======== */
-.index-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+.index-layout{display:grid;grid-template-columns:2fr 1fr;gap:28px;align-items:start}
 
 /* Hero Banner */
 .hero{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 60%,#fbbf24 100%);border-radius:16px;padding:36px 40px 32px;grid-column:1/-1}
@@ -62,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .section-title{font-size:16px;font-weight:700;color:#334155;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 
 /* 功能网格 */
-.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .feature-item{text-align:center;padding:20px 12px;border-radius:12px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .2s}
 .feature-item:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.08);border-color:#fde68a}
 .feature-icon-box{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px}
@@ -70,7 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .feature-desc{font-size:12px;color:#94a3b8;display:block}
 
 /* 工具箱 */
-.toolbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toolbox-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .toolbox-item{display:flex;align-items:center;gap:12px;padding:16px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;cursor:pointer;transition:all .2s}
 .toolbox-item:hover{background:#eff6ff;border-color:#bfdbfe;transform:translateY(-1px)}
 .toolbox-icon{font-size:26px}
@@ -583,9 +584,147 @@ body{overflow-x:hidden}
 pre{background:#1e293b;color:#e2e8f0;padding:14px;border-radius:10px;overflow-x:auto;font-size:13px;line-height:1.6}
 code{font-size:13px}
 .card{background:#fff;border:1px solid #f1f5f9;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+
+/* 登录页面样式 */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 50%, #fde68a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.login-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.login-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-input {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+}
+
+.login-btn {
+  padding: 14px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+}
+
+.login-switch {
+  text-align: center;
+  margin-top: 15px;
+  color: #666;
+}
+
+.login-switch a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-error {
+  color: #e74c3c;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.login-success {
+  color: #27ae60;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
 </style>
 </head>
 <body>
+
+<!-- 登录页面 -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-container">
+    <div class="login-title">🦌 鹿康研途</div>
+    <div class="login-subtitle">AI 考研规划师</div>
+    
+    <!-- 登录表单 -->
+    <div id="loginForm">
+      <div class="login-form">
+        <input type="text" id="loginUsername" class="login-input" placeholder="用户名" />
+        <input type="password" id="loginPassword" class="login-input" placeholder="密码" />
+        <button onclick="handleLogin()" class="login-btn">登录</button>
+      </div>
+      <div class="login-switch">
+        还没有账号？<a href="#" onclick="showRegister()">立即注册</a>
+      </div>
+      <div id="loginError" class="login-error"></div>
+    </div>
+    
+    <!-- 注册表单 -->
+    <div id="registerForm" class="hidden">
+      <div class="login-form">
+        <input type="text" id="registerUsername" class="login-input" placeholder="用户名" />
+        <input type="email" id="registerEmail" class="login-input" placeholder="邮箱（可选）" />
+        <input type="password" id="registerPassword" class="login-input" placeholder="密码（至少6位）" />
+        <button onclick="handleRegister()" class="login-btn">注册</button>
+      </div>
+      <div class="login-switch">
+        已有账号？<a href="#" onclick="showLogin()">返回登录</a>
+      </div>
+      <div id="registerError" class="login-error"></div>
+      <div id="registerSuccess" class="login-success"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ==================== 顶部导航栏 ==================== -->
 <header class="topbar">
@@ -595,7 +734,8 @@ code{font-size:13px}
   </div>
 </header>
 
-<div id="app">
+<div id="app" class="hidden">
+  <button onclick="handleLogout()" style="position:fixed;top:10px;right:10px;padding:8px 16px;background:#e74c3c;color:white;border:none;border-radius:4px;cursor:pointer;z-index:9998;">登出</button>
   <!-- ==================== 侧边栏 ==================== -->
   <aside class="sidebar">
     <div class="sidebar-section">
@@ -911,6 +1051,119 @@ code{font-size:13px}
 </div>
 
 <script>
+// ==================== 登录功能 ====================
+const API_BASE = '';  // 相对路径，自动使用当前域名
+
+// 检查登录状态
+function checkAuth() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('app').classList.add('hidden');
+    return false;
+  }
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  return true;
+}
+
+// 显示注册表单
+function showRegister() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.remove('hidden');
+  document.getElementById('loginError').textContent = '';
+}
+
+// 显示登录表单
+function showLogin() {
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerError').textContent = '';
+  document.getElementById('registerSuccess').textContent = '';
+}
+
+// 处理登录
+async function handleLogin() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  
+  if (!username || !password) {
+    document.getElementById('loginError').textContent = '请输入用户名和密码';
+    return;
+  }
+  
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    
+    const data = await res.json();
+    
+    if (data.code === 0) {
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('username', data.data.username);
+      document.getElementById('loginOverlay').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      document.getElementById('loginError').textContent = '';
+      initIndex();
+      loadCategories();
+    } else {
+      document.getElementById('loginError').textContent = data.msg;
+    }
+  } catch (err) {
+    document.getElementById('loginError').textContent = '登录失败，请稍后重试';
+  }
+}
+
+// 处理注册
+async function handleRegister() {
+  const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  
+  if (!username || !password) {
+    document.getElementById('registerError').textContent = '请输入用户名和密码';
+    return;
+  }
+  
+  if (password.length < 6) {
+    document.getElementById('registerError').textContent = '密码长度至少6位';
+    return;
+  }
+  
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    });
+    
+    const data = await res.json();
+    
+    if (data.code === 0) {
+      document.getElementById('registerError').textContent = '';
+      document.getElementById('registerSuccess').textContent = '注册成功！请登录';
+      setTimeout(() => showLogin(), 1500);
+    } else {
+      document.getElementById('registerError').textContent = data.msg;
+    }
+  } catch (err) {
+    document.getElementById('registerError').textContent = '注册失败，请稍后重试';
+  }
+}
+
+// 登出
+function handleLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+}
+
 // ==================== 全局状态 ====================
 const BASE_URL = '/api';
 let currentTab = 'index';
@@ -969,6 +1222,19 @@ function navigateTo(page) {
   currentPage = page;
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(function(t) { t.classList.remove('active'); });
+  var sideEl = document.querySelector('.sidebar [data-page="' + page + '"]');
+  if (sideEl) { sideEl.classList.add('active'); }
+  else {
+    // 工具按钮没有 data-page 属性，通过 onclick 匹配
+    var allItems = document.querySelectorAll('.sidebar-item');
+    for (var i = 0; i < allItems.length; i++) {
+      if (allItems[i].getAttribute('onclick') && allItems[i].getAttribute('onclick').indexOf(page) > -1) {
+        allItems[i].classList.add('active');
+        break;
+      }
+    }
+  }
   if (page === 'university') loadUniversities();
   if (page === 'daily') loadDailyPage();
   if (page === 'compare') loadCompareData();
@@ -983,6 +1249,10 @@ function goBack() {
     currentPage = prev;
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('page-' + prev).classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(function(t) { t.classList.remove('active'); });
+    var sideEl = document.querySelector('.sidebar [data-page="' + prev + '"]');
+    if (sideEl) sideEl.classList.add('active');
+    else switchTab(prev);
     if (prev === 'user') renderUserPage();
   } else {
     switchTab('index');
@@ -990,17 +1260,40 @@ function goBack() {
 }
 
 // ==================== API请求 ====================
+function getAuthHeaders() {
+  var headers = { 'Content-Type': 'application/json' };
+  var token = localStorage.getItem('token');
+  if (token) {
+    headers['Authorization'] = 'Bearer ' + token;
+  }
+  return headers;
+}
+
+function handleAuthError(res) {
+  if (res.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('loginError').textContent = '登录已过期，请重新登录';
+  }
+}
+
 async function apiGet(url, params) {
   var qs = params ? '?' + new URLSearchParams(params).toString() : '';
-  var res = await fetch(BASE_URL + url + qs);
+  var res = await fetch(BASE_URL + url + qs, {
+    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+  });
+  handleAuthError(res);
   return res.json();
 }
 async function apiPost(url, data) {
   var res = await fetch(BASE_URL + url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders(),
     body: JSON.stringify(data)
   });
+  handleAuthError(res);
   return res.json();
 }
 
@@ -1162,30 +1455,40 @@ async function sendToAI(content) {
     var apiMessages = messages
       .filter(function(m) { return !m.typing; })
       .map(function(m) { return { role: m.role, content: m.content }; });
-    var res = await fetch(BASE_URL + '/chat', {
+    var res = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
       body: JSON.stringify({ messages: apiMessages })
     });
+    handleAuthError(res);
     var data = await res.json();
-    if (data.code === 0 && data.data && data.data.reply) {
-      var fullReply = data.data.reply;
-      // 打字机效果：逐字显示
-      var idx = messages.findIndex(function(m) { return m.id === typingId; });
-      for (var i = 0; i < fullReply.length; i++) {
-        if (idx < 0) break;
-        messages[idx] = { id: typingId, role: 'assistant', content: fullReply.substring(0, i + 1), typing: true, timestamp: Date.now() };
-        updateTypingMessage(typingId);
-        await new Promise(function(r) { setTimeout(r, 20); });
+    var fullReply = data.reply || '';
+
+    // 简单打字机效果：逐字显示
+    var idx = messages.findIndex(function(m) { return m.id === typingId; });
+    var charIndex = 0;
+    var typewriterTimer = setInterval(function() {
+      if (charIndex < fullReply.length) {
+        if (idx >= 0) {
+          messages[idx] = { id: typingId, role: 'assistant', content: fullReply.substring(0, charIndex + 1), typing: true, timestamp: Date.now() };
+          updateTypingMessage(typingId);
+        }
+        charIndex++;
+      } else {
+        clearInterval(typewriterTimer);
+        if (idx >= 0) {
+          messages[idx] = { id: typingId, role: 'assistant', content: fullReply, typing: false, timestamp: Date.now() };
+          renderMessages();
+        }
+        updateHistorySummary(fullReply);
+        document.getElementById('chatInput').disabled = false;
+        document.getElementById('sendBtn').disabled = false;
       }
-      if (idx >= 0) {
-        messages[idx] = { id: typingId, role: 'assistant', content: fullReply, typing: false, timestamp: Date.now() };
-        renderMessages();
-      }
-      updateHistorySummary(fullReply);
-    } else {
-      throw new Error('API error');
-    }
+    }, 30);
+    return;
   } catch (e) {
     console.warn('AI API 调用失败，使用本地回复:', e);
     var fallback = generateAIResponse(content);
@@ -1334,17 +1637,19 @@ function setRating(r) { feedbackRating = r; renderStars(); }
 function closeFeedback() { document.getElementById('feedbackModal').style.display = 'none'; feedbackRating = 0; }
 function submitFeedback() {
   if (feedbackRating === 0) { showToast('请先评分'); return; }
-  apiPost('/user/feedback', { sessionId: currentSessionId, rating: feedbackRating, comment: document.getElementById('feedbackComment').value }).then(function() { showToast('感谢您的评价！'); closeFeedback(); }).catch(function() { showToast('提交失败'); });
+  var comment = document.getElementById('feedbackComment').value;
+  // 模拟提交（前端本地记录，不调后端）
+  var feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+  feedbacks.push({ rating: feedbackRating, comment: comment, time: new Date().toISOString() });
+  localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+  showToast('感谢您的评价！我们会继续努力 ⭐');
+  closeFeedback();
 }
 
 // ==================== 知识库 ====================
 async function loadCategories() {
-  try {
-    var res = await apiGet('/knowledge/categories');
-    if (res.code === 0) renderCategories(res.data);
-  } catch(e) {
-    renderCategories(CATEGORIES_DATA);
-  }
+  // 直接使用本地数据，不调后端
+  renderCategories(CATEGORIES_DATA);
 }
 var activeCategory = '';
 function renderCategories(cats) {
@@ -2034,57 +2339,8 @@ function closeUnivModal(e) {
   document.body.style.overflow = '';
 }
 
-// ==================== 每日一练（增强版） ====================
-var LOCAL_QUESTIONS = {
-  '政治': [
-    { id:'p1', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'马克思主义哲学的核心方法论是什么？', options:['A. 实事求是','B. 辩证唯物主义','C. 唯物辩证法','D. 群众路线'], correctAnswer:'C', explanation:'唯物辩证法是马克思主义哲学的核心方法论，它揭示了事物发展的根本规律。实事求是是思想路线，群众路线是工作方法。' },
-    { id:'p2', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'物质的唯一特性是什么？', options:['A. 运动','B. 时间','C. 空间','D. 客观实在性'], correctAnswer:'D', explanation:'客观实在性是物质的唯一特性。列宁指出："物质是标志客观实在的哲学范畴。"运动是物质的根本属性和存在方式。' },
-    { id:'p3', subject:'政治', category:'马克思主义基本原理', difficulty:'中等', type:'single', question:'矛盾的两个基本属性是？', options:['A. 普遍性和特殊性','B. 同一性和斗争性','C. 质和量','D. 内容和形式'], correctAnswer:'B', explanation:'矛盾的同一性和斗争性（也称统一性和对立性）是矛盾的两个基本属性。普遍性和特殊性是矛盾的普遍规律。' },
-    { id:'p4', subject:'政治', category:'毛泽东思想', difficulty:'基础', type:'single', question:'毛泽东思想的"活的灵魂"包括哪些方面？（多选）', options:['A. 实事求是','B. 群众路线','C. 独立自主','D. 武装斗争'], correctAnswer:'ABC', explanation:'毛泽东思想的活的灵魂是实事求是、群众路线、独立自主三个方面。武装斗争是中国革命的主要形式，但不属于"活的灵魂"。' },
-    { id:'p5', subject:'政治', category:'毛泽东思想', difficulty:'中等', type:'single', question:'新民主主义革命的总路线可以概括为？', options:['A. 无产阶级领导的，人民大众的，反对帝国主义的革命','B. 无产阶级领导的，人民大众的，反对帝国主义、封建主义和官僚资本主义的革命','C. 资产阶级领导的民主革命','D. 社会主义革命'], correctAnswer:'B', explanation:'新民主主义革命总路线：无产阶级领导的，人民大众的，反对帝国主义、封建主义和官僚资本主义的革命。这是1948年毛泽东在《在晋绥干部会议上的讲话》中完整表述的。' },
-    { id:'p6', subject:'政治', category:'中国特色社会主义理论', difficulty:'基础', type:'single', question:'中国特色社会主义进入新时代，我国社会主要矛盾已经转化为？', options:['A. 人民日益增长的物质文化需要同落后的社会生产之间的矛盾','B. 人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾','C. 经济发展与环境保护之间的矛盾','D. 城乡发展不均衡的矛盾'], correctAnswer:'B', explanation:'党的十九大报告指出：中国特色社会主义进入新时代，我国社会主要矛盾已经转化为人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾。' },
-    { id:'p7', subject:'政治', category:'中国特色社会主义理论', difficulty:'中等', type:'single', question:'"五位一体"总体布局不包括哪一项？', options:['A. 经济建设','B. 政治建设','C. 文化建设','D. 国防建设'], correctAnswer:'D', explanation:'"五位一体"总体布局是指：经济建设、政治建设、文化建设、社会建设、生态文明建设。国防建设属于国家安全范畴，不在"五位一体"之内。' },
-    { id:'p8', subject:'政治', category:'中国特色社会主义理论', difficulty:'基础', type:'single', question:'"四个全面"战略布局包括？', options:['A. 全面建成小康社会、全面深化改革、全面依法治国、全面从严治党','B. 全面建设社会主义现代化国家、全面深化改革、全面依法治国、全面从严治党','C. 全面改革开放、全面脱贫攻坚、全面依法治国、全面从严治党','D. 全面建成小康社会、全面对外开放、全面依法治国、全面改善民生'], correctAnswer:'B', explanation:'十九届五中全会后，"四个全面"新表述为：全面建设社会主义现代化国家、全面深化改革、全面依法治国、全面从严治党。' },
-    { id:'p9', subject:'政治', category:'近现代史', difficulty:'中等', type:'single', question:'标志着中国新民主主义革命开端的事件是？', options:['A. 辛亥革命','B. 五四运动','C. 中国共产党成立','D. 南昌起义'], correctAnswer:'B', explanation:'五四运动（1919年）标志着中国新民主主义革命的开端。它以彻底反帝反封建的革命性，促进了马克思主义在中国的传播。' },
-    { id:'p10', subject:'政治', category:'时事政治', difficulty:'基础', type:'single', question:'我国2035年的远景目标是？', options:['A. 基本实现社会主义现代化','B. 全面建成小康社会','C. 建成富强民主文明和谐美丽的社会主义现代化强国','D. 实现中华民族伟大复兴'], correctAnswer:'A', explanation:'根据《"十四五"规划和2035年远景目标纲要》，到2035年我国将基本实现社会主义现代化。到本世纪中叶建成社会主义现代化强国。' },
-    { id:'p11', subject:'政治', category:'马克思主义基本原理', difficulty:'中等', type:'single', question:'上层建筑对经济基础的反作用表现为？', options:['A. 上层建筑决定经济基础','B. 上层建筑促进或阻碍经济基础的发展','C. 上层建筑和经济基础完全独立','D. 上层建筑直接创造生产力'], correctAnswer:'B', explanation:'上层建筑对经济基础具有反作用，主要表现为促进或阻碍经济基础的发展。当上层建筑适合经济基础时促进作用，不适合时阻碍作用。' },
-    { id:'p12', subject:'政治', category:'中国特色社会主义理论', difficulty:'中等', type:'single', question:'新发展理念包括哪些方面？（多选）', options:['A. 创新','B. 协调','C. 绿色','D. 开放','E. 共享'], correctAnswer:'ABCDE', explanation:'五大新发展理念：创新、协调、绿色、开放、共享。创新是引领发展的第一动力，协调是持续健康发展的内在要求。' },
-    { id:'p13', subject:'政治', category:'马克思主义基本原理', difficulty:'基础', type:'single', question:'商品二因素是？', options:['A. 价值和价格','B. 使用价值和价值','C. 使用价值和交换价值','D. 价值和剩余价值'], correctAnswer:'B', explanation:'商品是使用价值和价值的对立统一体。使用价值是商品的自然属性，价值是商品的社会属性。' },
-    { id:'p14', subject:'政治', category:'近现代史', difficulty:'基础', type:'single', question:'抗日战争中打破了日军"不可战胜"神话的战役是？', options:['A. 台儿庄战役','B. 平型关大捷','C. 百团大战','D. 淞沪会战'], correctAnswer:'B', explanation:'平型关大捷（1937年9月）是八路军出师以来打的第一个大胜仗，打破了日军"不可战胜"的神话，极大地振奋了全国军民的抗战信心。' },
-    { id:'p15', subject:'政治', category:'时事政治', difficulty:'基础', type:'single', question:'"两个确立"的具体内容是什么？（多选）', options:['A. 确立习近平同志党中央的核心、全党的核心地位','B. 确立习近平新时代中国特色社会主义思想的指导地位','C. 确立社会主义市场经济体制','D. 确立全面建设社会主义现代化国家目标'], correctAnswer:'AB', explanation:'"两个确立"指确立习近平同志党中央的核心、全党的核心地位，确立习近平新时代中国特色社会主义思想的指导地位。这是党的十九届六中全会提出的。' }
-  ],
-  '英语': {
-    'word2meaning': [
-      { id:'ew1', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"abandon" 的意思是什么？', options:['A. 放弃','B. 接受','C. 获得','D. 保持'], correctAnswer:'A', explanation:'abandon 意为"放弃、抛弃"。考研高频词汇，常出现在阅读理解中。反义词：keep, maintain。' },
-      { id:'ew2', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"deliberate" 的意思是什么？', options:['A. 故意的','B. 快速的','C. 聪明的','D. 危险的'], correctAnswer:'A', explanation:'deliberate 意为"故意的、蓄意的"。也可作动词表示"仔细考虑"。近义词：intentional。' },
-      { id:'ew3', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"compelling" 的意思是什么？', options:['A. 令人信服的','B. 复杂的','C. 完整的','D. 竞争的'], correctAnswer:'A', explanation:'compelling 意为"令人信服的、引人入胜的"。来自 compel（强迫）。常用来形容evidence（证据）、argument（论点）等。' },
-      { id:'ew4', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"scrutiny" 的意思是什么？', options:['A. 检查','B. 屏幕','C. 秘密','D. 结构'], correctAnswer:'A', explanation:'scrutiny 意为"仔细检查、审查"。考研阅读常见搭配：under scrutiny（受到审查）、public scrutiny（公众监督）。' },
-      { id:'ew5', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"perpetual" 的意思是什么？', options:['A. 永久的','B. 完美的','C. 个人的','D. 部分的'], correctAnswer:'A', explanation:'perpetual 意为"永久的、持续的"。近义词：permanent, everlasting。perpetual motion（永动）是常见的固定搭配。' },
-      { id:'ew6', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"contradict" 的意思是什么？', options:['A. 矛盾','B. 合同','C. 贡献','D. 联系'], correctAnswer:'A', explanation:'contradict 意为"与...矛盾、反驳"。前缀contra-表示"反对"，词根dict表示"说"。名词形式：contradiction。' },
-      { id:'ew7', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"adequate" 的意思是什么？', options:['A. 足够的','B. 先进的','C. 学术的','D. 活跃的'], correctAnswer:'A', explanation:'adequate 意为"足够的、适当的"。近义词：sufficient, enough。反义词：inadequate。考研作文中常用来表达"充足的准备"。' },
-      { id:'ew8', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"distinguish" 的意思是什么？', options:['A. 区分','B. 分布','C. 打扰','D. 扭曲'], correctAnswer:'A', explanation:'distinguish 意为"区分、辨别"。常见搭配：distinguish A from B（区分A和B）。distinguished 作形容词表示"卓越的"。' },
-      { id:'ew9', subject:'英语', category:'单词→意思', difficulty:'基础', type:'single', question:'"consequence" 的意思是什么？', options:['A. 结果','B. 意识','C. 保存','D. 一致'], correctAnswer:'A', explanation:'consequence 意为"结果、后果"。常见短语：as a consequence（因此）、in consequence of（由于）。近义词：result, outcome。' },
-      { id:'ew10', subject:'英语', category:'单词→意思', difficulty:'中等', type:'single', question:'"endeavor" 的意思是什么？', options:['A. 努力','B. 结束','C. 危险','D. 工程'], correctAnswer:'A', explanation:'endeavor 意为"努力、尽力"。可作名词和动词。近义词：effort, strive。考研阅读理解常考词汇。' }
-    ],
-    'meaning2word': [
-      { id:'em1', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"必不可少的、极其重要的" 对应哪个单词？', options:['A. indispensable','B. independent','C. incredible','D. inadequate'], correctAnswer:'A', explanation:'indispensable 意为"必不可少的"。independent（独立的）、incredible（难以置信的）、inadequate（不足的）。' },
-      { id:'em2', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"同时发生的" 对应哪个单词？', options:['A. simultaneous','B. similar','C. simple','D. significant'], correctAnswer:'A', explanation:'simultaneous 意为"同时发生的"。similar（相似的）、simple（简单的）、significant（重要的）。' },
-      { id:'em3', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"不情愿的" 对应哪个单词？', options:['A. reluctant','B. relevant','C. reliable','D. religious'], correctAnswer:'A', explanation:'reluctant 意为"不情愿的"。relevant（相关的）、reliable（可靠的）、religious（宗教的）。' },
-      { id:'em4', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"普遍的、无处不在的" 对应哪个单词？', options:['A. prevalent','B. previous','C. precious','D. precise'], correctAnswer:'A', explanation:'prevalent 意为"普遍的、流行的"。previous（先前的）、precious（珍贵的）、precise（精确的）。' },
-      { id:'em5', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"透明的" 对应哪个单词？', options:['A. transparent','B. transient','C. tremendous','D. tropical'], correctAnswer:'A', explanation:'transparent 意为"透明的"。transient（短暂的）、tremendous（巨大的）、tropical（热带的）。' },
-      { id:'em6', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"模棱两可的" 对应哪个单词？', options:['A. ambiguous','B. ambitious','C. anonymous','D. ample'], correctAnswer:'A', explanation:'ambiguous 意为"模棱两可的、含糊的"。ambitious（有抱负的）、anonymous（匿名的）、ample（充足的）。' },
-      { id:'em7', subject:'英语', category:'意思→单词', difficulty:'基础', type:'single', question:'"维持、支撑" 对应哪个单词？', options:['A. sustain','B. suspend','C. suspect','D. surrender'], correctAnswer:'A', explanation:'sustain 意为"维持、支撑"。suspend（暂停）、suspect（怀疑）、surrender（投降）。' },
-      { id:'em8', subject:'英语', category:'意思→单词', difficulty:'中等', type:'single', question:'"使恶化" 对应哪个单词？', options:['A. deteriorate','B. determine','C. demonstrate','D. dominate'], correctAnswer:'A', explanation:'deteriorate 意为"使恶化、变坏"。determine（决定）、demonstrate（展示）、dominate（主导）。' }
-    ],
-    'translate': [
-      { id:'et1', subject:'英语', category:'短句翻译', difficulty:'基础', type:'translate', question:'请翻译：Practice makes perfect.', correctAnswer:'熟能生巧。', explanation:'"Practice makes perfect"是英语中的经典谚语，字面意思是"练习造就完美"，即"熟能生巧"。考研英语写作中可适当使用谚语增加文采。' },
-      { id:'et2', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：Where there is a will, there is a way.', correctAnswer:'有志者事竟成。', explanation:'这是英语中最著名的谚语之一。Will在这里指"意志力"，直译为"有意志的地方就有路"。考研中常出现在翻译或写作中。' },
-      { id:'et3', subject:'英语', category:'短句翻译', difficulty:'基础', type:'translate', question:'请翻译：Knowledge is power.', correctAnswer:'知识就是力量。', explanation:'培根的名言。在考研英语写作中可以作为名言引用，尤其在论证教育、学习重要性时使用。' },
-      { id:'et4', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：Actions speak louder than words.', correctAnswer:'行动胜于言语。', explanation:'直译为"行动比言语声音更大"。常用于议论文中强调实践、行动的重要性。是考研写作常用谚语。' },
-      { id:'et5', subject:'英语', category:'短句翻译', difficulty:'中等', type:'translate', question:'请翻译：It is never too old to learn.', correctAnswer:'活到老，学到老。', explanation:'直译为"学习永远不会因为年龄大而太晚"。对应中文谚语"活到老，学到老"。表达终身学习的理念，考研作文常用。' }
-    ]
-  }
-};
+// 每日一练题库已从 index.html 移至 questions.js
+// 如需修改题库，请编辑 questions.js 文件
 
 // 打乱选项顺序
 function shuffleQuestionOptions(q) {
@@ -2960,6 +3216,9 @@ function quickAddHours(subjectId, addHours) {
 
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', function() {
+  if (!checkAuth()) {
+    return;
+  }
   initIndex();
   loadCategories();
 });
